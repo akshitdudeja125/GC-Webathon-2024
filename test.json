@@ -61,12 +61,11 @@
     "Students":{
         "21CS01026":{
             "Feedback":"",
-            "Classes Attended":[
+            "Attendence":
                 {
                     "1":false,
                     "2":true,
                 }
-            ],
             "Assignments":[
                 {
                     "1":{

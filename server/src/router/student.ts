@@ -1,6 +1,7 @@
 
 import express from "express";
 import { firestoreDB } from "../config/config";
+import { getStudentDetails } from "../controller/studentController";
 const router = express.Router();
 
 
@@ -19,20 +20,6 @@ router.get("/getStudentDetails", async (req, res) => {
         return res.status(500).send("Internal Server Error");
     }
 });
-export const getStudentDetails = async (email: string) => {
-    try {
-        const studentCollection = firestoreDB.collection("students");
-        const studentDoc = await studentCollection.doc(email).get();
-        const studentData = studentDoc.data();
-        if (!studentData) {
-            throw new Error("Student not found");
-        }
-        return studentData;
-    } catch (e) {
-        console.error(e);
-        throw e;
-    }
-}
 router.post("/updateUserDetails", async (req, res) => {
     try {
         const { email, updateData } = req.body;
@@ -85,10 +72,14 @@ router.get("/getAvailableCourses", async (req, res) => {
 router.post("/registerStudentForCourse", async (req, res) => {
     try {
         const { email, courseId } = req.body;
+        const courseCode = courseId.split("_")[0];
+        const sem = courseId.split("_")[1];
+        const year = courseId.split("_")[2];
+        const branch = courseId.split("_")[3];
         const studentData: any = await getStudentDetails(email);
         const courseCollection = firestoreDB.collection("courses");
         const courseDoc = await courseCollection.doc(courseId).get();
-        const rollNumber = studentData['Academic Details']['Roll Number'];
+        const rollNumber = studentData['Student Details']['Roll Number'];
         if (courseDoc.exists) {
             const courseData = courseDoc.data();
             if (courseData) {
@@ -109,6 +100,12 @@ router.post("/registerStudentForCourse", async (req, res) => {
 
                         }
                     });
+                    await firestoreDB.collection("students").doc(email).update({
+                        [`Courses.${sem}.${courseId}`]: {
+                            "Attendance": 0,
+                            "Grade": "NA",
+                        }
+                    });
                     return res.status(200).send("Course registered successfully");
                 }
 
@@ -118,17 +115,39 @@ router.post("/registerStudentForCourse", async (req, res) => {
         } else {
             return res.status(404).send("Course not found");
         }
-    } catch (e) {
+    } catch (e: any) {
         console.error(e);
         return res.status(500).send(
             {
                 status: "error",
-                message: "Internal Server Error",
-                "error": e
+                message: e?.message
             }
         );
     }
 });
 
+router.get("/getResults", async (req, res) => {
+    try {
+        const email = req.query.email as string;
+        const studentData: any = await getStudentDetails(email);
+        const result = studentData?.['Courses'];
+        return res.status(200).send(result);
+    } catch (e) {
+        console.error(e);
+        return res.status(500).send("Internal Server Error");
+    }
+});
+
+
+router.get("/getAttendance", async (req, res) => {
+    try {
+        const email = req.query.email as string;
+        const studentData: any = await getStudentDetails(email);
+        const attendance = studentData?.['Courses'];
+    } catch (e) {
+        console.error(e);
+        return res.status(500).send("Internal Server Error");
+    }
+});
 export default router;
 
