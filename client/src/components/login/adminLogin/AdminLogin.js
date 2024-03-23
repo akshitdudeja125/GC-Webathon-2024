@@ -4,7 +4,7 @@ import { firebaseApp } from "../../../firebase";
 
 import Spinner from "../../../utils/Spinner";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-const StudentLogin = () => {
+const AdminLogin = () => {
   const [translate, setTranslate] = useState(false);
   const [loading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -13,7 +13,6 @@ const StudentLogin = () => {
       setTranslate(true);
     }, 1000);
   }, []);
-
   const onGoogleSignIn = async () => {
     try {
       console.log("Google Sign In");
@@ -43,9 +42,8 @@ const StudentLogin = () => {
     });
     return () => unsubscribe();
   }, []);
-
   return (
-    <div className="bg-[#d65158] h-screen w-screen flex items-center justify-center">
+    <div className="bg-[#04bd7d] h-screen w-screen flex items-center justify-center">
       <div className="grid grid-cols-2">
         <div
           className={`h-96 w-96 bg-white flex items-center justify-center ${
@@ -53,7 +51,7 @@ const StudentLogin = () => {
           }  duration-1000 transition-all rounded-3xl shadow-2xl`}
         >
           <h1 className="text-[3rem]  font-bold text-center">
-            Student
+            Admin
             <br />
             Login
           </h1>
@@ -88,4 +86,4 @@ const StudentLogin = () => {
   );
 };
 
-export default StudentLogin;
+export default AdminLogin;

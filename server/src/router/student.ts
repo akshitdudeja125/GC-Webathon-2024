@@ -2,53 +2,9 @@
 import express from "express";
 import { firestoreDB } from "../config/config";
 import { getStudentDetails } from "../controller/studentController";
+import { FieldValue } from "firebase-admin/firestore";
 const router = express.Router();
 
-router.post("/login", async (req, res) => {
-    // const { username, password } = req.body;
-    // const errors = { usernameError: String, passwordError: String };
-    try {
-        // const existingStudent = await Student.findOne({ username });
-        // if (!existingStudent) {
-        //     errors.usernameError = "Student doesn't exist.";
-        //     return res.status(404).json(errors);
-        // }
-        // if (!existingStudent.password) {
-        //     if (password != "12345678") {
-        //         errors.passwordError = "Invalid Credentials";
-        //         return res.status(404).json(errors);
-        //     }
-        // } else {
-        //     const isPasswordCorrect = await bcrypt.compare(
-        //         password,
-        //         existingStudent.password
-        //     );
-        //     if (!isPasswordCorrect) {
-        //         errors.passwordError = "Invalid Credentials";
-        //         return res.status(404).json(errors);
-        //     }
-        // }
-        // const token = jwt.sign(
-        //     {
-        //         email: existingStudent.email,
-        //         id: existingStudent._id,
-        //     },
-        //     "sEcReT",
-        //     { expiresIn: "1h" }
-        // );
-
-        // res.status(200).json({ result: existingStudent, token: token });
-        return res.status(200).send({
-            result: {
-                email: "21CS01026@iitbbs.ac.in",
-                name: "Akshit"
-            },
-            "token": "123"
-        });
-    } catch (error) {
-        console.log(error);
-    }
-});
 
 router.get("/getStudentDetails", async (req, res) => {
     try {
@@ -101,6 +57,7 @@ router.get("/getAvailableCourses", async (req, res) => {
             const data = doc.data();
             if (sem === studentData?.['Academic Details']?.["Semester"] && branch === studentData?.['Academic Details']?.["Branch"])
                 availableCourses.push({
+                    courseId: id,
                     courseCode,
                     sem,
                     year,
@@ -149,6 +106,7 @@ router.post("/registerStudentForCourse", async (req, res) => {
                         [`Courses.${sem}.${courseId}`]: {
                             "Attendance": 0,
                             "Grade": "NA",
+                            "Credits": courseData?.["Course Details"]?.["Credits"],
                         }
                     });
                     return res.status(200).send("Course registered successfully");
@@ -168,6 +126,82 @@ router.post("/registerStudentForCourse", async (req, res) => {
                 message: e?.message
             }
         );
+    }
+});
+router.post("/deRegisterStudentForCourse", async (req, res) => {
+    try {
+        const { email, courseId } = req.body;
+        const courseCode = courseId.split("_")[0];
+        const sem = courseId.split("_")[1];
+        const year = courseId.split("_")[2];
+        const branch = courseId.split("_")[3];
+        const studentData: any = await getStudentDetails(email);
+        const courseCollection = firestoreDB.collection("courses");
+        const courseDoc = await courseCollection.doc(courseId).get();
+        const rollNumber = studentData['Student Details']['Roll Number'];
+        const studentSem = studentData['Academic Details']['Semester'];
+        if (studentSem != sem) {
+            return res.status(400).send("Cannot deregister for course of different semester");
+        }
+        if (courseDoc.exists) {
+            const courseData = courseDoc.data();
+            if (courseData) {
+                if (!courseData?.["Students"]) {
+                    return res.status(400).send("Students not found in course data");
+                }
+                if (!courseData["Students"][rollNumber]) {
+                    return res.status(400).send("Student not registered for this course");
+                }
+                await firestoreDB.collection("students").doc(email).update({
+                    [`Courses.${sem}.${courseId}`]: FieldValue.delete()
+                });
+                await firestoreDB.collection("courses").doc(courseId).update({
+                    [`Students.${rollNumber}`]: FieldValue.delete()
+                });
+                return res.status(200).send("Course deregistered successfully");
+            }
+            else {
+                return res.status(404).send("Course not found");
+            }
+        }
+    }
+    catch (e: any) {
+        console.error(e);
+        return res.status(500).send({
+            status: "error",
+            message: e?.message
+        }
+        );
+    }
+});
+router.get("/getRegisteredCourses", async (req, res) => {
+    try {
+        const email = req.query.email as string;
+        const studentData: any = await getStudentDetails(email);
+        const courses = studentData?.['Courses'];
+        const arrayToSend = [];
+        for (const sem in courses) {
+            const semCourses = courses[sem];
+            const semArray = [];
+            let credits = 0;
+            for (const courseId in semCourses) {
+                credits += semCourses[courseId]?.["Credits"] ?? 0;
+                semArray.push({
+                    courseId,
+                    ...semCourses[courseId]
+                });
+            }
+            arrayToSend.push({
+                sem,
+                credits,
+                courses: semArray
+            });
+        }
+
+        return res.status(200).send(arrayToSend);
+    } catch (e) {
+        console.error(e);
+        return res.status(500).send("Internal Server Error");
     }
 });
 

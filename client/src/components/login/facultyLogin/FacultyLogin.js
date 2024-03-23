@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { firebaseApp } from "../../../firebase";
-
 import Spinner from "../../../utils/Spinner";
+import { firebaseApp } from "../../../firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-const StudentLogin = () => {
+const FacultyLogin = () => {
   const [translate, setTranslate] = useState(false);
   const [loading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -22,7 +21,7 @@ const StudentLogin = () => {
       const auth = getAuth(firebaseApp);
       console.log(auth);
       await signInWithPopup(auth, provider);
-      console.log("Google Sign In Success");
+      console.log("Google Sign In Sœuccess");
     } catch (error) {
       console.error(error);
       setIsLoading(false);
@@ -43,9 +42,8 @@ const StudentLogin = () => {
     });
     return () => unsubscribe();
   }, []);
-
   return (
-    <div className="bg-[#d65158] h-screen w-screen flex items-center justify-center">
+    <div className="bg-[#5a51d6] h-screen w-screen flex items-center justify-center">
       <div className="grid grid-cols-2">
         <div
           className={`h-96 w-96 bg-white flex items-center justify-center ${
@@ -53,7 +51,7 @@ const StudentLogin = () => {
           }  duration-1000 transition-all rounded-3xl shadow-2xl`}
         >
           <h1 className="text-[3rem]  font-bold text-center">
-            Student
+            Faculty
             <br />
             Login
           </h1>
@@ -88,4 +86,4 @@ const StudentLogin = () => {
   );
 };
 
-export default StudentLogin;
+export default FacultyLogin;
