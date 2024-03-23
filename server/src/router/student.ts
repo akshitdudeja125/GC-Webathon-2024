@@ -4,6 +4,51 @@ import { firestoreDB } from "../config/config";
 import { getStudentDetails } from "../controller/studentController";
 const router = express.Router();
 
+router.post("/login", async (req, res) => {
+    // const { username, password } = req.body;
+    // const errors = { usernameError: String, passwordError: String };
+    try {
+        // const existingStudent = await Student.findOne({ username });
+        // if (!existingStudent) {
+        //     errors.usernameError = "Student doesn't exist.";
+        //     return res.status(404).json(errors);
+        // }
+        // if (!existingStudent.password) {
+        //     if (password != "12345678") {
+        //         errors.passwordError = "Invalid Credentials";
+        //         return res.status(404).json(errors);
+        //     }
+        // } else {
+        //     const isPasswordCorrect = await bcrypt.compare(
+        //         password,
+        //         existingStudent.password
+        //     );
+        //     if (!isPasswordCorrect) {
+        //         errors.passwordError = "Invalid Credentials";
+        //         return res.status(404).json(errors);
+        //     }
+        // }
+        // const token = jwt.sign(
+        //     {
+        //         email: existingStudent.email,
+        //         id: existingStudent._id,
+        //     },
+        //     "sEcReT",
+        //     { expiresIn: "1h" }
+        // );
+
+        // res.status(200).json({ result: existingStudent, token: token });
+        return res.status(200).send({
+            result: {
+                email: "21CS01026@iitbbs.ac.in",
+                name: "Akshit"
+            },
+            "token": "123"
+        });
+    } catch (error) {
+        console.log(error);
+    }
+});
 
 router.get("/getStudentDetails", async (req, res) => {
     try {

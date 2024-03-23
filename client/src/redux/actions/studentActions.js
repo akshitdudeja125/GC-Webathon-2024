@@ -2,7 +2,7 @@ import {
   SET_ERRORS,
   UPDATE_PASSWORD,
   TEST_RESULT,
-  // STUDENT_LOGIN,
+  STUDENT_LOGIN,
   ATTENDANCE,
   UPDATE_STUDENT,
   GET_SUBJECT,
@@ -12,22 +12,21 @@ import * as api from "../api";
 import axios from "axios";
 export const studentSignIn = (formData, navigate) => async (dispatch) => {
   try {
-    console.log("studentSignIn");
-    console.log(formData);
+    const { data } = await axios.post(
+      "http://localhost:3002/api/student/login",
+      {
+        username: formData.username,
+        password: formData.password,
+      }
+    );
 
-    const { data } = axios.post("http://localhost:4000/api/student/login", {
-      username: formData.username,
-      password: formData.password,
-    });
-
-    console.log(data);
-
-    // console.log(data);
-    // const { data } = await api.studentSignIn(formData);
-    // console.log(data);
-    // dispatch({ type: STUDENT_LOGIN, data });
-    // if (data.result.passwordUpdated) navigate("/student/home");
-    // else navigate("/student/password");
+    dispatch({ type: STUDENT_LOGIN, data });
+    if (data.result.passwordUpdated) {
+      console.log("password updated");
+      navigate("/student/home");
+    } else {
+      navigate("/student/password");
+    }
   } catch (error) {
     // dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
