@@ -251,7 +251,7 @@ router.post("/submitFacultyFeedback", async (req, res) => {
                     [`FacultyFeedback`]: FieldValue.arrayUnion(feedback),
                 });
                 await firestoreDB.collection("courses").doc(courseId).update({
-                    [`Students.${rollNumber}.FacultyFeedback`]: true,
+                    [`Students.${rollNumber}.Faculty Feedback`]: true,
                 });
                 return res.status(200).send("Feedback submitted successfully");
             }
@@ -287,7 +287,7 @@ router.post("/submitCourseFeedback", async (req, res) => {
                     [`CourseFeedback`]: FieldValue.arrayUnion(feedback),
                 });
                 await firestoreDB.collection("courses").doc(courseId).update({
-                    [`Students.${rollNumber}.CourseFeedback`]: true,
+                    [`Students.${rollNumber}.Course Feedback`]: true,
                 });
                 return res.status(200).send("Feedback submitted successfully");
             }

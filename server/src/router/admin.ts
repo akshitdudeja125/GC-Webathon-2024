@@ -55,4 +55,6 @@ router.get("/getAllFaculty", async (req, res) => {
 
 
 
+
+
 export default router;

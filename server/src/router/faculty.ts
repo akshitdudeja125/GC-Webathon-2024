@@ -52,6 +52,51 @@ router.post("/updateFacultyDetails", async (req, res) => {
     }
 })
 
+router.get("/getFacultyFeedback", async (req, res) => {
+    try {
+        const courseId = req.query.courseId as string;
+        const courseCollection = firestoreDB.collection("courses");
+        const courseDoc = await courseCollection.doc(courseId).get();
+        if (!courseDoc.exists) {
+            return res.status(404).send("Course not found");
+        }
+        const courseData = courseDoc.data();
+        if (!courseData) {
+            return res.status(500).send("Course data not found");
+        }
+        const feedback = courseData["Faculty Feedback"];
+        return res.status(200).send(feedback);
+    } catch (e: any) {
+        console.error(e);
+        return res.status(500).send({
+            status: "error",
+            message: e?.message
+        });
+    }
+});
+
+router.get("/getCourseFeedback", async (req, res) => {
+    try {
+        const courseId = req.query.courseId as string;
+        const courseCollection = firestoreDB.collection("courses");
+        const courseDoc = await courseCollection.doc(courseId).get();
+        if (!courseDoc.exists) {
+            return res.status(404).send("Course not found");
+        }
+        const courseData = courseDoc.data();
+        if (!courseData) {
+            return res.status(500).send("Course data not found");
+        }
+        const feedback = courseData["Course Feedback"];
+        return res.status(200).send(feedback);
+    } catch (e: any) {
+        console.error(e);
+        return res.status(500).send({
+            status: "error",
+            message: e?.message
+        });
+    }
+});
 
 router.post("/registerCourse", async (req, res) => {
     try {
