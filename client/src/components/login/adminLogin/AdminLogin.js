@@ -4,6 +4,7 @@ import { firebaseApp } from "../../../firebase";
 
 import Spinner from "../../../utils/Spinner";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { Box, CircularProgress } from "@mui/material";
 const AdminLogin = () => {
   const [translate, setTranslate] = useState(false);
   const [loading, setIsLoading] = useState(false);
@@ -29,19 +30,49 @@ const AdminLogin = () => {
     }
   };
 
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   useEffect(() => {
     const firebaseAuth = getAuth(firebaseApp);
     const unsubscribe = firebaseAuth.onAuthStateChanged(async (user) => {
       if (user) {
         console.log(user);
+        const authToken = await user.getIdToken();
+        console.log(authToken);
+        //check if email has @iitbbs.ac.in
+        if (!user.email.includes("@iitbbs.ac.in")) {
+          alert("Please sign in with your IIT Bhubaneswar email id");
+          setIsInitialLoading(false);
+          setIsLoading(false);
+          await firebaseAuth.signOut();
+          return;
+        }
+
+        //set auth token and email to local storage
+        localStorage.setItem("authToken", authToken);
+        localStorage.setItem("email", user.email);
         console.log("User Logged In");
         navigate("/student/home");
       } else {
-        console.log("User Logged Out");
+        console.log("User is not signed in");
+        setIsInitialLoading(false);
       }
     });
     return () => unsubscribe();
   }, []);
+  if (isInitialLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          height: "100vh",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
   return (
     <div className="bg-[#04bd7d] h-screen w-screen flex items-center justify-center">
       <div className="grid grid-cols-2">

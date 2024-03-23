@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./components/login/Login";
 
 import StudentLogin from "./components/login/studentLogin/StudentLogin";
+import StudentHome from "./components/student/StudentHome";
 
 const App = () => {
   return (
@@ -10,6 +11,7 @@ const App = () => {
       <Route exact path="/" element={<Login />} />
 
       <Route path="/login/studentlogin" element={<StudentLogin />} />
+      <Route path="/student/home" element={<StudentHome />} />
     </Routes>
   );
 };
