@@ -16,9 +16,10 @@ router.get("/getStudentDetails", async (req, res) => {
             return res.status(404).send("Student not found");
         }
     }
-    catch (e) {
+    catch (e: any) {
         console.error(e);
-        return res.status(500).send("Internal Server Error");
+
+        return res.status(500).send(e.message);
     }
 });
 router.post("/updateUserDetails", async (req, res) => {
