@@ -27,7 +27,7 @@ import { Routes, Route } from "react-router-dom";
 // import FacultyLogin from "./components/login/facultyLogin/FacultyLogin";
 import Login from "./components/login/Login";
 
-// import StudentLogin from "./components/login/studentLogin/StudentLogin";
+import StudentLogin from "./components/login/studentLogin/StudentLogin";
 // import StudentFirstTimePassword from "./components/student/profile/update/firstTimePassword/FirstTimePassword";
 // import StudentHome from "./components/student/StudentHome";
 // import StudentProfile from "./components/student/profile/Profile";
@@ -92,6 +92,7 @@ const App = () => {
       <Route path="/student/subjectlist" element={<SubjectList />} />
       <Route path="/student/testresult" element={<TestResult />} />
       <Route path="/student/attendance" element={<Attendance />} /> */}
+      <Route path="/login/studentlogin" element={<StudentLogin />} />
     </Routes>
   );
 };
