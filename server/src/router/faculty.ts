@@ -3,6 +3,55 @@ import express from "express";
 import { firestoreDB } from "../config/config";
 import { FieldValue } from "firebase-admin/firestore";
 const router = express.Router();
+router.get("/getFacultyDetails", async (req, res) => {
+    try {
+        const email = req.query.email as string;
+        const facultyCollection = firestoreDB.collection("faculty");
+        const docRef = await facultyCollection.doc(email).get();
+        if (!docRef.exists) {
+            await facultyCollection.doc(email).set({
+                "Faculty Details": {
+                    "Name": "N/A",
+                    "Email": email,
+                    "Id": "N/A",
+                },
+                "Academic Details": {
+                    "School": "School",
+                    "Department": "Department",
+                    "Designation": "Designation",
+                },
+            });
+        }
+        const doc = await facultyCollection.doc(email).get();
+        const facultyData = doc.data();
+        return res.status(200).send(facultyData);
+    }
+    catch (e: any) {
+        console.error(e);
+
+        return res.status(500).send(e.message);
+    }
+});
+router.post("/updateFacultyDetails", async (req, res) => {
+    try {
+        const { email, updateData } = req.body;
+        const facultyCollection = firestoreDB.collection("faculty");
+        const facultyDoc = await facultyCollection.doc(email).get();
+        if (facultyDoc.exists) {
+            await facultyCollection.doc(email).update(updateData);
+            console.log("Faculty details updated successfully");
+            return res.status(200).send("Faculty details updated successfully");
+        } else {
+            await facultyCollection.doc(email).set(updateData);
+            return res.status(200).send("Faculty details added successfully");
+        }
+
+    } catch (e) {
+        console.error(e);
+        return res.status(500).send("Internal Server Error");
+    }
+})
+
 
 router.post("/registerCourse", async (req, res) => {
     try {
@@ -28,6 +77,7 @@ router.post("/registerCourse", async (req, res) => {
                         "Credits": credits,
                         "Instructor": facultyData?.['Faculty Details']?.['Name'],
                         "Instructor Id": facultyData?.['Faculty Details']?.['Id'],
+                        email: facultyEmail
                     },
                     "Total Classes": 0,
                     "Students": {},
@@ -141,6 +191,46 @@ router.get("/getAllRegisteredStudents", async (req, res) => {
     } catch (e) {
         console.error(e);
         return res.status(500).send("Internal Server Error");
+    }
+});
+router.get("/getCourseDetails", async (req, res) => {
+    try {
+        const courseId = req.query.courseId as string;
+        const courseCollection = firestoreDB.collection("courses");
+        const courseDoc = await courseCollection.doc(courseId).get();
+        if (!courseDoc.exists) {
+            return res.status(404).send("Course not found");
+        }
+        const courseData = courseDoc.data();
+        if (!courseData) {
+            return res.status(500).send("Course data not found");
+        }
+        return res.status(200).send(courseData);
+    } catch (e) {
+        console.error(e);
+        return res.status(500).send("Internal Server Error");
+    }
+});
+router.get("/getFacultyCourses", async (req, res) => {
+    try {
+        const email = req.query.email as string;
+        const courseCollection = firestoreDB.collection("courses");
+        const courseDocs = await courseCollection.where("Course Details.email", "==", email).get();
+        const coursesArray: any = [];
+        courseDocs.forEach(doc => {
+            const courseData = doc.data();
+            coursesArray.push({
+                courseId: doc.id,
+                ...courseData
+            });
+        });
+        return res.status(200).send(coursesArray);
+    } catch (e: any) {
+        console.error(e);
+        return res.status(500).send({
+            status: "error",
+            message: e?.message
+        });
     }
 });
 export default router;
