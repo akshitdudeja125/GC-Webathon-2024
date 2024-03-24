@@ -51,7 +51,7 @@ const FacultyLogin = () => {
         localStorage.setItem("authToken", authToken);
         localStorage.setItem("email", user.email);
         console.log("User Logged In");
-        navigate("/student/home");
+        navigate("/faculty/home");
       } else {
         console.log("User is not signed in");
         setIsInitialLoading(false);
