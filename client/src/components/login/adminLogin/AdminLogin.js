@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { firebaseApp } from "../../../firebase";
 
 import Spinner from "../../../utils/Spinner";
+import { firebaseApp } from "../../../firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { Box, CircularProgress } from "@mui/material";
+import axios from "axios";
 const AdminLogin = () => {
   const [translate, setTranslate] = useState(false);
   const [loading, setIsLoading] = useState(false);
@@ -47,11 +48,35 @@ const AdminLogin = () => {
           return;
         }
 
+        //check if admin
+        //make a http request to backend to check if user is admin
+        // if not admin then sign out
+        // else navigate to admin home
+        // await axios.get("http://localhost:3002/api/admin/isAdmin", {
+        //   params: { email: user.email },
+        // });
         //set auth token and email to local storage
         localStorage.setItem("authToken", authToken);
         localStorage.setItem("email", user.email);
         console.log("User Logged In");
-        navigate("/student/home");
+        const { data } = await axios.get(
+          "http://localhost:3002/api/admin/isAdmin",
+          {
+            params: { email: user.email },
+          }
+        );
+        if (data) {
+          navigate("/admin/home");
+        } else {
+          alert("You are not an admin");
+          setIsInitialLoading(false);
+          setIsLoading(false);
+          await firebaseAuth.signOut();
+          //delete auth token and email from local storage
+          localStorage.removeItem("authToken");
+          localStorage.removeItem("email");
+          return;
+        }
       } else {
         console.log("User is not signed in");
         setIsInitialLoading(false);
@@ -94,7 +119,7 @@ const AdminLogin = () => {
             translate ? "-translate-x-[12rem]" : ""
           }  duration-1000 transition-all space-y-6 rounded-3xl shadow-2xl`}
         >
-          <h1 className="text-white text-3xl font-semibold">Student</h1>
+          <h1 className="text-white text-3xl font-semibold">Admin</h1>
 
           <button
             onClick={onGoogleSignIn}
