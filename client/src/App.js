@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Login from "./Components/login/Login";
+import Login from "./components/login/Login";
 
 import StudentLogin from "./Components/login/studentLogin/StudentLogin";
 import StudentHome from "./Components/student/StudentHome";
@@ -53,6 +53,7 @@ const App = () => {
         path="/faculty/home/profile/update"
         element={<FacultyProfileUpdate />}
       />
+      
     </Routes>
   );
 };
