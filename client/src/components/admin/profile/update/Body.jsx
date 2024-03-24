@@ -6,7 +6,6 @@ import axios from "axios";
 import { firebaseApp } from "../../../../firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 const Body = () => {
-
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -17,54 +16,57 @@ const Body = () => {
   useEffect(() => {
     //get aemail from auth
     const auth = getAuth(firebaseApp);
-    const Authemail = auth.currentUser.email;
-    setEmail(Authemail);
-    if (!email) {
+    const Authemail = auth?.currentUser?.email;
+    console.log(Authemail);
+    if (!Authemail) {
       navigate("/admin/login");
     }
-    const emailReq = email;
+    setEmail(Authemail);
     const getData = async () => {
-      const { data } = await axios.get(
-        "http://localhost:3002/api/admin/getAdminDetails",
-        { params: { email: emailReq } }
-      );
-      //   console.log(data["Personal Details"]["PWD"]);
-      setName(data?.data["Admin Details"]?.["Name"]);
-      setdob(data?.data["Admin Details"]?.["DOB"]);
-      setAdminId(data?.data["Admin Details"]?.["Admin ID"]);
+      if (Authemail) {
+        const data = await axios.get(
+          "http://localhost:3002/api/admin/getAdminDetails",
+          { params: { email: Authemail } }
+        );
+        //   console.log(data["Personal Details"]["PWD"]);
+        setName(data?.data?.["Admin Details"]?.["Name"]);
+        setdob(data?.data?.["Admin Details"]?.["DOB"]);
+        setAdminId(data?.data?.["Admin Details"]?.["Id"]);
+      }
     };
 
     setLoading(true);
     getData();
-    // console.log(studentData["Student Details"]["Name"]);
     setLoading(false);
   }, []);
 
-
   const cancelHandler = () => {
-    navigate("/student/home/profile");
+    navigate("/admin/home/profile");
   };
 
   const formSubmitHandler = async (event) => {
-    const data = {
-      email: email,
-      updateData: {
-            "Admin Details": {
-                "Name": name,
-                "Email": email,
-                "Id": adminId,
-                "DOB": dob,
-            },
-  },
-    };
-
-    axios
-      .post("http://localhost:3002/api/student/updateUserDetails", data)
-      .then((response) => {
-        console.log(response.status, response.data.token);
-      });
-
-    navigate("/student/profile");
+    try {
+      const data = {
+        email: email,
+        updateData: {
+          "Admin Details": {
+            Name: name,
+            Email: email,
+            Id: adminId,
+            DOB: dob,
+          },
+        },
+      };
+      const res = await axios.post(
+        "http://localhost:3002/api/admin/updateAdminDetails",
+        data
+      );
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      navigate("/admin/home/profile");
+    }
   };
 
   return (
@@ -77,7 +79,7 @@ const Body = () => {
                 <div>
                   <label
                     htmlFor="Email"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Email
                   </label>
@@ -86,6 +88,7 @@ const Body = () => {
                     id="Email"
                     class="bg-gray-50 cursor-not-allowed border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[30rem] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={email}
+                    value={email}
                     disabled
                   />
                 </div>
@@ -93,7 +96,7 @@ const Body = () => {
                 <div>
                   <label
                     htmlFor="name"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Name
                   </label>
@@ -102,14 +105,16 @@ const Body = () => {
                     id="name"
                     class="bg-gray-50 cursor-not-allowed border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={name}
-                    disabled
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    // disabled
                   />
                 </div>
 
                 <div>
                   <label
                     htmlFor="rollno"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Admin Id
                   </label>
@@ -118,15 +123,28 @@ const Body = () => {
                     id="rollno"
                     class="bg-gray-50 cursor-not-allowed border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={adminId}
+                    onChange={(e) => setAdminId(e.target.value)}
+                    value={adminId}
                     disabled
                   />
                 </div>
-  
-               
-    
+                <div>
+                  <label
+                    htmlFor="rollno"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+                  >
+                    Date of Birth
+                  </label>
+                  <input
+                    type="text"
+                    id="dob"
+                    class="bg-gray-50 cursor-not-allowed border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder={"YYYY-MM-DD"}
+                    onChange={(e) => setdob(e.target.value)}
+                    value={dob}
+                  />
+                </div>
               </div>
-
-           
             </div>
 
             <div className={classes.adminFormButton}>

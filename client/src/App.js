@@ -17,7 +17,7 @@ import Feedback from "./Components/student/Feedback/Feedback";
 import AdminLogin from "./Components/login/adminLogin/AdminLogin";
 import AdminHome from "./Components/admin/AdminHome";
 import AdminHomeProfile from "./Components/admin/Profile";
-import AdminProfileUpdate from "./Components/admin/Profile";
+import AdminProfileUpdate from "./Components/admin/profile/update/Update";
 
 const App = () => {
   return (
