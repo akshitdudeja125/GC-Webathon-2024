@@ -34,7 +34,7 @@ const Sidebar = () => {
             <h1 className="font-normal">Dashboard</h1>
           </NavLink>
           <NavLink
-            to="/student/profile"
+            to="/student/home/profile"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
             }>

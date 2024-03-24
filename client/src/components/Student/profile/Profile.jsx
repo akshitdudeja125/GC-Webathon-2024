@@ -10,8 +10,9 @@ import Sidebar from "../Sidebar";
 import { useNavigate } from "react-router";
 
 const Profile = () => {
-
   const navigate = useNavigate();
+
+  const email = localStorage.getItem("email");
 
   const [name, setName] = useState();
   const [rollNo, setRollNo] = useState();
@@ -31,9 +32,13 @@ const Profile = () => {
 
   useEffect(() => {
     const getData = async () => {
+      let emailReq = "";
+      emailReq += email[0] + email[1];
+      emailReq += (email[2] + email[3]).toUpperCase();
+      for (let i = 4; i < email.length; i++) emailReq += email[i];
       const data = await axios.get(
         "http://localhost:3002/api/student/getStudentDetails",
-        { params: { email: "21CS01026@iitbbs.ac.in" } }
+        { params: { email: emailReq } }
       );
       console.log(data.data["Student Details"]["Name"]);
       setName(data.data["Student Details"]["Name"]);
@@ -41,9 +46,11 @@ const Profile = () => {
       setBatch(data.data["Academic Details"]["Batch"]);
       let atten = 0;
       let totalAtten = 0;
-      for (let i = 0; i < data.data["Courses"].length; i++) {
-        atten += data.data["Courses"][i]["Attendance"];
-        totalAtten += data.data["Courses"][i]["TotalClasses"];
+      if (data.data["Courses"]) {
+        for (let i = 0; i < data.data["Courses"].length; i++) {
+          atten += data.data["Courses"][i]["Attendance"];
+          totalAtten += data.data["Courses"][i]["TotalClasses"];
+        }
       }
       setAttendance(atten);
       setTotalAttendance(totalAtten);
@@ -62,8 +69,8 @@ const Profile = () => {
   }, []);
 
   const updateHandler = () => {
-    navigate("/student/profile/update");
-  }
+    navigate("/student/home/profile/update");
+  };
 
   return (
     <div className="bg-[#d6d9e0] h-screen flex items-center justify-center overflow-auto">
