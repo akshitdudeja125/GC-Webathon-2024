@@ -97,7 +97,15 @@ router.post("/registerStudentForCourse", async (req, res) => {
         const sem = courseId.split("_")[1];
         const year = courseId.split("_")[2];
         const branch = courseId.split("_")[3];
-        const studentData: any = await getStudentDetails(email);
+        const studentCollection = firestoreDB.collection("students");
+        const studentDoc = await studentCollection.doc(email).get();
+        if (!studentDoc.exists) {
+            return res.status(404).send("Student not found");
+        }
+        const studentData = studentDoc.data();
+        if (!studentData) {
+            return res.status(404).send("Student not found");
+        }
         const courseCollection = firestoreDB.collection("courses");
         const courseDoc = await courseCollection.doc(courseId).get();
         const rollNumber = studentData['Student Details']['Roll Number'];
@@ -111,6 +119,8 @@ router.post("/registerStudentForCourse", async (req, res) => {
                     return res.status(400).send("Student already registered for this course");
                 }
                 else {
+
+
                     await firestoreDB.collection("courses").doc(courseId).update({
                         [`Students.${rollNumber}`]: {
                             "Feedback": "",
@@ -324,6 +334,8 @@ router.post("/submitCourseFeedback", async (req, res) => {
         );
     }
 });
+
+
 
 export default router;
 

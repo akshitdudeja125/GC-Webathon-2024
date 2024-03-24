@@ -14,6 +14,7 @@ router.get("/getFacultyDetails", async (req, res) => {
                     "Name": "N/A",
                     "Email": email,
                     "Id": "N/A",
+                    "DOB": "N/A",
                 },
                 "Academic Details": {
                     "School": "School",
