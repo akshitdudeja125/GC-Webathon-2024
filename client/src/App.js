@@ -9,6 +9,7 @@ import TestResult from "./components/student/TestResults/TestResult";
 
 import Attendance from "./components/student/attendance/DisplayAttendance";
 import Feedback from "./components/student/Feedback/Feedback";
+import FacultyFeedback from "./components/student/FacultyFeedback/Feedback";
 
 import AdminLogin from "./components/login/adminLogin/AdminLogin";
 import AdminHome from "./components/admin/AdminHome";
@@ -39,6 +40,7 @@ const App = () => {
         <Route path="testResult" element={<TestResult />} />
         <Route path="attendance" element={<Attendance />} />
         <Route path="feedback" element={<Feedback />} />
+        <Route path="faculty-feedback" element={<FacultyFeedback />} />
         <Route path="courseRegistration" element={<Registration />} />
         <Route path="getCourses" element={<SeeCourses />} />
       </Route>

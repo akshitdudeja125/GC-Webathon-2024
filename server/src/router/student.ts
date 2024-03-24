@@ -218,16 +218,29 @@ router.get("/getRegisteredCourses", async (req, res) => {
         const studentData: any = await getStudentDetails(email);
         const courses = studentData?.['Courses'];
         const arrayToSend = [];
+        const courseCollection = firestoreDB.collection("courses");
         for (const sem in courses) {
             const semCourses = courses[sem];
             const semArray = [];
             let credits = 0;
             for (const courseId in semCourses) {
                 credits += semCourses[courseId]?.["Credits"] ?? 0;
-                semArray.push({
-                    courseId,
-                    ...semCourses[courseId]
-                });
+                const courseDoc = await courseCollection.doc(courseId).get();
+                const courseData = courseDoc.data();
+                // console.log(courseData);
+                if (courseData) {
+                    semArray.push({
+                        courseId,
+                        ...semCourses[courseId],
+                        faculty: courseData?.["Course Details"]?.["Instructor"]
+                    });
+                }
+                else {
+                    semArray.push({
+                        courseId,
+                        ...semCourses[courseId],
+                    });
+                }
             }
             arrayToSend.push({
                 sem,
