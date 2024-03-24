@@ -53,3 +53,5 @@ const DataTable1 = () => {
     </div>
   );
 };
+
+export default DataTable1;

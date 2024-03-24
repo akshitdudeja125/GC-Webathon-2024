@@ -9,6 +9,9 @@ import StudentProfileUpdate from "./Components/Student/profile/Update/Update";
 import TestResult from "./Components/Student/TestResults/TestResult";
 import Attendance from "./Components/Student/attendance/Attendance";
 import Feedback from "./Components/Student/Feedback/Feedback";
+import DataTable1 from "./Pages/registerCourses";
+import Registration from "./Pages/Registration";
+import SeeCourses from "./Pages/SeeCourses";
 
 const App = () => {
   return (
@@ -22,6 +25,8 @@ const App = () => {
       <Route path="/student/testResult" element={<TestResult/>}/>
       <Route path="/student/attendance" element={<Attendance/>}/>
       <Route path="/student/feedback" element={<Feedback/>}/>
+      <Route path="/student/courseRegistration" element={<Registration/>}/>
+      <Route path="/student/getCourses" element={<SeeCourses/>}/>
       
     </Routes>
   );
