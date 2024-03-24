@@ -5,10 +5,14 @@ import * as classes from "../../../../utils/styles";
 import axios from "axios";
 
 const Body = () => {
-  //   const email = localStorage.getItem("email");
-  const email = "21CS01026@iitbbs.ac.in";
+  const email = localStorage.getItem("email");
+
+  let emailReq = "";
+  emailReq += email[0] + email[1];
+  emailReq += (email[2] + email[3]).toUpperCase();
+  for (let i = 4; i < email.length; i++) emailReq += email[i];
+
   const navigate = useNavigate();
-  const [studentData, setStudentData] = useState({});
 
   const [name, setName] = useState();
   const [category, setCategory] = useState();
@@ -39,7 +43,7 @@ const Body = () => {
     const getData = async () => {
       const { data } = await axios.get(
         "http://localhost:3002/api/student/getStudentDetails",
-        { params: { email: "21CS01026@iitbbs.ac.in" } }
+        { params: { email: emailReq } }
       );
       //   console.log(data["Personal Details"]["PWD"]);
 
@@ -84,12 +88,12 @@ const Body = () => {
   };
 
   const cancelHandler = () => {
-    navigate("/student/profile");
+    navigate("/student/home/profile");
   };
 
   const formSubmitHandler = async (event) => {
     const data = {
-      email: "21CS01026@iitbbs.ac.in",
+      email: email,
       updateData: {
         "Student Details": {
           "Roll Number": rollNo,
@@ -132,9 +136,9 @@ const Body = () => {
       .post("http://localhost:3002/api/student/updateUserDetails", data)
       .then((response) => {
         console.log(response.status, response.data.token);
-      })
-      
-      navigate("/student/profile");
+      });
+
+    navigate("/student/profile");
   };
 
   return (
@@ -438,7 +442,7 @@ const Body = () => {
             </div>
           </form>
         </div>
-      </div>{" "}
+      </div>
     </div>
   );
 };

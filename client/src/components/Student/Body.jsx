@@ -6,9 +6,9 @@ import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import "react-calendar/dist/Calendar.css";
 import axios from "axios";
 
-
 const Body = () => {
-  const email=localStorage.getItem("email");
+  const email = localStorage.getItem("email");
+  console.log(email);
   const [name, setName] = useState();
   const [rollNo, setRollNo] = useState();
   const [attendance, setAttendance] = useState();
@@ -21,9 +21,13 @@ const Body = () => {
 
   useEffect(() => {
     const getData = async () => {
+      let emailReq="";
+      emailReq+=email[0]+email[1];
+      emailReq+=(email[2]+email[3]).toUpperCase();
+      for(let i=4;i<email.length;i++)emailReq+=email[i];
       const data = await axios.get(
         "http://localhost:3002/api/student/getStudentDetails",
-        { params: { email: "21CS01026@iitbbs.ac.in" } }
+        { params: { email: email } }
       );
       console.log(data.data["Student Details"]["Name"]);
       setName(data.data["Student Details"]["Name"]);
@@ -31,9 +35,11 @@ const Body = () => {
       setBatch(data.data["Academic Details"]["Batch"]);
       let atten = 0;
       let totalAtten = 0;
-      for (let i = 0; i < data.data["Courses"].length; i++) {
-        atten += data.data["Courses"][i]["Attendance"];
-        totalAtten += data.data["Courses"][i]["TotalClasses"];
+      if (data.data["Courses"]) {
+        for (let i = 0; i < data.data["Courses"].length; i++) {
+          atten += data.data["Courses"][i]["Attendance"];
+          totalAtten += data.data["Courses"][i]["TotalClasses"];
+        }
       }
       setAttendance(atten);
       setTotalAttendance(totalAtten);
