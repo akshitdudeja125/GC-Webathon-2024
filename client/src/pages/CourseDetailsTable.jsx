@@ -4,7 +4,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import CourseDetailsRow from "./CourseDetailsRow";
 
-
 const CourseDetailsTable = ({ courses }) => {
   if (!courses) {
     return <div>No courses available</div>;
@@ -30,7 +29,7 @@ const CourseDetailsTable = ({ courses }) => {
               </tr>
             </thead>
             <tbody>
-                {console.log(courses)}
+              {console.log(courses)}
               {courses.map((course) => (
                 <CourseDetailsRow key={course.courseCode} course={course} />
               ))}

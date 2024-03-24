@@ -283,6 +283,9 @@ router.post("/submitFacultyFeedback", async (req, res) => {
                 if (!courseData["Students"][rollNumber]) {
                     return res.status(400).send("Student not registered for this course");
                 }
+                if (courseData["Students"][rollNumber]["FacultyFeedback"]) {
+                    return res.status(400).send("Feedback already submitted");
+                }
                 await firestoreDB.collection("courses").doc(courseId).update({
                     [`FacultyFeedback`]: FieldValue.arrayUnion(feedback),
                 });
@@ -319,6 +322,15 @@ router.post("/submitCourseFeedback", async (req, res) => {
         if (courseDoc.exists) {
             const courseData = courseDoc.data();
             if (courseData) {
+                if (!courseData?.["Students"]) {
+                    return res.status(400).send("Students not found in course data");
+                }
+                if (!courseData["Students"][rollNumber]) {
+                    return res.status(400).send("Student not registered for this course");
+                }
+                if (courseData["Students"][rollNumber]["Course Feedback"]) {
+                    return res.status(400).send("Feedback already submitted");
+                }
                 await firestoreDB.collection("courses").doc(courseId).update({
                     [`CourseFeedback`]: FieldValue.arrayUnion(feedback),
                 });
@@ -330,6 +342,9 @@ router.post("/submitCourseFeedback", async (req, res) => {
             else {
                 return res.status(404).send("Course not found");
             }
+        }
+        else {
+            return res.status(404).send("Course not found");
         }
     } catch (e: any) {
         console.error(e);

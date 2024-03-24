@@ -7,6 +7,8 @@ import { SET_ERRORS } from "../../../redux/actionTypes";
 import * as classes from "../../../utils/styles";
 import axios from "axios";
 import DisplayData from "./DisplayData";
+import { getAuth } from "firebase/auth";
+import { firebaseApp } from "../../../firebase";
 
 const Body = () => {
   const [courses, setCourses] = useState();
@@ -25,17 +27,19 @@ const Body = () => {
 
   useEffect(() => {
     const response = async () => {
+      const auth = getAuth(firebaseApp);
+      const email = auth?.currentUser?.email;
       const data = await axios.get(
         "http://localhost:3002/api/student/getRegisteredCourses",
         {
           params: {
-            email: "21cs01026@iitbbs.ac.in",
+            // email: "21cs01026@iitbbs.ac.in",
+            email: email,
           },
         }
       );
 
       setCourses(data.data);
-      // console.log(data.data);
     };
     response();
   }, []);
@@ -69,8 +73,6 @@ const Body = () => {
               }
               {updatedCourses &&
                 updatedCourses.map((sub, idx) => <DisplayData obj={sub} />)}
-
-              
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import Header from "../components/Student/Header";
-import Sidebar from "../components/Student/Sidebar";
+import Header from "../components/student/Header";
+import Sidebar from "../components/student/Sidebar";
 import DataTable1 from "./courseRegistration";
 
 const SeeCourses = () => {

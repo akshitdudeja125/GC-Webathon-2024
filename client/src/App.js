@@ -22,7 +22,8 @@ import FacultyProfileUpdate from "./components/faculty/profile/update/Update";
 import Update from "./components/student/profile/update/Update";
 import StudentProfile from "./components/student/Profile";
 import StudentLayout from "./components/student/StudentLayout";
-import { StudentProvider } from "./store/student-context";
+import Registration from "./pages/Registration";
+import SeeCourses from "./pages/SeeCourses";
 import Login from "./components/login/Login";
 
 const App = () => {
@@ -38,6 +39,8 @@ const App = () => {
         <Route path="testResult" element={<TestResult />} />
         <Route path="attendance" element={<Attendance />} />
         <Route path="feedback" element={<Feedback />} />
+        <Route path="courseRegistration" element={<Registration />} />
+        <Route path="getCourses" element={<SeeCourses />} />
       </Route>
 
       <Route path="/admin/login" element={<AdminLogin />} />

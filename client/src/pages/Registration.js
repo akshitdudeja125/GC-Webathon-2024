@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-import Header from "../components/Student/Header";
-import Sidebar from "../components/Student/Sidebar";
 import DataTable1 from "./registerCourses";
-
+import Header from "../components/student/Header";
+import Sidebar from "../components/student/Sidebar";
 const Registration = () => {
   return (
     <div className="bg-[#d6d9e0] h-screen flex items-center justify-center">
