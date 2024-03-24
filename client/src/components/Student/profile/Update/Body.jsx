@@ -41,45 +41,48 @@ const Body = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const { data } = await axios.get(
-        "http://localhost:3002/api/student/getStudentDetails",
-        { params: { email: emailReq } }
-      );
-      //   console.log(data["Personal Details"]["PWD"]);
+      try {
+        const { data } = await axios.get(
+          "http://localhost:3002/api/student/getStudentDetails",
+          { params: { email: emailReq } }
+        );
+        //   console.log(data["Personal Details"]["PWD"]);
 
-      setName(data["Student Details"]["Name"]);
-      setRollNo(data["Student Details"]["Roll Number"]);
-      setCategory(data["Personal Details"]["Category"]);
-      setPwd(data["Personal Details"]["PWD"]);
-      setPerAdd(data["Personal Details"]["Permanent Address"]);
-      setCorAdd(data["Personal Details"]["Correspondence Address"]);
-      setAccountNumber(data["Bank Details"]["Account Number"]);
-      setIfscCode(data["Bank Details"]["IFSC Code"]);
-      setBankName(data["Bank Details"]["Bank Name"]);
-      setAccountHolder(data["Bank Details"]["Account Holder Name"]);
-      setAddBank(data["Bank Details"]["Address of Bank"]);
-      setFatherContactNumber(
-        data["Parents Information"]["Father's Mobile Number"]
-      );
-      setMotherContactNumber(
-        data["Parents Information"]["Mother's Mobile Number"]
-      );
-      setFatherOccupation(data["Parents Information"]["Father's Occupation"]);
-      setMotherOccupation(data["Parents Information"]["Mother's Occupation"]);
-      setMotherName(data["Parents Information"]["Mother's Name"]);
-      setFatherName(data["Parents Information"]["Father's Name"]);
-      setPresentPostal(data["Personal Details"]["Present Postal Address"]);
-      setSchool(data["Academic Details"]["School"]);
-      setSem(data["Academic Details"]["Semester"]);
-      setBranch(data["Academic Details"]["Branch"]);
-      setBatch(data["Academic Details"]["Batch"]);
-      setRollNo(data["Student Details"]["Roll Number"]);
+        setName(data["Student Details"]["Name"]);
+        setRollNo(data["Student Details"]["Roll Number"]);
+        setCategory(data["Personal Details"]["Category"]);
+        setPwd(data["Personal Details"]["PWD"]);
+        setPerAdd(data["Personal Details"]["Permanent Address"]);
+        setCorAdd(data["Personal Details"]["Correspondence Address"]);
+        setAccountNumber(data["Bank Details"]["Account Number"]);
+        setIfscCode(data["Bank Details"]["IFSC Code"]);
+        setBankName(data["Bank Details"]["Bank Name"]);
+        setAccountHolder(data["Bank Details"]["Account Holder Name"]);
+        setAddBank(data["Bank Details"]["Address of Bank"]);
+        setFatherContactNumber(
+          data["Parents Information"]["Father's Mobile Number"]
+        );
+        setMotherContactNumber(
+          data["Parents Information"]["Mother's Mobile Number"]
+        );
+        setFatherOccupation(data["Parents Information"]["Father's Occupation"]);
+        setMotherOccupation(data["Parents Information"]["Mother's Occupation"]);
+        setMotherName(data["Parents Information"]["Mother's Name"]);
+        setFatherName(data["Parents Information"]["Father's Name"]);
+        setPresentPostal(data["Personal Details"]["Present Postal Address"]);
+        setSchool(data["Academic Details"]["School"]);
+        setSem(data["Academic Details"]["Semester"]);
+        setBranch(data["Academic Details"]["Branch"]);
+        setBatch(data["Academic Details"]["Batch"]);
+        setRollNo(data["Student Details"]["Roll Number"]);
+        setLoading(true);
+        getData();
+        // console.log(studentData["Student Details"]["Name"]);
+        setLoading(false);
+      } catch (err) {
+        alert("Unable to fetch student details!");
+      }
     };
-
-    setLoading(true);
-    getData();
-    // console.log(studentData["Student Details"]["Name"]);
-    setLoading(false);
   }, []);
 
   const accountNumberChangeHandler = (event) => {
@@ -131,14 +134,17 @@ const Body = () => {
         },
       },
     };
+    try {
+      axios
+        .post("http://localhost:3002/api/student/updateUserDetails", data)
+        .then((response) => {
+          console.log(response.status, response.data.token);
+        });
 
-    axios
-      .post("http://localhost:3002/api/student/updateUserDetails", data)
-      .then((response) => {
-        console.log(response.status, response.data.token);
-      });
-
-    navigate("/student/profile");
+      navigate("/student/profile");
+    } catch (err) {
+      alert("Error in storing the information!");
+    }
   };
 
   return (

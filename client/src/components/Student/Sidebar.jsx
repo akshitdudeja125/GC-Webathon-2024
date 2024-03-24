@@ -17,7 +17,6 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const logout = () => {
     alert("OOPS! Your session expired. Please Login again");
-    dispatch({ type: "LOGOUT" });
     navigate("/login/studentlogin");
   };
 
@@ -70,6 +69,17 @@ const Sidebar = () => {
             <h1 className="font-normal">Subject List</h1>
           </NavLink>
         </div>
+        <div className="">
+          <NavLink
+            to="/student/feedback"
+            className={({ isActive }) =>
+              isActive ? isActiveStyle : isNotActiveStyle
+            }>
+            <EngineeringIcon className="" />
+            <h1 className="font-normal">Feedback</h1>
+          </NavLink>
+        </div>
+        {/* <button onClick={logout}>Logout</button> */}
       </div>
     </div>
   );

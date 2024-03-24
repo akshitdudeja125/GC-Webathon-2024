@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
-import axios from "axios";
 import Spinner from "../../../utils/Spinner";
 import * as classes from "../../../utils/styles";
-import DisplayAttendance from "./DisplayAttendance";
+import axios from "axios";
+import DisplaySgpa from "./DisplaySgpa";
 
 const Body = () => {
+  // const email = localStorage.getItem("email");
   const [loading, setLoading] = useState(false);
   let totalCredits = 0;
   let obtainedCredits = 0;
@@ -76,7 +77,6 @@ const Body = () => {
           "http://localhost:3002/api/student/getResults",
           { params: { email: "21CS01026@iitbbs.ac.in" } }
         );
-        console.log(data);
 
         setsem1(data.data["1"] ? data.data["1"] : {});
         setsem2(data.data["2"] ? data.data["2"] : {});
@@ -96,14 +96,16 @@ const Body = () => {
     fetchingResults();
   }, []);
 
+  const updated = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
   return (
-    <div className="flex-[0.8] mt-3">
+    <div className="flex-[0.8] mt-3 ml-10">
       <div className="space-y-5">
         <div className="flex text-gray-400 items-center space-x-2">
           <MenuBookIcon />
           <h1>All Subjects</h1>
         </div>
-        <div className=" mr-10 bg-white rounded-xl pt-6 pl-6 h-[29.5rem]">
+        <div className=" mr-10 bg-white rounded-xl pt-6 pl-6 h-[18rem]">
           <div className="col-span-3 mr-6">
             <div className={classes.loadingAndError}>
               {loading && (
@@ -117,9 +119,12 @@ const Body = () => {
               )}
             </div>
             {!loading && (
-              // Object.keys(error).length === 0 &&
-              // subjects?.length !== 0 && (
-              <div className={classes.adminData}>
+              // subjects?.length !== 0 &&
+              <div
+                className={
+                  "flex flex-col overflow-y-auto scrollbar-thin scrollbar-track-white scrollbar-thumb-black h-[14rem]  shadow-lg pl-5 rounded-md overflow-x-hidden"
+                }
+              >
                 <div className="grid grid-cols-8">
                   <h1 className={`${classes.adminDataHeading} col-span-1`}>
                     Sr no.
@@ -128,25 +133,24 @@ const Body = () => {
                     Subject Code
                   </h1>
                   <h1 className={`${classes.adminDataHeading} col-span-2`}>
-                    Branch
+                    Batch
                   </h1>
                   <h1 className={`${classes.adminDataHeading} col-span-2`}>
-                    Attended
+                    Credits
                   </h1>
                   <h1 className={`${classes.adminDataHeading} col-span-1`}>
-                    Total
-                  </h1>
-                  <h1 className={`${classes.adminDataHeading} col-span-1`}>
-                    Percentage
+                    Grade Obtained
                   </h1>
                 </div>
                 {arr?.map(
                   (res, idx) =>
-                    // Object.keys(res).length !== 0 && (
-                    //   <DisplayAttendance index={idx} array={res} />
-                    // )
-                    console.log(res)
+                    Object.keys(res).length !== 0 && (
+                      <DisplaySgpa index={idx} array={res} />
+                    )
                 )}
+                <div className="flex-1 bg-grey-500 rounded-lg ml-[3rem] text-xl font-bold">
+                  {/* CGPA: {sgpa} */}
+                </div>
               </div>
             )}
           </div>

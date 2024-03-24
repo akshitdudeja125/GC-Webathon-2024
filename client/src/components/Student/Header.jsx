@@ -10,12 +10,17 @@ const Header = () => {
 
   useEffect( () => {
     const gettingName = async () => {
-      const data=await axios.get("http://localhost:3002/api/student/getStudentDetails", {
-        params: {
-          email: email
-        }
-      });
-      setName(data.data["Student Details"]["Name"]);
+      try{
+        const data=await axios.get("http://localhost:3002/api/student/getStudentDetails", {
+          params: {
+            email: email
+          }
+        });
+        setName(data.data["Student Details"]["Name"]);
+      }
+      catch(err){
+        alert("Error in receving student details!");
+      }
     };
 
     gettingName();

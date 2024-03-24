@@ -36,6 +36,9 @@ const Profile = () => {
       emailReq += email[0] + email[1];
       emailReq += (email[2] + email[3]).toUpperCase();
       for (let i = 4; i < email.length; i++) emailReq += email[i];
+      try{
+
+      
       const data = await axios.get(
         "http://localhost:3002/api/student/getStudentDetails",
         { params: { email: emailReq } }
@@ -64,6 +67,10 @@ const Profile = () => {
       setPerAdd(data.data["Personal Details"]["Permanent Address"]);
       setCorAdd(data.data["Personal Details"]["Correspondence Address"]);
       setPWD(data.data["Personal Details"]["PWD"]);
+    }
+    catch(err){
+      alert("Error in getting Student details");
+    }
     };
     getData();
   }, []);
