@@ -5,7 +5,7 @@ import { FieldValue } from "firebase-admin/firestore";
 const router = express.Router();
 router.post("/registerFaculty", async (req, res) => {
     try {
-        const { name, email, id, school, department, designation } = req.body;
+        const { name, email, id, school, department, designation, adminEmail } = req.body;
         const facultyCollection = firestoreDB.collection("faculty");
         const docRef = await facultyCollection.doc(email).get();
         if (docRef.exists) {
@@ -28,6 +28,112 @@ router.post("/registerFaculty", async (req, res) => {
     catch (e) {
         console.error(e);
         return res.status(500).send("Internal Server Error");
+    }
+});
+router.post("/registerStudent", async (req, res) => {
+    try {
+        const { name, email, rollNumber, school, branch, batch, adminEmail } = req.body;
+        const studentCollection = firestoreDB.collection("students");
+        const docRef = await studentCollection.doc(email).get();
+        if (docRef.exists) {
+            return res.status(400).send("Student already exists");
+        }
+        await studentCollection.doc(email).set({
+            "Student Details": {
+                "Name": name,
+                "Email": email,
+                "Roll Number": rollNumber,
+            },
+            "Personal Details": {
+                "Category": "",
+                "PWD": false,
+                "Permanent Address": "",
+                "Correspondence Address": ""
+            },
+            "Academic Details": {
+                "School": school,
+                "Branch": branch,
+                "Batch": batch,
+
+            },
+            "Bank Details": {
+                "Name of Benificiary": "",
+                "Account Number": "",
+                "Name of the Bank": "",
+                "IFSC Code": "",
+                "Address of Bank": ""
+            },
+            "Parents Information": {
+                "Father's Name": "",
+                "Father's Occupation": "",
+                "Father's Mobile Number": "",
+                "Mother's Name": "",
+                "Mother's Occupation": "",
+                "Mother's Mobile Number": "",
+                "Present Postal Address": ""
+            }
+        });
+        return res.status(200).send("Student registered successfully");
+    }
+    catch (e: any) {
+        console.error(e);
+        return res.status(500).send({
+            status: "error",
+            message: e?.message
+        });
+    }
+});
+
+router.get("/getStudentsOfParticularBranchAndBatch", async (req, res) => {
+    try {
+        const email = req.query.email as string;
+        const branch = req.query.branch as string;
+        const batch = req.query.batch as string;
+        const batchInt = parseInt(batch);
+        const studentCollection = firestoreDB.collection("students");
+        const studentDocs = await studentCollection.where("Academic Details.Branch", "==", branch).where("Academic Details.Batch", "==", batchInt).get();
+        const studentArray: any = [];
+        studentDocs.forEach(doc => {
+            const studentData = doc.data();
+            studentArray.push({
+                email: doc.id,
+                "Academic Details": studentData?.["Academic Details"],
+                "Student Details": studentData?.["Student Details"]
+            });
+        });
+        return res.status(200).send(studentArray);
+
+    } catch (e: any) {
+        console.error(e);
+        return res.status(500).send({
+            status: "error",
+            message: e?.message
+        });
+    }
+});
+router.get("/getStudents", async (req, res) => {
+    try {
+        const email = req.query.email as string;
+        const branch = req.query.branch as string;
+        const studentCollection = firestoreDB.collection("students");
+        const studentDocs = await studentCollection.get();
+        const studentArray: any = [];
+        studentDocs.forEach(doc => {
+            const studentData = doc.data();
+            studentArray.push({
+                email: doc.id,
+                "Academic Details": studentData?.["Academic Details"],
+                "Student Details": studentData?.["Student Details"]
+            });
+        });
+        return res.status(200).send(studentArray);
+
+    } catch (e: any) {
+        console.error(e);
+        return res.status(500).send({
+            status: "error",
+            message: e?.message
+        });
     }
 });
 
