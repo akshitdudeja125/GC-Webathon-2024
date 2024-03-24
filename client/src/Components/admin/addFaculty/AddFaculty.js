@@ -1,23 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { getTestResult } from "../../../redux/actions/studentActions";
-
+import { getAllDepartment } from "../../../redux/actions/adminActions";
 import Header from "../Header";
 import Sidebar from "../Sidebar";
-import Body from "./Body";
+import Body from "./body";
 
-const TestResult = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-
+const AddFaculty = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(
-      getTestResult(
-        user.result.department,
-        user.result.year,
-        user.result.section
-      )
-    );
+    dispatch(getAllDepartment());
   }, [dispatch]);
   return (
     <div className="bg-[#d6d9e0] h-screen flex items-center justify-center">
@@ -32,4 +23,4 @@ const TestResult = () => {
   );
 };
 
-export default TestResult;
+export default AddFaculty;

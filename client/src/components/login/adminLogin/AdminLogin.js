@@ -47,15 +47,6 @@ const AdminLogin = () => {
           await firebaseAuth.signOut();
           return;
         }
-
-        //check if admin
-        //make a http request to backend to check if user is admin
-        // if not admin then sign out
-        // else navigate to admin home
-        // await axios.get("http://localhost:3002/api/admin/isAdmin", {
-        //   params: { email: user.email },
-        // });
-        //set auth token and email to local storage
         localStorage.setItem("authToken", authToken);
         localStorage.setItem("email", user.email);
         console.log("User Logged In");

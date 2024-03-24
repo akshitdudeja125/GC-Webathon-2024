@@ -5,18 +5,28 @@ import axios from "axios";
 import { firebaseApp } from "../../firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 const Header = () => {
-
-  const email=localStorage.getItem("email");
   const [name, setName] = useState();
 
-  useEffect( () => {
+  useEffect(() => {
     const gettingName = async () => {
-      const data=await axios.get("http://localhost:3002/api/admin/getAdminDetails", {
-        params: {
-          email: email
+      try {
+        const auth = getAuth(firebaseApp);
+        const authEmail = auth?.currentUser?.email;
+        console.log(`AuthEmail in header: ${authEmail}`)
+        if (authEmail) {
+          const data = await axios.get(
+            "http://localhost:3002/api/admin/getAdminDetails",
+            {
+              params: {
+                email: authEmail,
+              },
+            }
+          );
+          setName(data?.data?.["Admin Details"]?.["Name"] ?? "N/A");
         }
-      });
-      setName(data?.data?.["Admin Details"]?.["Name"]??"N/A");
+      } catch (err) {
+        console.log(err);
+      }
     };
 
     gettingName();

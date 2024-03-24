@@ -9,7 +9,6 @@ import StudentProfileUpdate from "./components/Student/profile/Update/Update";
 import TestResult from "./components/Student/TestResults/TestResult";
 import Attendance from "./components/Student/attendance/Attendance";
 import Feedback from "./components/Student/Feedback/Feedback";
-import DataTable1 from "./pages/registerCourses";
 import Registration from "./pages/Registration";
 import SeeCourses from "./pages/SeeCourses";
 import FacultyLogin from "./components/login/facultyLogin/FacultyLogin";
@@ -21,8 +20,7 @@ import MarkAttendance from "./components/Faculty/MarkAttendace/MarkAttendance";
 const App = () => {
   return (
     <Routes>
-
-      <Route exact path="/" element={<Login/>} />
+      <Route exact path="/" element={<Login />} />
       <Route path="/login/studentlogin" element={<StudentLogin />} />
       <Route path="/login/facultylogin" element={<FacultyLogin />} />
       <Route path="/student/home" element={<StudentHome />} />
@@ -40,6 +38,21 @@ const App = () => {
       <Route path="/faculty/currentCourses" element={<CourseDetails />} />
       <Route path="/faculty/markAttendance" element={<MarkAttendance />} />
 
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin/home" element={<AdminHome />} />
+      <Route path="/admin/home/profile" element={<AdminHomeProfile />} />
+      <Route
+        path="/admin/home/profile/update"
+        element={<AdminProfileUpdate />}
+      />
+
+      <Route path="/login/faculty" element={<FacultyLogin />} />
+      <Route path="/faculty/home" element={<FacultyHome />} />
+      <Route path="/faculty/home/profile" element={<FacultyHomeProfile />} />
+      <Route
+        path="/faculty/home/profile/update"
+        element={<FacultyProfileUpdate />}
+      />
       
     </Routes>
   );

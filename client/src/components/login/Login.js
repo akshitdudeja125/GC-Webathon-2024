@@ -22,7 +22,7 @@ const Login = () => {
 
             <Link
               type="button"
-              to="/login/facultylogin"
+              to="/login/faculty"
               className="flex items-center justify-center bg-blue-500 h-10 w-32 text-lg rounded-lg text-white hover:scale-110 transition-all duration-200"
             >
               Login

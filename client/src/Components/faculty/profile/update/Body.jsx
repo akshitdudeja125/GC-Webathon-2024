@@ -10,28 +10,36 @@ const Body = () => {
 
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState();
-  const [dob, setdob] = useState();
-  const [adminId, setAdminId] = useState();
+  const [id, setId] = useState();
   const [email, setEmail] = useState();
+  const [dept, setDept] = useState();
+  const [designation, setDesignation] = useState();
+  const [school, setSchool] = useState();
+  const [dob, setDob] = useState();
   useEffect(() => {
     //get aemail from auth
     const auth = getAuth(firebaseApp);
-    const Authemail = auth?.currentUser?.email;
-    console.log(Authemail);
-    if (!Authemail) {
-      navigate("/admin/login");
+    const authEmail = auth?.currentUser?.email;
+    console.log(authEmail);
+    if (!authEmail) {
+      navigate("/login/faculty");
     }
-    setEmail(Authemail);
+    setEmail(authEmail);
     const getData = async () => {
-      if (Authemail) {
-        const data = await axios.get(
-          "http://localhost:3002/api/admin/getAdminDetails",
-          { params: { email: Authemail } }
-        );
-        //   console.log(data["Personal Details"]["PWD"]);
-        setName(data?.data?.["Admin Details"]?.["Name"]);
-        setdob(data?.data?.["Admin Details"]?.["DOB"]);
-        setAdminId(data?.data?.["Admin Details"]?.["Id"]);
+      if (authEmail) {
+        if (authEmail) {
+          const data = await axios.get(
+            "http://localhost:3002/api/faculty/getFacultyDetails",
+            { params: { email: authEmail } }
+          );
+          setName(data.data?.["Faculty Details"]?.["Name"]);
+          setId(data.data["Faculty Details"]?.["Id"]);
+          setEmail(data.data["Faculty Details"]?.["Email"]);
+          setDept(data.data["Academic Details"]?.["Department"]);
+          setDesignation(data.data["Academic Details"]?.["Designation"]);
+          setSchool(data.data["Academic Details"]?.["School"]);
+          setDob(data.data["Faculty Details"]?.["DOB"]);
+        }
       }
     };
 
@@ -41,7 +49,7 @@ const Body = () => {
   }, []);
 
   const cancelHandler = () => {
-    navigate("/admin/home/profile");
+    navigate("/faculty/home/profile");
   };
 
   const formSubmitHandler = async (event) => {
@@ -49,23 +57,28 @@ const Body = () => {
       const data = {
         email: email,
         updateData: {
-          "Admin Details": {
+          "Faculty Details": {
             Name: name,
             Email: email,
-            Id: adminId,
+            Id: id,
             DOB: dob,
+          },
+          "Academic Details": {
+            School: school,
+            Department: dept,
+            Designation: designation,
           },
         },
       };
       const res = await axios.post(
-        "http://localhost:3002/api/admin/updateAdminDetails",
+        "http://localhost:3002/api/faculty/updateFacultyDetails",
         data
       );
       console.log(res);
     } catch (error) {
       console.log(error);
     } finally {
-      navigate("/admin/home/profile");
+      navigate("/faculty/home/profile");
     }
   };
 
@@ -122,9 +135,9 @@ const Body = () => {
                     type="text"
                     id="rollno"
                     class="bg-gray-50 cursor-not-allowed border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder={adminId}
-                    onChange={(e) => setAdminId(e.target.value)}
-                    value={adminId}
+                    placeholder={id}
+                    onChange={(e) => setId(e.target.value)}
+                    value={id}
                     disabled
                   />
                 </div>
@@ -140,7 +153,7 @@ const Body = () => {
                     id="dob"
                     class="bg-gray-50 cursor-not-allowed border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={"YYYY-MM-DD"}
-                    onChange={(e) => setdob(e.target.value)}
+                    onChange={(e) => setDob(e.target.value)}
                     value={dob}
                   />
                 </div>
@@ -153,7 +166,6 @@ const Body = () => {
               </button>
 
               <button
-                // onClick={() => navigate("/admin/profile")}
                 className={classes.adminFormClearButton}
                 type="button"
                 onClick={cancelHandler}

@@ -4,7 +4,48 @@ import { firestoreDB } from "../config/config";
 import { FieldValue } from "firebase-admin/firestore";
 const router = express.Router();
 
+router.get("/getDashboardItems", async (req, res) => {
+    try {
+        const email = req.query.email as string;
+        const adminCollection = firestoreDB.collection("admins");
+        const docRef = await adminCollection.doc(email).get();
+        if (!docRef.exists) {
+            return res.status(400).send("Admin does not exist");
+        }
+        const adminData = docRef.data();
+        const facultyCollection = firestoreDB.collection("faculty");
+        //get no of docs
+        const facultyDocs = await facultyCollection.get();
+        const facultyCount = facultyDocs.size;
+        //get no of students
+        const studentCollection = firestoreDB.collection("students");
+        const studentDocs = await studentCollection.get();
+        const studentCount = studentDocs.size;
+        //get no of admins
+        const adminDocs = await adminCollection.get();
+        const adminCount = adminDocs.size;
 
+        //get no of events
+        const eventCollection = firestoreDB.collection("events");
+        const eventDocs = await eventCollection.get();
+        const eventCount = eventDocs.size;
+
+
+        return res.status(200).send({
+            ...adminData,
+            facultyCount,
+            studentCount,
+            adminCount,
+            eventCount
+        });
+    } catch (e: any) {
+        console.error(e);
+        return res.status(500).send({
+            status: "error",
+            message: e?.message
+        });
+    }
+})
 router.post("/registerFaculty", async (req, res) => {
     try {
         const { name, email, id, school, department, designation, adminEmail } = req.body;
@@ -18,6 +59,7 @@ router.post("/registerFaculty", async (req, res) => {
                 "Name": name,
                 "Email": email,
                 "Id": id,
+                "DOB": "N/A",
             },
             "Academic Details": {
                 "School": school,

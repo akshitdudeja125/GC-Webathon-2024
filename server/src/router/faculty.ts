@@ -2,6 +2,20 @@ import express from "express";
 import { firestoreDB } from "../config/config";
 import { FieldValue } from "firebase-admin/firestore";
 const router = express.Router();
+router.get("/isFaculty", async (req, res) => {
+    try {
+        const email = req.query.email as string;
+        const adminCollection = firestoreDB.collection("faculty");
+        const docRef = await adminCollection.doc(email).get();
+        if (docRef.exists) {
+            return res.status(200).send(true);
+        }
+        return res.status(200).send(false);
+    } catch (e) {
+        console.error(e);
+        return res.status(500).send("Internal Server Error");
+    }
+});
 router.get("/getFacultyDetails", async (req, res) => {
   try {
     const email = req.query.email as string;

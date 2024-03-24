@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import Spinner from "../../../utils/Spinner";
 import { firebaseApp } from "../../../firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { Box, CircularProgress } from "@mui/material";
+import axios from "axios";
 const FacultyLogin = () => {
   const [translate, setTranslate] = useState(false);
   const [loading, setIsLoading] = useState(false);
@@ -47,10 +47,27 @@ const FacultyLogin = () => {
           return;
         }
 
-        //set auth token and email to local storage
         localStorage.setItem("authToken", authToken);
         localStorage.setItem("email", user.email);
         console.log("User Logged In");
+        const { data } = await axios.get(
+          "http://localhost:3002/api/faculty/isFaculty",
+          {
+            params: { email: user.email },
+          }
+        );
+        if (data) {
+          navigate("/faculty/home");
+        } else {
+          alert("You are not an faculty");
+          setIsInitialLoading(false);
+          setIsLoading(false);
+          await firebaseAuth.signOut();
+          //delete auth token and email from local storage
+          localStorage.removeItem("authToken");
+          localStorage.removeItem("email");
+          return;
+        }
         navigate("/faculty/home");
       } else {
         console.log("User is not signed in");
@@ -59,20 +76,6 @@ const FacultyLogin = () => {
     });
     return () => unsubscribe();
   }, []);
-  if (isInitialLoading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          height: "100vh",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
   return (
     <div className="bg-[#5a51d6] h-screen w-screen flex items-center justify-center">
       <div className="grid grid-cols-2">

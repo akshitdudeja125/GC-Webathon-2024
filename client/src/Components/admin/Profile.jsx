@@ -5,39 +5,42 @@ import BoyIcon from "@mui/icons-material/Boy";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import "react-calendar/dist/Calendar.css";
 import axios from "axios";
-import Header from "../Header";
-import Sidebar from "../Sidebar";
+import Header from "./Header";
+import Sidebar from "./Sidebar";
 import { useNavigate } from "react-router";
-import { firebaseApp } from "../../../firebase";
+import { firebaseApp } from "../../firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 const AdminHomeProfile = () => {
   const navigate = useNavigate();
-
-  const email = localStorage.getItem("email");
 
   const [name, setName] = useState();
   const [dob, setdob] = useState();
   const [adminId, setAdminId] = useState();
   useEffect(() => {
     const getData = async () => {
-      // let emailReq = "";
-      // emailReq += email[0] + email[1];
-      // emailReq += (email[2] + email[3]).toUpperCase();
-      // take email from auth
-      const email = localStorage.getItem("email");
-      if (!email) {
-        navigate("/admin/login");
-      }
+      try {
+        const auth = getAuth(firebaseApp);
+        const authEmail = auth?.currentUser?.email;
+        console.log(`authEmail: ${authEmail}`);
+        if (!authEmail) {
+          navigate("/admin/login");
+        }
+        //update local storage
 
-      // for (let i = 4; i < email.length; i++) emailReq += email[i];
-      const data = await axios.get(
-        "http://localhost:3002/api/admin/getAdminDetails",
-        { params: { email: email } }
-      );
-      console.log(data?.data["Admin Details"]?.["Name"]);
-      setName(data?.data["Admin Details"]?.["Name"]);
-      setdob(data?.data["Admin Details"]?.["DOB"]);
-      setAdminId(data?.data["Admin Details"]?.["Admin ID"]);
+        // for (let i = 4; i < email.length; i++) emailReq += email[i];
+        if (authEmail) {
+          const data = await axios.get(
+            "http://localhost:3002/api/admin/getAdminDetails",
+            { params: { email: authEmail } }
+          );
+          console.log(data?.data["Admin Details"]?.["Name"]);
+          setName(data?.data["Admin Details"]?.["Name"]);
+          setdob(data?.data["Admin Details"]?.["DOB"]);
+          setAdminId(data?.data["Admin Details"]?.["Id"]);
+        }
+      } catch (err) {
+        console.log(err);
+      }
     };
     getData();
   }, []);
@@ -97,7 +100,7 @@ const AdminHomeProfile = () => {
                       <h2 className="text-2xl font-bold">{dob}</h2>
                     </div>
                   </div>
-                  </div>
+                </div>
               </div>
             </div>
           </div>
