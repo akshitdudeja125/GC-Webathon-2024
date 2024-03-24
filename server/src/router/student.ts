@@ -56,7 +56,22 @@ router.get("/getAvailableCourses", async (req, res) => {
             const year = id.split("_")[2];
             const branch = id.split("_")[3];
             const data = doc.data();
-            if (sem === studentData?.['Academic Details']?.["Semester"] && branch === studentData?.['Academic Details']?.["Branch"])
+
+            const studentBatch = studentData?.['Academic Details']?.["Batch"];
+            const studentSem = studentData?.['Academic Details']?.["Semester"];
+            const studentYear = studentBatch + studentSem / 2;
+            console.log(studentBatch, studentSem, studentYear);
+
+
+            console.log(studentData?.['Academic Details']?.["Semester"]);
+            if (sem === studentData?.['Academic Details']?.["Semester"] && branch === studentData?.['Academic Details']?.["Branch"]
+                && year === studentYear.toString()
+            ) {
+                const studentCourses = studentData?.['Courses']?.[sem];
+                let registered = false;
+                if (studentCourses && studentCourses[id]) {
+                    registered = true;
+                }
                 availableCourses.push({
                     courseId: id,
                     courseCode,
@@ -64,7 +79,10 @@ router.get("/getAvailableCourses", async (req, res) => {
                     year,
                     branch,
                     "Course Details": data?.["Course Details"],
+                    registered
+
                 });
+            }
         });
         return res.status(200).send(availableCourses);
     } catch (e) {
@@ -108,6 +126,7 @@ router.post("/registerStudentForCourse", async (req, res) => {
                         [`Courses.${sem}.${courseId}`]: {
                             "Attendance": 0,
                             "Grade": "NA",
+                            "TotalClasses": 0,
                             "Credits": courseData?.["Course Details"]?.["Credits"],
                         }
                     });

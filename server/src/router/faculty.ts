@@ -161,7 +161,7 @@ const getEmailFromRollNumber = async (rollNumber: string) => {
 // router.post("/addAssignment", async (req, res) => {
 router.post("/registerAttendence", async (req, res) => {
     try {
-        const { courseId, date, time, students } = req.body;
+        const { email, courseId, date, time, students } = req.body;
         if (!courseId || !date || !time || !students) {
             return res.status(400).send("Bad Request");
         }
