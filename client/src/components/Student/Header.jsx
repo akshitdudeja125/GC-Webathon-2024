@@ -4,15 +4,15 @@ import logo from "../../Images/logo.png";
 import axios from "axios";
 import { firebaseApp } from "../../firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 const Header = () => {
-  
   const navigate = useNavigate();
   const logout = () => {
     const auth = getAuth(firebaseApp);
     auth.signOut();
     navigate("/");
   };
+  // const name = "Admin";
 
   return (
     <div className="flex-[0.05] flex justify-between items-center mx-10 my-6">
@@ -23,7 +23,7 @@ const Header = () => {
         </h1>
       </div>
       <div className="flex items-center space-x-3 text-3xl font-semibold">
-        <h1>{name}</h1>
+        <h1>{"a"}</h1>
         <LogoutIcon
           onClick={logout}
           className="cursor-pointer hover:scale-125 transition-all"

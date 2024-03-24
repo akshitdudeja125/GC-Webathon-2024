@@ -6,10 +6,10 @@ import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import "react-calendar/dist/Calendar.css";
 import axios from "axios";
 import Header from "./Header";
-import Sidebar from "./Sidebar";
 import { useNavigate } from "react-router";
 import { firebaseApp } from "../../firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import Sidebar from "../../components/student/Sidebar";
 const FacultyHomeProfile = () => {
   const navigate = useNavigate();
 

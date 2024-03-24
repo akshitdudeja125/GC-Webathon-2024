@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Body from "./Body";
 import Header from "../../Header";
-import Sidebar from "../../Sidebar";
+import Sidebar from "../../SideBar";
 
 const FacultyProfileUpdate = () => {
   return (
