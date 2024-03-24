@@ -22,7 +22,7 @@ const Body = () => {
     const authEmail = auth?.currentUser?.email;
     console.log(authEmail);
     if (!authEmail) {
-      navigate("/faculty/login");
+      navigate("/login/faculty");
     }
     setEmail(authEmail);
     const getData = async () => {

@@ -22,12 +22,7 @@ const FacultyHomeProfile = () => {
         const auth = getAuth(firebaseApp);
         const authEmail = auth?.currentUser?.email;
         console.log(`authEmail: ${authEmail}`);
-        if (!authEmail) {
-          navigate("/faculty/login");
-        }
-        //update local storage
 
-        // for (let i = 4; i < email.length; i++) emailReq += email[i];
         if (authEmail) {
           const data = await axios.get(
             "http://localhost:3002/api/faculty/getFacultyDetails",
