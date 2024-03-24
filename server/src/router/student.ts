@@ -18,7 +18,6 @@ router.get("/getStudentDetails", async (req, res) => {
     }
     catch (e: any) {
         console.error(e);
-
         return res.status(500).send(e.message);
     }
 });
@@ -32,11 +31,17 @@ router.post("/updateUserDetails", async (req, res) => {
         if (studentDoc.exists) {
             await studentCollection.doc(email).update(updateData);
             console.log("User details updated successfully");
-            return res.status(200).send("User details updated successfully");
+
         } else {
             await studentCollection.doc(email).set(updateData);
-            return res.status(200).send("User details added successfully");
         }
+        const doc = await studentCollection.doc(email).get();
+        const data = doc.data();
+
+        return res.status(200).json({
+            status: "success",
+            data: data
+        });
     } catch (e) {
         console.error(e);
         return res.status(500).send("Internal Server Error");

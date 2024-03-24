@@ -12,29 +12,29 @@ const StudentProfile = () => {
   const navigate = useNavigate();
   const { store } = useContext(studentContext);
 
-  const name = store["Student Details"]["Name"];
-  const rollNo = store["Student Details"]["Roll Number"];
-  const batch = store["Academic Details"]["Batch"];
-  const school = store["Academic Details"]["School"];
-  const sem = store["Academic Details"]["Semester"];
-  const branch = store["Academic Details"]["Branch"];
+  const name = store?.["Student Details"]?.["Name"];
+  const rollNo = store?.["Student Details"]?.["Roll Number"];
+  const batch = store?.["Academic Details"]?.["Batch"];
+  const school = store?.["Academic Details"]?.["School"];
+  const sem = store?.["Academic Details"]?.["Semester"];
+  const branch = store?.["Academic Details"]?.["Branch"];
   let atten = 0;
   let totalAtten = 0;
   if (store["Courses"]) {
-    for (let i = 0; i < store["Courses"].length; i++) {
-      atten += store["Courses"][i]["Attendance"];
-      totalAtten += store["Courses"][i]["TotalClasses"];
+    for (let i = 0; i < store?.["Courses"]?.length; i++) {
+      atten += store?.["Courses"]?.[i]?.["Attendance"];
+      totalAtten += store?.["Courses"]?.[i]?.["TotalClasses"];
     }
   }
   const attendance = atten;
   const totalAttendance = totalAtten;
-  const accountNo = store["Bank Details"]["Account Number"];
-  const ifsc = store["Bank Details"]["IFSC Code"];
-  const bankname = store["Bank Details"]["Name of the Bank"];
-  const category = store["Personal Details"]["Category"];
-  const perAdd = store["Personal Details"]["Permanent Address"];
-  const corAdd = store["Personal Details"]["Correspondence Address"];
-  const PWD = store["Personal Details"]["PWD"];
+  const accountNo = store?.["Bank Details"]?.["Account Number"];
+  const ifsc = store?.["Bank Details"]?.["IFSC Code"];
+  const bankname = store?.["Bank Details"]?.["Name of the Bank"];
+  const category = store?.["Personal Details"]?.["Category"];
+  const perAdd = store?.["Personal Details"]?.["Permanent Address"];
+  const corAdd = store?.["Personal Details"]?.["Correspondence Address"];
+  const PWD = store?.["Personal Details"]?.["PWD"];
 
   const updateHandler = () => {
     navigate("/student/home/profile/update");

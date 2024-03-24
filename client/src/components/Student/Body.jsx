@@ -8,18 +8,18 @@ import studentContext from "../../store/student-context";
 const Body = () => {
   const { store } = useContext(studentContext);
 
-  const name = store["Student Details"]["Name"];
-  const rollNo = store["Student Details"]["Roll Number"];
-  const batch = store["Academic Details"]["Batch"];
-  const school = store["Academic Details"]["School"];
-  const sem = store["Academic Details"]["Semester"];
-  const branch = store["Academic Details"]["Branch"];
+  const name = store?.["Student Details"]?.["Name"] ?? "N/A";
+  const rollNo = store?.["Student Details"]?.["Roll Number"] ?? "N/A";
+  const batch = store?.["Academic Details"]?.["Batch"] ?? "N/A";
+  const school = store?.["Academic Details"]?.["School"] ?? "N/A";
+  const sem = store?.["Academic Details"]?.["Semester"] ?? "N/A";
+  const branch = store?.["Academic Details"]?.["Branch"] ?? "N/A";
   let atten = 0;
   let totalAtten = 0;
-  if (store["Courses"]) {
-    for (let i = 0; i < store["Courses"].length; i++) {
-      atten += store["Courses"][i]["Attendance"];
-      totalAtten += store["Courses"][i]["TotalClasses"];
+  if (store?.["Courses"]) {
+    for (let i = 0; i < store?.["Courses"].length; i++) {
+      atten += store?.["Courses"]?.[i]?.["Attendance"];
+      totalAtten += store?.["Courses"]?.[i]?.["TotalClasses"] ?? 0;
     }
   }
   const attendance = atten;

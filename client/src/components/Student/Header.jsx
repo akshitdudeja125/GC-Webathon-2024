@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import logo from "../../Images/logo.png";
-import axios from "axios";
 import { firebaseApp } from "../../firebase";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { getAuth } from "firebase/auth";
 const Header = () => {
-  const navigate = useNavigate();
   const logout = () => {
     const auth = getAuth(firebaseApp);
     auth.signOut();
-    navigate("/");
   };
   // const name = "Admin";
 

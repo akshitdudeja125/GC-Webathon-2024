@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import studentContext from "../../../../store/student-context";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../../../utils/Spinner";
 import * as classes from "../../../../utils/styles";
@@ -8,87 +9,74 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 const Body = () => {
   const navigate = useNavigate();
 
-  const [name, setName] = useState();
-  const [category, setCategory] = useState();
-  const [perAdd, setPerAdd] = useState();
-  const [corAdd, setCorAdd] = useState();
-  const [pwd, setPwd] = useState(false);
-  const [addBank, setAddBank] = useState();
-  const [accHolder, setAccountHolder] = useState();
-  const [presentPostal, setPresentPostal] = useState();
-  const [motherName, setMotherName] = useState();
-  const [fatherName, setFatherName] = useState();
-  const [school, setSchool] = useState();
-  const [sem, setSem] = useState();
-  const [branch, setBranch] = useState();
-  const [batch, setBatch] = useState();
-  const [rollNo, setRollNo] = useState();
-  const [accountNumber, setAccountNumber] = useState();
-  const [ifscCode, setIfscCode] = useState();
-  const [bankName, setBankName] = useState();
-  const [fatherContactNumber, setFatherContactNumber] = useState();
-  const [motherContactNumber, setMotherContactNumber] = useState();
-  const [fatherOccupation, setFatherOccupation] = useState();
-  const [motherOccupation, setMotherOccupation] = useState();
-  const [email, setEmail] = useState(false);
-
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    //get aemail from auth
-    const auth = getAuth(firebaseApp);
-    const authEmail = auth?.currentUser?.email;
-    console.log(authEmail);
-    if (!authEmail) {
-      navigate("/login/student");
-    }
-    setEmail(authEmail);
-    const getData = async () => {
-      if (authEmail) {
-        if (authEmail) {
-          const data = await axios.get(
-            "http://localhost:3002/api/student/getStudentDetails",
-            { params: { email: authEmail } }
-          );
-          setName(data["Student Details"]["Name"]);
-          setRollNo(data["Student Details"]["Roll Number"]);
-          setCategory(data["Personal Details"]["Category"]);
-          setPwd(data["Personal Details"]["PWD"]);
-          setPerAdd(data["Personal Details"]["Permanent Address"]);
-          setCorAdd(data["Personal Details"]["Correspondence Address"]);
-          setAccountNumber(data["Bank Details"]["Account Number"]);
-          setIfscCode(data["Bank Details"]["IFSC Code"]);
-          setBankName(data["Bank Details"]["Bank Name"]);
-          setAccountHolder(data["Bank Details"]["Account Holder Name"]);
-          setAddBank(data["Bank Details"]["Address of Bank"]);
-          setFatherContactNumber(
-            data["Parents Information"]["Father's Mobile Number"]
-          );
-          setMotherContactNumber(
-            data["Parents Information"]["Mother's Mobile Number"]
-          );
-          setFatherOccupation(
-            data["Parents Information"]["Father's Occupation"]
-          );
-          setMotherOccupation(
-            data["Parents Information"]["Mother's Occupation"]
-          );
-          setMotherName(data["Parents Information"]["Mother's Name"]);
-          setFatherName(data["Parents Information"]["Father's Name"]);
-          setPresentPostal(data["Personal Details"]["Present Postal Address"]);
-          setSchool(data["Academic Details"]["School"]);
-          setSem(data["Academic Details"]["Semester"]);
-          setBranch(data["Academic Details"]["Branch"]);
-          setBatch(data["Academic Details"]["Batch"]);
-          setRollNo(data["Student Details"]["Roll Number"]);
-          setLoading(true);
-        }
-      }
-    };
 
-    setLoading(true);
-    getData();
-    setLoading(false);
-  }, []);
+  const { store, setStore } = useContext(studentContext);
+  const email = store?.["Student Details"]?.["Email"] ?? "N/A";
+  const [name, setName] = useState(
+    store?.["Student Details"]?.["Name"] ?? "N/A"
+  );
+  const [category, setCategory] = useState(
+    store?.["Personal Details"]?.["Category"] ?? "N/A"
+  );
+  const [perAdd, setPerAdd] = useState(
+    store?.["Personal Details"]?.["Permanent Address"] ?? "N/A"
+  );
+  const [corAdd, setCorAdd] = useState(
+    store?.["Personal Details"]?.["Correspondence Address"] ?? "N/A"
+  );
+  const [pwd, setPwd] = useState(store?.["Personal Details"]?.["PWD"] ?? "N/A");
+  const [addBank, setAddBank] = useState(
+    store?.["Bank Details"]?.["Address of Bank"] ?? "N/A"
+  );
+  const [accHolder, setAccountHolder] = useState(
+    store?.["Bank Details"]?.["Name of Beneficiary"] ?? "N/A"
+  );
+  const [accountNumber, setAccountNumber] = useState(
+    store?.["Bank Details"]?.["Account Number"] ?? "N/A"
+  );
+  const [ifscCode, setIfscCode] = useState(
+    store?.["Bank Details"]?.["IFSC Code"] ?? "N/A"
+  );
+  const [bankName, setBankName] = useState(
+    store?.["Bank Details"]?.["Name of the Bank"] ?? "N/A"
+  );
+  const [fatherContactNumber, setFatherContactNumber] = useState(
+    store?.["Parents Information"]?.["Father's Mobile Number"] ?? "N/A"
+  );
+  const [motherContactNumber, setMotherContactNumber] = useState(
+    store?.["Parents Information"]?.["Mother's Mobile Number"] ?? "N/A"
+  );
+  const [fatherOccupation, setFatherOccupation] = useState(
+    store?.["Parents Information"]?.["Father's Occupation"] ?? "N/A"
+  );
+  const [motherOccupation, setMotherOccupation] = useState(
+    store?.["Parents Information"]?.["Mother's Occupation"] ?? "N/A"
+  );
+  const [presentPostal, setPresentPostal] = useState(
+    store?.["Parents Information"]?.["Present Postal Address"] ?? "N/A"
+  );
+  const [motherName, setMotherName] = useState(
+    store?.["Parents Information"]?.["Mother's Name"] ?? "N/A"
+  );
+  const [fatherName, setFatherName] = useState(
+    store?.["Parents Information"]?.["Father's Name"] ?? "N/A"
+  );
+  const [school, setSchool] = useState(
+    store?.["Academic Details"]?.["School"] ?? "N/A"
+  );
+  const [sem, setSem] = useState(
+    store?.["Academic Details"]?.["Semester"] ?? "N/A"
+  );
+  const [branch, setBranch] = useState(
+    store?.["Academic Details"]?.["Branch"] ?? "N/A"
+  );
+  const [batch, setBatch] = useState(
+    store?.["Academic Details"]?.["Batch"] ?? "N/A"
+  );
+  const [rollNo, setRollNo] = useState(
+    store?.["Student Details"]?.["Roll Number"] ?? "N/A"
+  );
 
   const accountNumberChangeHandler = (event) => {
     setAccountNumber(event.target.value);
@@ -145,6 +133,43 @@ const Body = () => {
         .then((response) => {
           console.log(response.status, response.data.token);
         });
+      setStore({
+        ...store,
+        "Student Details": {
+          "Roll Number": rollNo,
+          Email: email,
+          Name: name,
+        },
+        "Personal Details": {
+          Category: category,
+          "Permanent Address": perAdd,
+          "Correspondence Address": corAdd,
+          PWD: pwd,
+        },
+        "Bank Details": {
+          "Account Number": accountNumber,
+          "IFSC Code": ifscCode,
+          "Address of Bank": addBank,
+          "Name of Beneficiary": accHolder,
+          "Name of the Bank": bankName,
+        },
+        "Parents Information": {
+          "Father's Mobile Number": fatherContactNumber,
+          "Mother's Mobile Number": motherContactNumber,
+          "Father's Occupation": fatherOccupation,
+          "Present Postal Address": presentPostal,
+          "Mother's Name": motherName,
+          "Father's Name": fatherName,
+          "Mother's Occupation": motherOccupation,
+        },
+        "Academic Details": {
+          School: school,
+          Batch: batch,
+          Branch: branch,
+          "Roll Number": rollNo,
+          Semester: sem,
+        },
+      });
 
       navigate("/student/profile");
     } catch (err) {
