@@ -68,6 +68,7 @@ const FacultyLogin = () => {
           localStorage.removeItem("email");
           return;
         }
+        navigate("/faculty/home");
       } else {
         console.log("User is not signed in");
         setIsInitialLoading(false);

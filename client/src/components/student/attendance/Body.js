@@ -142,10 +142,10 @@ const Body = () => {
                 </div>
                 {arr?.map(
                   (res, idx) =>
-                    // Object.keys(res).length !== 0 && (
-                    //   <DisplayAttendance index={idx} array={res} />
-                    // )
-                    console.log(res)
+                    Object.keys(res).length !== 0 && (
+                      <DisplayAttendance index={idx} array={res} />
+                    )
+                    // console.log(res)
                 )}
               </div>
             )}
