@@ -35,7 +35,7 @@ router.get("/getDashboardItems", async (req, res) => {
             ...adminData,
             facultyCount,
             studentCount,
-            adminCount, 
+            adminCount,
             eventCount
         });
     } catch (e: any) {
@@ -59,6 +59,7 @@ router.post("/registerFaculty", async (req, res) => {
                 "Name": name,
                 "Email": email,
                 "Id": id,
+                "DOB": "N/A",
             },
             "Academic Details": {
                 "School": school,

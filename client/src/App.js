@@ -19,6 +19,11 @@ import AdminHome from "./Components/admin/AdminHome";
 import AdminHomeProfile from "./Components/admin/Profile";
 import AdminProfileUpdate from "./Components/admin/profile/update/Update";
 
+import FacultyLogin from "./Components/login/facultyLogin/FacultyLogin";
+import FacultyHome from "./Components/faculty/FacultyHome";
+import FacultyHomeProfile from "./Components/faculty/Profile";
+import FacultyProfileUpdate from "./Components/faculty/profile/update/Update";
+
 const App = () => {
   return (
     <Routes>
@@ -41,6 +46,14 @@ const App = () => {
       <Route
         path="/admin/home/profile/update"
         element={<AdminProfileUpdate />}
+      />
+
+      <Route path="/login/faculty" element={<FacultyLogin />} />
+      <Route path="/faculty/home" element={<FacultyHome />} />
+      <Route path="/faculty/home/profile" element={<FacultyHomeProfile />} />
+      <Route
+        path="/faculty/home/profile/update"
+        element={<FacultyProfileUpdate />}
       />
     </Routes>
   );
