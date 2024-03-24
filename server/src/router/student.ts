@@ -22,6 +22,8 @@ router.get("/getStudentDetails", async (req, res) => {
         return res.status(500).send(e.message);
     }
 });
+
+
 router.post("/updateUserDetails", async (req, res) => {
     try {
         const { email, updateData } = req.body;

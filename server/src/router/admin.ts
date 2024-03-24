@@ -3,6 +3,8 @@ import express from "express";
 import { firestoreDB } from "../config/config";
 import { FieldValue } from "firebase-admin/firestore";
 const router = express.Router();
+
+
 router.post("/registerFaculty", async (req, res) => {
     try {
         const { name, email, id, school, department, designation, adminEmail } = req.body;
