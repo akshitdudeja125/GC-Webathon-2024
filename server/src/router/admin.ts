@@ -89,10 +89,10 @@ router.post("/registerStudent", async (req, res) => {
                 "Roll Number": rollNumber,
             },
             "Personal Details": {
-                "Category": "",
+                "Category": "N/A",
                 "PWD": false,
-                "Permanent Address": "",
-                "Correspondence Address": ""
+                "Permanent Address": "N/A",
+                "Correspondence Address": "N/A"
             },
             "Academic Details": {
                 "School": school,
@@ -101,20 +101,20 @@ router.post("/registerStudent", async (req, res) => {
 
             },
             "Bank Details": {
-                "Name of Benificiary": "",
-                "Account Number": "",
-                "Name of the Bank": "",
-                "IFSC Code": "",
-                "Address of Bank": ""
+                "Name of Benificiary": "N/A",
+                "Account Number": "N/A",
+                "Name of the Bank": "N/A",
+                "IFSC Code": "N/A",
+                "Address of Bank": "N/A"
             },
             "Parents Information": {
-                "Father's Name": "",
-                "Father's Occupation": "",
-                "Father's Mobile Number": "",
-                "Mother's Name": "",
-                "Mother's Occupation": "",
-                "Mother's Mobile Number": "",
-                "Present Postal Address": ""
+                "Father's Name": "N/A",
+                "Father's Occupation": "N/A",
+                "Father's Mobile Number": "N/A",
+                "Mother's Name": "N/A",
+                "Mother's Occupation": "N/A",
+                "Mother's Mobile Number": "N/A",
+                "Present Postal Address": "N/A"
             }
         });
         return res.status(200).send("Student registered successfully");

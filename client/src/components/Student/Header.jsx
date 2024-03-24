@@ -2,32 +2,16 @@ import React, { useState, useEffect } from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import logo from "../../Images/logo.png";
 import axios from "axios";
-
+import { firebaseApp } from "../../firebase";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
 const Header = () => {
-
-  const email=localStorage.getItem("email");
-  const [name, setName] = useState();
-
-  useEffect( () => {
-    const gettingName = async () => {
-      try{
-        const data=await axios.get("http://localhost:3002/api/student/getStudentDetails", {
-          params: {
-            email: email
-          }
-        });
-        setName(data.data["Student Details"]["Name"]);
-      }
-      catch(err){
-        alert("Error in receving student details!");
-      }
-    };
-
-    gettingName();
-  }, []);
-
+  
+  const navigate = useNavigate();
   const logout = () => {
-    console.log("Logging out");
+    const auth = getAuth(firebaseApp);
+    auth.signOut();
+    navigate("/");
   };
 
   return (

@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import React from "react";
+import { NavLink } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import AddIcon from "@mui/icons-material/Add";
-import { useDispatch } from "react-redux";
 // import {decode} from "jwt-decode";
 const isNotActiveStyle =
   "flex items-center px-5 gap-3 text-gray-500 hover:text-black transition-all duration-200 ease-in-out capitalize hover:bg-gray-200 py-2 my-1";
@@ -12,14 +11,6 @@ const isActiveStyle =
   "flex items-center px-5 gap-3 text-blue-600 transition-all duration-200 ease-in-out capitalize hover:bg-gray-200 py-2 my-1";
 
 const Sidebar = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const logout = () => {
-    alert("OOPS! Your session expired. Please Login again");
-    navigate("/login/studentlogin");
-  };
-
   return (
     <div className="flex-[0.2]">
       <div className="space-y-8 overflow-y-scroll scrollbar-thin scrollbar-track-white scrollbar-thumb-gray-300 h-[33rem]">
@@ -28,7 +19,8 @@ const Sidebar = () => {
             to="/student/home"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }>
+            }
+          >
             <HomeIcon className="" />
             <h1 className="font-normal">Dashboard</h1>
           </NavLink>
@@ -36,7 +28,8 @@ const Sidebar = () => {
             to="/student/home/profile"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }>
+            }
+          >
             <AssignmentIndIcon className="" />
             <h1 className="font-normal">Profile</h1>
           </NavLink>
@@ -46,7 +39,8 @@ const Sidebar = () => {
             to="/student/testresult"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }>
+            }
+          >
             <AddIcon className="" />
             <h1 className="font-normal">Test results</h1>
           </NavLink>
@@ -54,7 +48,8 @@ const Sidebar = () => {
             to="/student/attendance"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }>
+            }
+          >
             <AddIcon className="" />
             <h1 className="font-normal">Attendance</h1>
           </NavLink>
@@ -64,7 +59,8 @@ const Sidebar = () => {
             to="/student/subjectlist"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }>
+            }
+          >
             <EngineeringIcon className="" />
             <h1 className="font-normal">Subject List</h1>
           </NavLink>
@@ -74,7 +70,8 @@ const Sidebar = () => {
             to="/student/feedback"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }>
+            }
+          >
             <EngineeringIcon className="" />
             <h1 className="font-normal">Feedback</h1>
           </NavLink>
@@ -84,7 +81,8 @@ const Sidebar = () => {
             to="/student/getCourses"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }>
+            }
+          >
             <EngineeringIcon className="" />
             <h1 className="font-normal">Available Courses</h1>
           </NavLink>
@@ -94,7 +92,8 @@ const Sidebar = () => {
             to="/student/courseRegistration"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }>
+            }
+          >
             <EngineeringIcon className="" />
             <h1 className="font-normal">Course Registration</h1>
           </NavLink>

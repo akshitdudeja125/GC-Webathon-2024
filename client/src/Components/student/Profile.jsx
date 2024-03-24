@@ -1,79 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import BoyIcon from "@mui/icons-material/Boy";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import "react-calendar/dist/Calendar.css";
-import axios from "axios";
-import Header from "../Header";
-import Sidebar from "../Sidebar";
 import { useNavigate } from "react-router";
-
-const Profile = () => {
+import Header from "./Header";
+import Sidebar from "./Sidebar";
+import studentContext from "../../store/student-context";
+const StudentProfile = () => {
   const navigate = useNavigate();
+  const { store } = useContext(studentContext);
 
-  const email = localStorage.getItem("email");
-
-  const [name, setName] = useState();
-  const [rollNo, setRollNo] = useState();
-  const [attendance, setAttendance] = useState();
-  const [totalAttendance, setTotalAttendance] = useState();
-  const [batch, setBatch] = useState();
-  const [school, setSchool] = useState();
-  const [sem, setSem] = useState();
-  const [branch, setBranch] = useState();
-  const [accountNo, setAccountNo] = useState();
-  const [ifsc, setifsc] = useState();
-  const [bankname, setBankName] = useState();
-  const [category, setCategory] = useState();
-  const [perAdd, setPerAdd] = useState();
-  const [corAdd, setCorAdd] = useState();
-  const [PWD, setPWD] = useState(false);
-
-  useEffect(() => {
-    const getData = async () => {
-      let emailReq = "";
-      emailReq += email[0] + email[1];
-      emailReq += (email[2] + email[3]).toUpperCase();
-      for (let i = 4; i < email.length; i++) emailReq += email[i];
-      try{
-
-      
-      const data = await axios.get(
-        "http://localhost:3002/api/student/getStudentDetails",
-        { params: { email: emailReq } }
-      );
-      console.log(data.data["Student Details"]["Name"]);
-      setName(data.data["Student Details"]["Name"]);
-      setRollNo(data.data["Student Details"]["Roll Number"]);
-      setBatch(data.data["Academic Details"]["Batch"]);
-      let atten = 0;
-      let totalAtten = 0;
-      if (data.data["Courses"]) {
-        for (let i = 0; i < data.data["Courses"].length; i++) {
-          atten += data.data["Courses"][i]["Attendance"];
-          totalAtten += data.data["Courses"][i]["TotalClasses"];
-        }
-      }
-      setAttendance(atten);
-      setTotalAttendance(totalAtten);
-      setSchool(data.data["Academic Details"]["School"]);
-      setSem(data.data["Academic Details"]["Semester"]);
-      setBranch(data.data["Academic Details"]["Branch"]);
-      setAccountNo(data.data["Bank Details"]["Account Number"]);
-      setifsc(data.data["Bank Details"]["IFSC Code"]);
-      setBankName(data.data["Bank Details"]["Name of the Bank"]);
-      setCategory(data.data["Personal Details"]["Category"]);
-      setPerAdd(data.data["Personal Details"]["Permanent Address"]);
-      setCorAdd(data.data["Personal Details"]["Correspondence Address"]);
-      setPWD(data.data["Personal Details"]["PWD"]);
+  const name = store["Student Details"]["Name"];
+  const rollNo = store["Student Details"]["Roll Number"];
+  const batch = store["Academic Details"]["Batch"];
+  const school = store["Academic Details"]["School"];
+  const sem = store["Academic Details"]["Semester"];
+  const branch = store["Academic Details"]["Branch"];
+  let atten = 0;
+  let totalAtten = 0;
+  if (store["Courses"]) {
+    for (let i = 0; i < store["Courses"].length; i++) {
+      atten += store["Courses"][i]["Attendance"];
+      totalAtten += store["Courses"][i]["TotalClasses"];
     }
-    catch(err){
-      alert("Error in getting Student details");
-    }
-    };
-    getData();
-  }, []);
+  }
+  const attendance = atten;
+  const totalAttendance = totalAtten;
+  const accountNo = store["Bank Details"]["Account Number"];
+  const ifsc = store["Bank Details"]["IFSC Code"];
+  const bankname = store["Bank Details"]["Name of the Bank"];
+  const category = store["Personal Details"]["Category"];
+  const perAdd = store["Personal Details"]["Permanent Address"];
+  const corAdd = store["Personal Details"]["Correspondence Address"];
+  const PWD = store["Personal Details"]["PWD"];
 
   const updateHandler = () => {
     navigate("/student/home/profile/update");
@@ -334,4 +295,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default StudentProfile;

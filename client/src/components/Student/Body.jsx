@@ -1,61 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import BoyIcon from "@mui/icons-material/Boy";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import "react-calendar/dist/Calendar.css";
-import axios from "axios";
-
+import studentContext from "../../store/student-context";
 const Body = () => {
-  const email = localStorage.getItem("email");
-  console.log(email);
-  const [name, setName] = useState();
-  const [rollNo, setRollNo] = useState();
-  const [attendance, setAttendance] = useState();
-  const [totalAttendance, setTotalAttendance] = useState();
-  const [year, setYear] = useState();
-  const [batch, setBatch] = useState();
-  const [school, setSchool] = useState();
-  const [sem, setSem] = useState();
-  const [branch, setBranch] = useState();
+  const { store } = useContext(studentContext);
 
-  useEffect(() => {
-    const getData = async () => {
-      let emailReq="";
-      emailReq+=email[0]+email[1];
-      emailReq+=(email[2]+email[3]).toUpperCase();
-      for(let i=4;i<email.length;i++)emailReq+=email[i];
-      try{
-
-      
-      const data = await axios.get(
-        "http://localhost:3002/api/student/getStudentDetails",
-        { params: { email: "21CS01026@iitbbs.ac.in" } }
-      );
-      console.log(data.data["Student Details"]["Name"]);
-      setName(data.data["Student Details"]["Name"]);
-      setRollNo(data.data["Student Details"]["Roll Number"]);
-      setBatch(data.data["Academic Details"]["Batch"]);
-      let atten = 0;
-      let totalAtten = 0;
-      if (data.data["Courses"]) {
-        for (let i = 0; i < data.data["Courses"].length; i++) {
-          atten += data.data["Courses"][i]["Attendance"];
-          totalAtten += data.data["Courses"][i]["TotalClasses"];
-        }
-      }
-      setAttendance(atten);
-      setTotalAttendance(totalAtten);
-      setSchool(data.data["Academic Details"]["School"]);
-      setSem(data.data["Academic Details"]["Semester"]);
-      setBranch(data.data["Academic Details"]["Branch"]);
-    }catch(err){
-      alert("Error in getting the details!");
+  const name = store["Student Details"]["Name"];
+  const rollNo = store["Student Details"]["Roll Number"];
+  const batch = store["Academic Details"]["Batch"];
+  const school = store["Academic Details"]["School"];
+  const sem = store["Academic Details"]["Semester"];
+  const branch = store["Academic Details"]["Branch"];
+  let atten = 0;
+  let totalAtten = 0;
+  if (store["Courses"]) {
+    for (let i = 0; i < store["Courses"].length; i++) {
+      atten += store["Courses"][i]["Attendance"];
+      totalAtten += store["Courses"][i]["TotalClasses"];
     }
-    };
-    getData();
-  }, []);
-
+  }
+  const attendance = atten;
+  const totalAttendance = totalAtten;
   return (
     <div className="flex-[0.8] mt-4">
       <div className="space-y-5 mt-15 ml-5">

@@ -3,15 +3,9 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "../../../../utils/Spinner";
 import * as classes from "../../../../utils/styles";
 import axios from "axios";
-
+import { firebaseApp } from "../../../../firebase";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 const Body = () => {
-  const email = localStorage.getItem("email");
-
-  let emailReq = "";
-  emailReq += email[0] + email[1];
-  emailReq += (email[2] + email[3]).toUpperCase();
-  for (let i = 4; i < email.length; i++) emailReq += email[i];
-
   const navigate = useNavigate();
 
   const [name, setName] = useState();
@@ -36,53 +30,64 @@ const Body = () => {
   const [motherContactNumber, setMotherContactNumber] = useState();
   const [fatherOccupation, setFatherOccupation] = useState();
   const [motherOccupation, setMotherOccupation] = useState();
+  const [email, setEmail] = useState(false);
 
   const [loading, setLoading] = useState(false);
-
   useEffect(() => {
+    //get aemail from auth
+    const auth = getAuth(firebaseApp);
+    const authEmail = auth?.currentUser?.email;
+    console.log(authEmail);
+    if (!authEmail) {
+      navigate("/login/student");
+    }
+    setEmail(authEmail);
     const getData = async () => {
-      try {
-        const { data } = await axios.get(
-          "http://localhost:3002/api/student/getStudentDetails",
-          { params: { email: emailReq } }
-        );
-        //   console.log(data["Personal Details"]["PWD"]);
-
-        setName(data["Student Details"]["Name"]);
-        setRollNo(data["Student Details"]["Roll Number"]);
-        setCategory(data["Personal Details"]["Category"]);
-        setPwd(data["Personal Details"]["PWD"]);
-        setPerAdd(data["Personal Details"]["Permanent Address"]);
-        setCorAdd(data["Personal Details"]["Correspondence Address"]);
-        setAccountNumber(data["Bank Details"]["Account Number"]);
-        setIfscCode(data["Bank Details"]["IFSC Code"]);
-        setBankName(data["Bank Details"]["Bank Name"]);
-        setAccountHolder(data["Bank Details"]["Account Holder Name"]);
-        setAddBank(data["Bank Details"]["Address of Bank"]);
-        setFatherContactNumber(
-          data["Parents Information"]["Father's Mobile Number"]
-        );
-        setMotherContactNumber(
-          data["Parents Information"]["Mother's Mobile Number"]
-        );
-        setFatherOccupation(data["Parents Information"]["Father's Occupation"]);
-        setMotherOccupation(data["Parents Information"]["Mother's Occupation"]);
-        setMotherName(data["Parents Information"]["Mother's Name"]);
-        setFatherName(data["Parents Information"]["Father's Name"]);
-        setPresentPostal(data["Personal Details"]["Present Postal Address"]);
-        setSchool(data["Academic Details"]["School"]);
-        setSem(data["Academic Details"]["Semester"]);
-        setBranch(data["Academic Details"]["Branch"]);
-        setBatch(data["Academic Details"]["Batch"]);
-        setRollNo(data["Student Details"]["Roll Number"]);
-        setLoading(true);
-        getData();
-        // console.log(studentData["Student Details"]["Name"]);
-        setLoading(false);
-      } catch (err) {
-        alert("Unable to fetch student details!");
+      if (authEmail) {
+        if (authEmail) {
+          const data = await axios.get(
+            "http://localhost:3002/api/student/getStudentDetails",
+            { params: { email: authEmail } }
+          );
+          setName(data["Student Details"]["Name"]);
+          setRollNo(data["Student Details"]["Roll Number"]);
+          setCategory(data["Personal Details"]["Category"]);
+          setPwd(data["Personal Details"]["PWD"]);
+          setPerAdd(data["Personal Details"]["Permanent Address"]);
+          setCorAdd(data["Personal Details"]["Correspondence Address"]);
+          setAccountNumber(data["Bank Details"]["Account Number"]);
+          setIfscCode(data["Bank Details"]["IFSC Code"]);
+          setBankName(data["Bank Details"]["Bank Name"]);
+          setAccountHolder(data["Bank Details"]["Account Holder Name"]);
+          setAddBank(data["Bank Details"]["Address of Bank"]);
+          setFatherContactNumber(
+            data["Parents Information"]["Father's Mobile Number"]
+          );
+          setMotherContactNumber(
+            data["Parents Information"]["Mother's Mobile Number"]
+          );
+          setFatherOccupation(
+            data["Parents Information"]["Father's Occupation"]
+          );
+          setMotherOccupation(
+            data["Parents Information"]["Mother's Occupation"]
+          );
+          setMotherName(data["Parents Information"]["Mother's Name"]);
+          setFatherName(data["Parents Information"]["Father's Name"]);
+          setPresentPostal(data["Personal Details"]["Present Postal Address"]);
+          setSchool(data["Academic Details"]["School"]);
+          setSem(data["Academic Details"]["Semester"]);
+          setBranch(data["Academic Details"]["Branch"]);
+          setBatch(data["Academic Details"]["Batch"]);
+          setRollNo(data["Student Details"]["Roll Number"]);
+          setLoading(true);
+        }
       }
     };
+
+    setLoading(true);
+    getData();
+    setLoading(false);
   }, []);
 
   const accountNumberChangeHandler = (event) => {
@@ -157,7 +162,7 @@ const Body = () => {
                 <div>
                   <label
                     htmlFor="Email"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Email
                   </label>
@@ -165,7 +170,8 @@ const Body = () => {
                     type="text"
                     id="Email"
                     class="bg-gray-50 cursor-not-allowed border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[30rem] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder={email}
+                    placeholder={"Enter Email"}
+                    value={email}
                     disabled
                   />
                 </div>
@@ -173,7 +179,7 @@ const Body = () => {
                 <div>
                   <label
                     htmlFor="name"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Name
                   </label>
@@ -181,15 +187,16 @@ const Body = () => {
                     type="text"
                     id="name"
                     class="bg-gray-50 cursor-not-allowed border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder={name}
-                    disabled
+                    placeholder={"Enter Name"}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </div>
 
                 <div>
                   <label
                     htmlFor="rollno"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Roll Number
                   </label>
@@ -197,14 +204,15 @@ const Body = () => {
                     type="text"
                     id="rollno"
                     class="bg-gray-50 cursor-not-allowed border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder={rollNo}
-                    disabled
+                    onChange={(e) => setRollNo(e.target.value)}
+                    placeholder={"Roll Number"}
+                    value={rollNo}
                   />
                 </div>
                 <div>
                   <label
                     htmlFor="category"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Category
                   </label>
@@ -213,13 +221,14 @@ const Body = () => {
                     id="category"
                     class="bg-gray-50 cursor-not-allowed border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={category}
-                    disabled
+                    onChange={(e) => setCategory(e.target.value)}
+                    value={category}
                   />
                 </div>
                 <div>
                   <label
                     htmlFor="PWD"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     PWD
                   </label>
@@ -228,13 +237,14 @@ const Body = () => {
                     id="PWD"
                     class="bg-gray-50 cursor-not-allowed border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={pwd}
-                    disabled
+                    onChange={(e) => setPwd(e.target.value)}
+                    value={pwd}
                   />
                 </div>
                 <div>
                   <label
                     htmlFor="Account Number"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Account Number
                   </label>
@@ -244,13 +254,14 @@ const Body = () => {
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     onChange={accountNumberChangeHandler}
                     placeholder={accountNumber}
+                    value={accountNumber}
                   />
                 </div>
 
                 <div>
                   <label
                     htmlFor="Mother's Name"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Mother's Name
                   </label>
@@ -259,13 +270,13 @@ const Body = () => {
                     id="Mother's Name"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={motherName}
-                    disabled
+                    value={motherName}
                   />
                 </div>
                 <div>
                   <label
                     htmlFor="<Father's Name>"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Father's Name
                   </label>
@@ -274,13 +285,14 @@ const Body = () => {
                     id="Father's Name"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={fatherName}
-                    disabled
+                    value={fatherName}
+                    onChange={(e) => setFatherName(e.target.value)}
                   />
                 </div>
                 <div>
                   <label
                     htmlFor="Mother's Occupation"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Mother's Occupation
                   </label>
@@ -290,6 +302,7 @@ const Body = () => {
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     onChange={(e) => setMotherOccupation(e.target.value)}
                     placeholder={motherOccupation}
+                    value={motherOccupation}
                   />
                 </div>
               </div>
@@ -298,7 +311,7 @@ const Body = () => {
                 <div>
                   <label
                     for="IFSC Code"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     IFSC Code
                   </label>
@@ -308,13 +321,14 @@ const Body = () => {
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[30rem] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={ifscCode}
                     onChange={(e) => setIfscCode(e.target.value)}
+                    value={ifscCode}
                   />
                 </div>
 
                 <div>
                   <label
                     for="Name of the Bank"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Name of Bank
                   </label>
@@ -324,12 +338,13 @@ const Body = () => {
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={bankName}
                     onChange={(e) => setBankName(e.target.value)}
+                    value={bankName}
                   />
                 </div>
                 <div>
                   <label
                     for="Father's Mobile Number"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Father's Mobile Number
                   </label>
@@ -339,12 +354,13 @@ const Body = () => {
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={fatherContactNumber}
                     onChange={(e) => setFatherContactNumber(e.target.value)}
+                    value={fatherContactNumber}
                   />
                 </div>
                 <div>
                   <label
                     for="Mother's Mobile Number"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Mother's Mobile Number
                   </label>
@@ -354,12 +370,13 @@ const Body = () => {
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={motherContactNumber}
                     onChange={(e) => setMotherContactNumber(e.target.value)}
+                    value={motherContactNumber}
                   />
                 </div>
                 <div>
                   <label
                     for="Father's Occupation"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Father's Occupation
                   </label>
@@ -369,13 +386,14 @@ const Body = () => {
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={fatherOccupation}
                     onChange={(e) => setFatherOccupation(e.target.value)}
+                    value={fatherOccupation}
                   />
                 </div>
 
                 <div>
                   <label
                     for="Semester"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Semester
                   </label>
@@ -384,13 +402,14 @@ const Body = () => {
                     id="Semester"
                     class="bg-gray-50 border cursor-not-allowed border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={sem}
-                    disabled
+                    value={sem}
+                    onChange={(e) => setSem(e.target.value)}
                   />
                 </div>
                 <div>
                   <label
                     for="Branch"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Branch
                   </label>
@@ -399,13 +418,14 @@ const Body = () => {
                     id="Branch"
                     class="bg-gray-50 cursor-not-allowed border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={branch}
-                    disabled
+                    value={branch}
+                    onChange={(e) => setBranch(e.target.value)}
                   />
                 </div>
                 <div>
                   <label
                     for="Batch"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Batch
                   </label>
@@ -414,7 +434,8 @@ const Body = () => {
                     id="Batch"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed"
                     placeholder={batch}
-                    disabled
+                    value={batch}
+                    onChange={(e) => setBatch(e.target.value)}
                   />
                 </div>
               </div>
