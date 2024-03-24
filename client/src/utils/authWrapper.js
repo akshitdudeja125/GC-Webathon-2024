@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { firebaseApp } from "../firebase";
 import { useNavigate } from "react-router";
-
 export default function AuthWrapper(Component) {
   const IsAuth = (props) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);

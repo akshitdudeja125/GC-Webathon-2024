@@ -6,9 +6,9 @@ import axios from "axios";
 import { getAuth } from "firebase/auth";
 import { firebaseApp } from "../../firebase";
 import AuthWrapper from "../../utils/authWrapper";
+import Sidebar from "../../components/student/Sidebar";
 
 const StudentLayout = () => {
-    
   const [store, setStore] = useState(initialState);
 
   useEffect(() => {
@@ -32,14 +32,9 @@ const StudentLayout = () => {
   }, []);
 
   return (
-    <div className="bg-[#d6d9e0] h-screen flex items-center justify-center">
-      <div className="flex flex-col  bg-[#f4f6fa] h-5/6 w-[95%] rounded-2xl shadow-2xl space-y-6 overflow-y-hidden">
-        <Header />
-        <studentContext.Provider value={{ store, setStore }}>
-          <Outlet />
-        </studentContext.Provider>
-      </div>
-    </div>
+    <studentContext.Provider value={{ store, setStore }}>
+      <Outlet />
+    </studentContext.Provider>
   );
 };
 

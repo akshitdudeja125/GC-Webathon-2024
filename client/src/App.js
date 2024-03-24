@@ -19,6 +19,7 @@ import FacultyLogin from "./components/login/facultyLogin/FacultyLogin";
 import FacultyHome from "./components/faculty/FacultyHome";
 import FacultyHomeProfile from "./components/faculty/Profile";
 import FacultyProfileUpdate from "./components/faculty/profile/update/Update";
+import Update from "./components/student/profile/update/Update";
 import StudentProfile from "./components/student/Profile";
 import StudentLayout from "./components/student/StudentLayout";
 import { StudentProvider } from "./store/student-context";
@@ -32,7 +33,8 @@ const App = () => {
       <Route path="/login/studentlogin" element={<StudentLogin />} />
       <Route path="/student" element={<StudentLayout />}>
         <Route path="home" element={<StudentHome />} />
-        <Route path="profile" element={<StudentProfile />} />
+        <Route path="home/profile" element={<StudentProfile />} />
+        <Route path="home/profile/update" element={<Update />} />
         <Route path="testResult" element={<TestResult />} />
         <Route path="attendance" element={<Attendance />} />
         <Route path="feedback" element={<Feedback />} />

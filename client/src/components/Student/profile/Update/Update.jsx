@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Header from "../../Header";
 import Sidebar from "../../Sidebar";
-import Body from "../../../../components/student/profile/Body";
+import Body from "./Body";
 const Update = () => {
   return (
     <div className="bg-[#d6d9e0] h-screen flex items-center justify-center">

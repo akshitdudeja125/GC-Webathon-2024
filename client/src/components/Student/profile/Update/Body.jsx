@@ -135,43 +135,10 @@ const Body = () => {
         });
       setStore({
         ...store,
-        "Student Details": {
-          "Roll Number": rollNo,
-          Email: email,
-          Name: name,
-        },
-        "Personal Details": {
-          Category: category,
-          "Permanent Address": perAdd,
-          "Correspondence Address": corAdd,
-          PWD: pwd,
-        },
-        "Bank Details": {
-          "Account Number": accountNumber,
-          "IFSC Code": ifscCode,
-          "Address of Bank": addBank,
-          "Name of Beneficiary": accHolder,
-          "Name of the Bank": bankName,
-        },
-        "Parents Information": {
-          "Father's Mobile Number": fatherContactNumber,
-          "Mother's Mobile Number": motherContactNumber,
-          "Father's Occupation": fatherOccupation,
-          "Present Postal Address": presentPostal,
-          "Mother's Name": motherName,
-          "Father's Name": fatherName,
-          "Mother's Occupation": motherOccupation,
-        },
-        "Academic Details": {
-          School: school,
-          Batch: batch,
-          Branch: branch,
-          "Roll Number": rollNo,
-          Semester: sem,
-        },
+        ...data,
       });
 
-      navigate("/student/profile");
+      navigate("/student/home/profile");
     } catch (err) {
       alert("Error in storing the information!");
     }
