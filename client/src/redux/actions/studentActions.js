@@ -6,6 +6,7 @@ import {
   ATTENDANCE,
   UPDATE_STUDENT,
   GET_SUBJECT,
+  GET_EVENT
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -60,6 +61,15 @@ export const getSubject = (department, year) => async (dispatch) => {
       year,
     };
     const { data } = await api.getSubject(formData);
+    dispatch({ type: GET_SUBJECT, payload: data });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
+export const getEvents = () => async (dispatch) => {
+  try {
+    
+    const { data } = await api.getEvents(formData);
     dispatch({ type: GET_SUBJECT, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
