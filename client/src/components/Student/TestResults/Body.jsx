@@ -4,6 +4,8 @@ import Spinner from "../../../utils/Spinner";
 import * as classes from "../../../utils/styles";
 import axios from "axios";
 import DisplaySgpa from "./DisplaySgpa";
+import { firebaseApp } from "../../../firebase";
+import { getAuth } from "firebase/auth";
 
 const Body = () => {
   // const email = localStorage.getItem("email");
@@ -73,10 +75,13 @@ const Body = () => {
   useEffect(() => {
     const fetchingResults = async () => {
       try {
+        const auth = getAuth(firebaseApp);
+        const email = auth?.currentUser?.email;
         const data = await axios.get(
           "http://localhost:3002/api/student/getResults",
-          { params: { email: "21CS01026@iitbbs.ac.in" } }
+          { params: { email: email } }
         );
+        console.log(data.data);
 
         setsem1(data.data["1"] ? data.data["1"] : {});
         setsem2(data.data["2"] ? data.data["2"] : {});
