@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Body from "./Body";
 import Header from "./Header";
 import AuthWrapper from "../../utils/authWrapper";
-import Sidebar from "./SideBar";
+import Sidebar from "../../components/student/Sidebar";
 
 const FacultyHome = () => {
   return (
