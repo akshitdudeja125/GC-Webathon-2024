@@ -46,7 +46,7 @@ router.get("/getFacultyDetails", async (req, res) => {
   }
 });
 
-router.post("/addAssignmnet", async (req, res) => {
+router.post("/addAssignment", async (req, res) => {
   try {
     const email = req.body.email;
     const courseId = req.body.courseId;
@@ -70,15 +70,15 @@ router.post("/addAssignmnet", async (req, res) => {
     const updateObj = {
       "Total Assignments": numAssignments + 1,
       [`Assignments.${numAssignments + 1}`]: {
-        [`Assignment Name`]: assignmentName,
-        [`Assignment Description`]: description,
+        [`Name`]: assignmentName,
+        [`Description`]: description,
         [`Due Date`]: dueDate
 
       },
     };
     await courseCollection.doc(courseId).update(updateObj);
 
-    return res.status(200).send("Attendance registered successfully");
+    return res.status(200).send("Assignment registered successfully");
   } catch (e: any) {
     console.error(e);
 
