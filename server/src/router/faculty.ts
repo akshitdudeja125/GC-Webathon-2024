@@ -3,18 +3,18 @@ import { firestoreDB } from "../config/config";
 import { FieldValue } from "firebase-admin/firestore";
 const router = express.Router();
 router.get("/isFaculty", async (req, res) => {
-    try {
-        const email = req.query.email as string;
-        const adminCollection = firestoreDB.collection("faculty");
-        const docRef = await adminCollection.doc(email).get();
-        if (docRef.exists) {
-            return res.status(200).send(true);
-        }
-        return res.status(200).send(false);
-    } catch (e) {
-        console.error(e);
-        return res.status(500).send("Internal Server Error");
+  try {
+    const email = req.query.email as string;
+    const adminCollection = firestoreDB.collection("faculty");
+    const docRef = await adminCollection.doc(email).get();
+    if (docRef.exists) {
+      return res.status(200).send(true);
     }
+    return res.status(200).send(false);
+  } catch (e) {
+    console.error(e);
+    return res.status(500).send("Internal Server Error");
+  }
 });
 router.get("/getFacultyDetails", async (req, res) => {
   try {
@@ -39,6 +39,46 @@ router.get("/getFacultyDetails", async (req, res) => {
     const doc = await facultyCollection.doc(email).get();
     const facultyData = doc.data();
     return res.status(200).send(facultyData);
+  } catch (e: any) {
+    console.error(e);
+
+    return res.status(500).send(e.message);
+  }
+});
+
+router.post("/addAssignmnet", async (req, res) => {
+  try {
+    const email = req.body.email;
+    const courseId = req.body.courseId;
+    const assignmentName = req.body.assignmentName;
+    const dueDate = req.body.dueDate;
+    const description = req.body.description;
+    const courseCollection = firestoreDB.collection("courses");
+    const courseDoc = await courseCollection.doc(courseId).get();
+    if (!courseDoc.exists) {
+      return res.status(404).send("Course not found");
+    }
+    const courseData = courseDoc.data();
+    if (!courseData) {
+      return res.status(500).send("Course data not found");
+    }
+    const assignments = courseData["Assignments"];
+    const numAssignments = courseData["Total Assignments"];
+
+
+
+    const updateObj = {
+      "Total Assignments": numAssignments + 1,
+      [`Assignments.${numAssignments + 1}`]: {
+        [`Assignment Name`]: assignmentName,
+        [`Assignment Description`]: description,
+        [`Due Date`]: dueDate
+
+      },
+    };
+    await courseCollection.doc(courseId).update(updateObj);
+
+    return res.status(200).send("Attendance registered successfully");
   } catch (e: any) {
     console.error(e);
 
@@ -145,6 +185,7 @@ router.post("/registerCourse", async (req, res) => {
             email: facultyEmail,
           },
           "Total Classes": 0,
+          "Total Assignments": 0,
           Students: {},
           Attendance: {},
           Assignments: {},
