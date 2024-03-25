@@ -1,26 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import axios from "axios";
 import Spinner from "../../../utils/Spinner";
 import * as classes from "../../../utils/styles";
 import DisplayData from "./DisplayData";
+import facultyContext from "../../../store/faculty-context";
 
 const Body = () => {
-  
-    const [course, setCourse] = useState([]);
+  const [course, setCourse] = useState([]);
+  const { store } = useContext(facultyContext);
+  const [loading, setLoading] = useState(false);
 
-    useEffect(()=>{
-        const gettingData=async()=>{
-            const data=await axios.get("http://localhost:3002/api/faculty/getFacultyCourses", {
-                params: {
-                    email: "21cs01025@iitbbs.ac.in"
-                }
-            });
-            setCourse(data.data);
-            console.log(data.data);
-        }
-        gettingData();
-    }, []);
+  const email = store?.["Faculty Details"]["Email"];
+
+  useEffect(() => {
+    try {
+      const gettingData = async () => {
+        const data = await axios.get(
+          "http://localhost:3002/api/faculty/getFacultyCourses",
+          {
+            params: {
+              email: email,
+            },
+          }
+        );
+        setCourse(data.data);
+        console.log(data.data);
+      };
+      setLoading(true);
+      gettingData();
+      setLoading(false);
+    } catch (err) {
+      alert("Unable to fetch Data!");
+    }
+  }, []);
 
   return (
     <div className="flex-[0.8] mt-3 overflow-auto">
@@ -32,7 +45,7 @@ const Body = () => {
         <div className=" mr-10 ml-10 bg-white rounded-xl pt-6 pl-6 h-[29.5rem] overflow-auto">
           <div className="col-span-3 mr-10 overflow-auto">
             <div className={classes.loadingAndError}>
-              {/* {loading && (
+              {loading && (
                 <Spinner
                   message="Loading"
                   height={50}
@@ -40,9 +53,9 @@ const Body = () => {
                   color="#111111"
                   messageColor="blue"
                 />
-              )} */}
+              )}
             </div>
-            {/* {!loading && ( */}
+            {!loading && (
               <div className={classes.adminData}>
                 <div className="grid grid-cols-8">
                   <h1 className={`${classes.adminDataHeading} col-span-1`}>
@@ -63,14 +76,13 @@ const Body = () => {
                   <h1 className={`${classes.adminDataHeading} col-span-1`}>
                     Instructor
                   </h1>
-                  {course.length!==0 && (
+                  {course.length !== 0 &&
                     course.map((res, idx) => (
-                        <DisplayData obj={res} index={idx}/>
-                    ))
-                  )}
+                      <DisplayData obj={res} index={idx} />
+                    ))}
                 </div>
               </div>
-            {/* )} */}
+            )}
           </div>
         </div>
       </div>

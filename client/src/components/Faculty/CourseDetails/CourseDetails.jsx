@@ -1,7 +1,4 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { getAttendance } from "../../../redux/actions/studentActions";
-
 import Header from "../Header";
 import Sidebar from "../SideBar";
 import Body from "./Body";

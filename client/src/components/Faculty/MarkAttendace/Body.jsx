@@ -1,48 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import BoyIcon from "@mui/icons-material/Boy";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  getStudent,
-  markAttendance,
-} from "../../../redux/actions/facultyActions";
-import { MenuItem, Select } from "@mui/material";
-import Spinner from "../../../utils/Spinner";
+
 import * as classes from "../../../utils/styles";
-import { ATTENDANCE_MARKED, SET_ERRORS } from "../../../redux/actionTypes";
-import { getTest } from "../../../redux/actions/facultyActions";
-import { getSubject } from "../../../redux/actions/adminActions";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const Body = () => {
-  const [course, setCourse] = useState();
+  const navigate = useNavigate();
+  const course = window.location.pathname.split("=")[1];
+  console.log(course);
   const [student, setStudent] = useState([]);
+  // console.log("EEE");
+  // const student = ["1", "2", "3"];
   const [checkedValue, setCheckedValue] = useState([]);
   const [courseId, setCourseId] = useState();
-
-  useEffect(() => {
-    try {
-      const fetchingData = async () => {
-        const data = await axios.get(
-          "http://localhost:3002/api/faculty/getFacultyCourses",
-          {
-            params: {
-              email: "21cs01025@iitbbs.ac.in",
-            },
-          }
-        );
-        console.log(data.data);
-        setCourseId(data.data[0]["courseId"]);
-        let temp = [];
-        for (let i = 0; i < Object.keys(data.data[1]["Students"]).length; i++) {
-          temp.push(Object.keys(data.data[1]["Students"])[i]);
-        }
-        setStudent(temp);
-      };
-
-      fetchingData();
-    } catch (err) {
-      alert("Error in fetching the data");
-    }
-  });
 
   const handleInputChange = (event) => {
     const tempCheck = checkedValue;
@@ -75,18 +45,26 @@ const Body = () => {
       time: time,
       students: checkedValue,
     };
+    try {
+      const upload = async () => {
+        const data2 = await axios.post(
+          "http://localhost:3002/api/faculty/registerAttendence",
+          data
+        );
+      };
+      upload();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-    const upload = async () => {
-      const data = await axios.post(
-        "http://localhost:3002/api/faculty/registerAttendence",
-        data
-      );
-    };
-    upload();
+  const backHandler = () => {
+    navigate("/faculty/home/attendance");
   };
 
   return (
     <div className="flex-[0.8] mt-3 ">
+      {console.log("djjjjjdd")}
       <div className="space-y-5">
         <div className="flex text-gray-400 items-center space-x-2 ">
           <BoyIcon />
@@ -94,36 +72,16 @@ const Body = () => {
         </div>
         <div className=" mr-10 bg-white grid grid-cols-4 rounded-xl pt-6 pl-6 h-[29.5rem]">
           <div className="col-span-3 mr-6">
-            {/* <div className={classes.loadingAndError}>
-              {loading && (
-                <Spinner
-                  message="Loading"
-                  height={50}
-                  width={150}
-                  color="#111111"
-                  messageColor="blue"
-                />
-              )}
-              {(error.noStudentError || error.backendError) && (
-                <p className="text-red-500 text-2xl font-bold">
-                  {error.noStudentError || error.backendError}
-                </p>
-              )}
-            </div> */}
-            {/* {search &&
-              !loading &&
-              Object.keys(error).length === 0 &&
-              students?.length !== 0 && ( */}
             <div className={`${classes.adminData} h-[20rem] w-300`}>
               <div className="grid grid-cols-7">
                 <h1 className={`col-span-2 ${classes.adminDataHeading}`}>
                   S No.
                 </h1>
                 <h1 className={`col-span-3 ${classes.adminDataHeading}`}>
-                  Roll No.
+                  Course
                 </h1>
                 <h1 className={`col-span-2 ${classes.adminDataHeading}`}>
-                  Present
+                  Mark
                 </h1>
               </div>
               {student?.map((stu, idx) => (
@@ -146,32 +104,20 @@ const Body = () => {
                 </div>
               ))}
             </div>
-            {/* )} */}
-            {/* {search && Object.keys(error).length === 0 && ( */}
             <div className="space-x-3 flex items-center justify-center mt-5">
-              <label className="font-bold text-lg">Subject</label>
-              {/* <Select
-                  required
-                  displayEmpty
-                  sx={{ height: 36, width: 224 }}
-                  inputProps={{ "aria-label": "Without label" }}
-                  value={subjectName}
-                  onChange={(e) => setSubjectName(e.target.value)}>
-                  <MenuItem value="">None</MenuItem>
-                  {subjects?.map((dp, idx) => (
-                    <MenuItem key={idx} value={dp.subjectName}>
-                      {dp.subjectName}
-                    </MenuItem>
-                  ))}
-                </Select> */}
               <button
                 onClick={uploadAttendance}
                 className={`${classes.adminFormSubmitButton} bg-blue-500`}
               >
                 Mark
               </button>
+              <button
+                onClick={backHandler}
+                className={`${classes.adminFormSubmitButton} bg-blue-500`}
+              >
+                Back
+              </button>
             </div>
-            {/* )} */}
           </div>
         </div>
       </div>

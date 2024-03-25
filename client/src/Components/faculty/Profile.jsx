@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import BoyIcon from "@mui/icons-material/Boy";
@@ -9,36 +9,15 @@ import Header from "./Header";
 import { useNavigate } from "react-router";
 import { firebaseApp } from "../../firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import Sidebar from "../../components/student/Sidebar";
+import Sidebar from "./SideBar";
+import facultyContext from "../../store/faculty-context";
 const FacultyHomeProfile = () => {
   const navigate = useNavigate();
+  const { store } = useContext(facultyContext);
 
-  const [name, setName] = useState();
-  const [dob, setdob] = useState();
-  const [facultyId, setfacultyId] = useState();
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const auth = getAuth(firebaseApp);
-        const authEmail = auth?.currentUser?.email;
-        console.log(`authEmail: ${authEmail}`);
-
-        if (authEmail) {
-          const data = await axios.get(
-            "http://localhost:3002/api/faculty/getFacultyDetails",
-            { params: { email: authEmail } }
-          );
-          console.log(data?.data["faculty Details"]?.["Name"]);
-          setName(data?.data["Faculty Details"]?.["Name"]);
-          setdob(data?.data["Faculty Details"]?.["DOB"]);
-          setfacultyId(data?.data["Faculty Details"]?.["Id"]);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getData();
-  }, []);
+  const name=store?.["Faculty Details"]?.["Name"];
+  const facultyId=store?.["Faculty Details"]?.["Id"];
+  const dob=store?.["Faculty Details"]?.["DOB"];
 
   const updateHandler = () => {
     navigate("/faculty/home/profile/update");

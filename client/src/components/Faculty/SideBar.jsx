@@ -32,6 +32,26 @@ const Sidebar = () => {
             <AssignmentIndIcon className="" />
             <h1 className="font-normal">Profile</h1>
           </NavLink>
+
+          <NavLink
+            to="/faculty/home/attendance"
+            className={({ isActive }) =>
+              isActive ? isActiveStyle : isNotActiveStyle
+            }
+          >
+            <AssignmentIndIcon className="" />
+            <h1 className="font-normal">Mark Attendance</h1>
+          </NavLink>
+
+          <NavLink
+            to="/faculty/home/courses"
+            className={({ isActive }) =>
+              isActive ? isActiveStyle : isNotActiveStyle
+            }
+          >
+            <AssignmentIndIcon className="" />
+            <h1 className="font-normal">Courses</h1>
+          </NavLink>
         </div>
       </div>
     </div>

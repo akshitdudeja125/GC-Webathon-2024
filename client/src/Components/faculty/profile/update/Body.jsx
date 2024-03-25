@@ -16,6 +16,7 @@ const Body = () => {
   const [designation, setDesignation] = useState();
   const [school, setSchool] = useState();
   const [dob, setDob] = useState();
+
   useEffect(() => {
     //get aemail from auth
     const auth = getAuth(firebaseApp);
@@ -78,6 +79,7 @@ const Body = () => {
     } catch (error) {
       console.log(error);
     } finally {
+      alert("Detials updated successfully!");
       navigate("/faculty/home/profile");
     }
   };
@@ -116,7 +118,7 @@ const Body = () => {
                   <input
                     type="text"
                     id="name"
-                    class="bg-gray-50 cursor-not-allowed border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={name}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -143,7 +145,7 @@ const Body = () => {
                 </div>
                 <div>
                   <label
-                    htmlFor="rollno"
+                    htmlFor="dob"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
                   >
                     Date of Birth
@@ -151,12 +153,63 @@ const Body = () => {
                   <input
                     type="text"
                     id="dob"
-                    class="bg-gray-50 cursor-not-allowed border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={"YYYY-MM-DD"}
                     onChange={(e) => setDob(e.target.value)}
                     value={dob}
                   />
                 </div>
+                <div>
+                  <label
+                    htmlFor="designation"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+                  >
+                    Designation
+                  </label>
+                  <input
+                    type="text"
+                    id="designation"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder={designation}
+                    onChange={(e) => setDob(e.target.value)}
+                    value={dob}
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="school"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+                  >
+                    School
+                  </label>
+                  <input
+                    type="text"
+                    id="school"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder={school}
+                    onChange={(e) => setDob(e.target.value)}
+                    value={dob}
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="dep"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+                  >
+                    Department
+                  </label>
+                  <input
+                    type="text"
+                    id="dep"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder={dept}
+                    onChange={(e) => setDob(e.target.value)}
+                    value={dob}
+                  />
+                </div>
+
               </div>
             </div>
 

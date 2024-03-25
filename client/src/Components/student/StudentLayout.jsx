@@ -6,7 +6,7 @@ import axios from "axios";
 import { getAuth } from "firebase/auth";
 import { firebaseApp } from "../../firebase";
 import AuthWrapper from "../../utils/authWrapper";
-import Sidebar from "../../components/student/Sidebar";
+import Sidebar from "./Sidebar";
 
 const StudentLayout = () => {
   const [store, setStore] = useState(initialState);
