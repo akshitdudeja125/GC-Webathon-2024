@@ -85,6 +85,28 @@ router.post("/addAssignment", async (req, res) => {
     return res.status(500).send(e.message);
   }
 });
+router.get("/getAssignments", async (req, res) => {
+  const email = req.query.email as string;
+  const courseId = req.query.courseId as string;
+  const courseCollection = firestoreDB.collection("courses");
+  const courseDoc = await courseCollection.doc(courseId).get();
+  if (courseDoc.exists) {
+    const courseData = courseDoc.data();
+    if (courseData) {
+      if (!courseData?.["Assignments"]) {
+        return res.status(400).send("Assignments not found in course data");
+      }
+      return res.status(200).send(courseData["Assignments"]);
+    }
+    else {
+      return res.status(404).send("Course not found");
+    }
+  }
+  else {
+    return res.status(404).send("Course not found");
+  }
+
+});
 router.post("/updateFacultyDetails", async (req, res) => {
   try {
     const { email, updateData } = req.body;

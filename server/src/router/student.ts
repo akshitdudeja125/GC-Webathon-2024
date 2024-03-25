@@ -116,6 +116,9 @@ router.post("/registerStudentForCourse", async (req, res) => {
         const courseCollection = firestoreDB.collection("courses");
         const courseDoc = await courseCollection.doc(courseId).get();
         const rollNumber = studentData['Student Details']['Roll Number'];
+        if (rollNumber == "N/A") {
+            return res.status(400).send("Roll number not found");
+        }
         if (courseDoc.exists) {
             const courseData = courseDoc.data();
             if (courseData) {
@@ -126,6 +129,8 @@ router.post("/registerStudentForCourse", async (req, res) => {
                     return res.status(400).send("Student already registered for this course");
                 }
                 else {
+                    console.log("Registering student for course");
+                    console.log(courseId, rollNumber);
 
 
                     await firestoreDB.collection("courses").doc(courseId).update({
