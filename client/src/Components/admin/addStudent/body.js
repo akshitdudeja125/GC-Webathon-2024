@@ -25,7 +25,7 @@ const Body = () => {
     rollNumber: "",
     school: "",
     batch: "",
-    adminEmail: "",
+    userEmail: "",
   });
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const Body = () => {
         rollNumber: "",
         school: "",
         batch: "",
-        adminEmail: "",
+        userEmail: "",
       });
     } catch (error) {
       if (error.response) {
@@ -155,13 +155,13 @@ const Body = () => {
                   <div className={classes.adminForm3}>
                     <h1 className={classes.adminLabel}>Admin Email :</h1>
                     <input
-                      placeholder="Admin Email"
+                      placeholder="User Email"
                       required
                       className={classes.adminInput}
                       type="email"
-                      value={value.adminEmail}
+                      value={value.userEmail}
                       onChange={(e) =>
-                        setValue({ ...value, adminEmail: e.target.value })
+                        setValue({ ...value, userEmail: e.target.value })
                       }
                     />
                   </div>
@@ -180,7 +180,7 @@ const Body = () => {
                           rollNumber: "",
                           school: "",
                           batch: "",
-                          adminEmail: "",
+                          userEmail: "",
                         });
                         setError({});
                       }}
