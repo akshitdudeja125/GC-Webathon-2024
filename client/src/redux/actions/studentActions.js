@@ -66,7 +66,7 @@ export const getSubject = (department, year) => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
-export const getEvents = () => async (dispatch) => {
+export const getEvents = (title,adminEmail,description,) => async (dispatch) => {
   try {
     const formData = {
       title,
