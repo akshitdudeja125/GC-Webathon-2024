@@ -1,36 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import logo from "../../Images/logo.png";
-import axios from "axios";
 import { firebaseApp } from "../../firebase";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth } from "firebase/auth";
+import adminContext from "../../store/admin-context";
 const Header = () => {
-  const [name, setName] = useState();
-
-  useEffect(() => {
-    const gettingName = async () => {
-      try {
-        const auth = getAuth(firebaseApp);
-        const authEmail = auth?.currentUser?.email;
-        console.log(`AuthEmail in header: ${authEmail}`)
-        if (authEmail) {
-          const data = await axios.get(
-            "http://localhost:3002/api/admin/getAdminDetails",
-            {
-              params: {
-                email: authEmail,
-              },
-            }
-          );
-          setName(data?.data?.["Admin Details"]?.["Name"] ?? "N/A");
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    gettingName();
-  }, []);
+  const { store } = useContext(adminContext);
+  const name = store?.["Admin Details"]?.["Name"];
 
   const logout = () => {
     const firebaseAuth = getAuth(firebaseApp);

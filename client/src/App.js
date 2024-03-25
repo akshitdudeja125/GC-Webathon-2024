@@ -1,35 +1,40 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
-import StudentLogin from "./Components/login/studentLogin/StudentLogin";
-import StudentHome from "./Components/student/StudentHome";
-// import StudentProfileUpdate from "./Components/student/profile/Profile";
+import StudentLogin from "./components/login/studentLogin/StudentLogin";
+import StudentHome from "./components/student/StudentHome";
+// import StudentProfileUpdate from "./components/student/profile/Profile";
 
-import TestResult from "./Components/student/TestResults/TestResult";
+import TestResult from "./components/student/TestResults/TestResult";
 
-import Attendance from "./Components/student/attendance/DisplayAttendance";
-import Feedback from "./Components/student/Feedback/Feedback";
-import FacultyFeedback from "./Components/student/FacultyFeedback/Feedback";
+import Attendance from "./components/student/attendance/DisplayAttendance";
+import Feedback from "./components/student/Feedback/Feedback";
+import FacultyFeedback from "./components/student/FacultyFeedback/Feedback";
 
-import AdminLogin from "./Components/login/adminLogin/AdminLogin";
-import AdminHome from "./Components/admin/AdminHome";
-import AdminHomeProfile from "./Components/admin/Profile";
-import AdminProfileUpdate from "./Components/admin/profile/update/Update";
+import AdminLogin from "./components/login/adminLogin/AdminLogin";
+import AdminHome from "./components/admin/AdminHome";
+import AdminHomeProfile from "./components/admin/Profile";
+import AdminProfileUpdate from "./components/admin/profile/update/Update";
 
-import FacultyLogin from "./Components/login/facultyLogin/FacultyLogin";
-import FacultyHome from "./Components/faculty/FacultyHome";
-import FacultyHomeProfile from "./Components/faculty/Profile";
-import FacultyProfileUpdate from "./Components/faculty/profile/update/Update";
-import Update from "./Components/student/profile/Update/Update";
-import StudentProfile from "./Components/student/Profile";
-import StudentLayout from "./Components/student/StudentLayout";
+import FacultyLogin from "./components/login/facultyLogin/FacultyLogin";
+import FacultyHome from "./components/faculty/FacultyHome";
+import FacultyHomeProfile from "./components/faculty/Profile";
+import FacultyProfileUpdate from "./components/faculty/profile/update/Update";
+
+import Update from "./components/student/profile/update/Update";
+
+import StudentProfile from "./components/student/Profile";
+import StudentLayout from "./components/student/StudentLayout";
 import Registration from "./pages/Registration";
 import SeeCourses from "./pages/SeeCourses";
-import Login from "./Components/login/Login";
-import Profile from "./Components/faculty/Profile";
-import MarkAttendance from "./Components/faculty/MarkAttendace/MarkAttendance";
-import CourseDetails from "./Components/faculty/CourseDetails/CourseDetails";
-import Mark from "./Components/faculty/MarkAttendace/Mark";
+import Login from "./components/login/Login";
+import Profile from "./components/faculty/Profile";
+import MarkAttendance from "./components/faculty/MarkAttendace/MarkAttendance";
+import CourseDetails from "./components/faculty/CourseDetails/CourseDetails";
+import Mark from "./components/faculty/MarkAttendace/Mark";
+import AdminLayout from "./components/admin/AdminLayout";
+import AddFaculty from "./components/admin/addFaculty/AddFaculty";
+import AddStudent from "./components/admin/addStudent/AddStudent";
 
 const App = () => {
   return (
@@ -50,12 +55,22 @@ const App = () => {
       </Route>
 
       <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route path="home" element={<AdminHome />} />
+        <Route path="home/profile" element={<AdminHomeProfile />} />
+        <Route path="home/profile/update" element={<AdminProfileUpdate />} />
+        <Route path="addStudent" element={<AddStudent />} />
+        <Route path="addFaculty" element={<AddFaculty />} />
+        {/* <Route path="addStudent" element={<AdminProfileUpdate />} /> */}
+      </Route>
+
+      {/* <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin/home" element={<AdminHome />} />
       <Route path="/admin/home/profile" element={<AdminHomeProfile />} />
       <Route
         path="/admin/home/profile/update"
         element={<AdminProfileUpdate />}
-      />
+      /> */}
 
       <Route path="/login/faculty" element={<FacultyLogin />} />
       <Route path="/faculty/home" element={<Profile />} />
@@ -67,7 +82,6 @@ const App = () => {
       <Route path="/faculty/home/attendance" element={<MarkAttendance />} />
       <Route path="/faculty/home/attendance/:courseId" element={<Mark />} />
       <Route path="/faculty/home/courses" element={<CourseDetails />} />
-      
     </Routes>
   );
 };

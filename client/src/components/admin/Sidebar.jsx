@@ -10,7 +10,6 @@ const isActiveStyle =
   "flex items-center px-5 gap-3 text-blue-600 transition-all duration-200 ease-in-out capitalize hover:bg-gray-200 py-2 my-1";
 
 const Sidebar = () => {
-
   return (
     <div className="flex-[0.2]">
       <div className="space-y-8 overflow-y-scroll scrollbar-thin scrollbar-track-white scrollbar-thumb-gray-300 h-[33rem]">
@@ -19,7 +18,8 @@ const Sidebar = () => {
             to="/admin/home"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }>
+            }
+          >
             <HomeIcon className="" />
             <h1 className="font-normal">Dashboard</h1>
           </NavLink>
@@ -27,9 +27,28 @@ const Sidebar = () => {
             to="/admin/home/profile"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
-            }>
+            }
+          >
             <AssignmentIndIcon className="" />
             <h1 className="font-normal">Profile</h1>
+          </NavLink>
+          <NavLink
+            to="/admin/addFaculty"
+            className={({ isActive }) =>
+              isActive ? isActiveStyle : isNotActiveStyle
+            }
+          >
+            <HomeIcon className="" />
+            <h1 className="font-normal">Add Faculty</h1>
+          </NavLink>
+          <NavLink
+            to="/admin/addStudent"
+            className={({ isActive }) =>
+              isActive ? isActiveStyle : isNotActiveStyle
+            }
+          >
+            <AssignmentIndIcon className="" />
+            <h1 className="font-normal">Add Student</h1>
           </NavLink>
         </div>
       </div>

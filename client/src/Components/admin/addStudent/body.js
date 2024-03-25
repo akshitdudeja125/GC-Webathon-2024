@@ -7,14 +7,14 @@ import MenuItem from "@mui/material/MenuItem";
 import Spinner from "../../../utils/Spinner";
 import { ADD_STUDENT, SET_ERRORS } from "../../../redux/actionTypes";
 import * as classes from "../../../utils/styles";
-import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify'; 
-import 'react-toastify/dist/ReactToastify.css'; 
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Body = () => {
   const dispatch = useDispatch();
   const store = useSelector((state) => state);
-  const departments = useSelector((state) => state.admin.allDepartment);
+  const departments = ["CSE", "ECE", "ME", "CE", "EE", ];
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const errorRef = useRef();
@@ -22,10 +22,10 @@ const Body = () => {
   const [value, setValue] = useState({
     name: "",
     email: "",
-    rollNumber:"",
-    school:"",
+    rollNumber: "",
+    school: "",
     batch: "",
-    adminEmail:""
+    adminEmail: "",
   });
 
   useEffect(() => {
@@ -41,24 +41,27 @@ const Body = () => {
     setError({});
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:3002/api/admin/registerStudent', value);
+      const response = await axios.post(
+        "http://localhost:3002/api/admin/registerStudent",
+        value
+      );
       if (response.status === 200) {
-        toast.success('Student added successfully!');
+        toast.success("Student added successfully!");
       }
       dispatch({ type: ADD_STUDENT, payload: true });
       setValue({
         name: "",
         email: "",
-        rollNumber:"",
-        school:"",
+        rollNumber: "",
+        school: "",
         batch: "",
-        adminEmail:""
+        adminEmail: "",
       });
     } catch (error) {
       if (error.response) {
         dispatch({ type: SET_ERRORS, payload: error.response.data });
       } else {
-        console.error('An error occurred:', error.message);
+        console.error("An error occurred:", error.message);
       }
     }
     setLoading(false);
@@ -91,10 +94,12 @@ const Body = () => {
                       className={classes.adminInput}
                       type="text"
                       value={value.name}
-                      onChange={(e) => setValue({ ...value, name: e.target.value })}
+                      onChange={(e) =>
+                        setValue({ ...value, name: e.target.value })
+                      }
                     />
                   </div>
-                  
+
                   <div className={classes.adminForm3}>
                     <h1 className={classes.adminLabel}>Email :</h1>
                     <input
@@ -103,7 +108,9 @@ const Body = () => {
                       className={classes.adminInput}
                       type="email"
                       value={value.email}
-                      onChange={(e) => setValue({ ...value, email: e.target.value })}
+                      onChange={(e) =>
+                        setValue({ ...value, email: e.target.value })
+                      }
                     />
                   </div>
                   <div className={classes.adminForm3}>
@@ -114,7 +121,9 @@ const Body = () => {
                       className={classes.adminInput}
                       type="text"
                       value={value.rollNumber}
-                      onChange={(e) => setValue({ ...value, rollNumber: e.target.value })}
+                      onChange={(e) =>
+                        setValue({ ...value, rollNumber: e.target.value })
+                      }
                     />
                   </div>
                   <div className={classes.adminForm3}>
@@ -125,7 +134,9 @@ const Body = () => {
                       className={classes.adminInput}
                       type="text"
                       value={value.batch}
-                      onChange={(e) => setValue({ ...value, batch: e.target.value })}
+                      onChange={(e) =>
+                        setValue({ ...value, batch: e.target.value })
+                      }
                     />
                   </div>
                   <div className={classes.adminForm3}>
@@ -136,7 +147,9 @@ const Body = () => {
                       className={classes.adminInput}
                       type="text"
                       value={value.school}
-                      onChange={(e) => setValue({ ...value, school: e.target.value })}
+                      onChange={(e) =>
+                        setValue({ ...value, school: e.target.value })
+                      }
                     />
                   </div>
                   <div className={classes.adminForm3}>
@@ -147,11 +160,16 @@ const Body = () => {
                       className={classes.adminInput}
                       type="email"
                       value={value.adminEmail}
-                      onChange={(e) => setValue({ ...value, adminEmail: e.target.value })}
+                      onChange={(e) =>
+                        setValue({ ...value, adminEmail: e.target.value })
+                      }
                     />
                   </div>
                   <div className={classes.adminFormButton}>
-                    <button className={classes.adminFormSubmitButton} type="submit">
+                    <button
+                      className={classes.adminFormSubmitButton}
+                      type="submit"
+                    >
                       Submit
                     </button>
                     <button
@@ -159,10 +177,10 @@ const Body = () => {
                         setValue({
                           name: "",
                           email: "",
-                          rollNumber:"",
-                          school:"",
+                          rollNumber: "",
+                          school: "",
                           batch: "",
-                          adminEmail:""
+                          adminEmail: "",
                         });
                         setError({});
                       }}

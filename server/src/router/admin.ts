@@ -196,6 +196,21 @@ router.get("/isAdmin", async (req, res) => {
         return res.status(500).send("Internal Server Error");
     }
 });
+router.get("/getalldepartment", async (req, res) => {
+    try {
+        const departments = [
+            "CSE",
+            "ECE",
+            "ME",
+            "CE",
+            "EE",
+        ]
+        return res.status(200).send(departments);
+    } catch (e) {
+        console.error(e);
+        return res.status(500).send("Internal Server Error");
+    }
+});
 router.get("/getAdminDetails", async (req, res) => {
     try {
         const email = req.query.email as string;

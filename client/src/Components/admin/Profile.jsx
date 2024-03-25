@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import BoyIcon from "@mui/icons-material/Boy";
@@ -10,40 +10,13 @@ import Sidebar from "./Sidebar";
 import { useNavigate } from "react-router";
 import { firebaseApp } from "../../firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import adminContext from "../../store/admin-context";
 const AdminHomeProfile = () => {
   const navigate = useNavigate();
-
-  const [name, setName] = useState();
-  const [dob, setdob] = useState();
-  const [adminId, setAdminId] = useState();
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const auth = getAuth(firebaseApp);
-        const authEmail = auth?.currentUser?.email;
-        console.log(`authEmail: ${authEmail}`);
-        if (!authEmail) {
-          navigate("/admin/login");
-        }
-        //update local storage
-
-        // for (let i = 4; i < email.length; i++) emailReq += email[i];
-        if (authEmail) {
-          const data = await axios.get(
-            "http://localhost:3002/api/admin/getAdminDetails",
-            { params: { email: authEmail } }
-          );
-          console.log(data?.data["Admin Details"]?.["Name"]);
-          setName(data?.data["Admin Details"]?.["Name"]);
-          setdob(data?.data["Admin Details"]?.["DOB"]);
-          setAdminId(data?.data["Admin Details"]?.["Id"]);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getData();
-  }, []);
+  const { store } = useContext(adminContext);
+  const name = store?.["Admin Details"]?.["Name"];
+  const dob = store?.["Admin Details"]?.["DOB"];
+  const adminId = store?.["Admin Details"]?.["Id"];
 
   const updateHandler = () => {
     navigate("/admin/home/profile/update");

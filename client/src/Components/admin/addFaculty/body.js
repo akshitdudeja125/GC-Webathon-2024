@@ -6,20 +6,20 @@ import MenuItem from "@mui/material/MenuItem";
 import Spinner from "../../../utils/Spinner";
 import { ADD_FACULTY, SET_ERRORS } from "../../../redux/actionTypes";
 import * as classes from "../../../utils/styles";
-import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify'; 
-import 'react-toastify/dist/ReactToastify.css'; 
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Body = () => {
   const dispatch = useDispatch();
-  const departments = useSelector((state) => state.admin.allDepartment);
+  const departments = ["CSE", "ECE", "ME", "CE", "EE"];
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const [value, setValue] = useState({
     name: "",
     email: "",
-    id:"",
-    school:"",
+    id: "",
+    school: "",
     department: "",
     designation: "",
   });
@@ -29,18 +29,21 @@ const Body = () => {
     setError({});
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:3002/api/admin/registerFaculty', value);
-      
+      const response = await axios.post(
+        "http://localhost:3002/api/admin/registerFaculty",
+        value
+      );
+
       if (response.status === 200) {
-        toast.success('Faculty added successfully!');
+        toast.success("Faculty added successfully!");
       }
-      
+
       dispatch({ type: ADD_FACULTY, payload: true });
       setValue({
         name: "",
         email: "",
-        id:"",
-        school:"",
+        id: "",
+        school: "",
         department: "",
         designation: "",
       });
@@ -48,12 +51,12 @@ const Body = () => {
       if (error.response) {
         dispatch({ type: SET_ERRORS, payload: error.response.data });
       } else {
-        console.error('An error occurred:', error.message);
+        console.error("An error occurred:", error.message);
       }
     }
     setLoading(false);
   };
-  
+
   return (
     <div className="flex-[0.8] mt-3">
       <div className="space-y-5">
@@ -73,7 +76,9 @@ const Body = () => {
                     className={classes.adminInput}
                     type="text"
                     value={value.name}
-                    onChange={(e) => setValue({ ...value, name: e.target.value })}
+                    onChange={(e) =>
+                      setValue({ ...value, name: e.target.value })
+                    }
                   />
                 </div>
                 <div className={classes.adminForm3}>
@@ -84,7 +89,9 @@ const Body = () => {
                     className={classes.adminInput}
                     type="email"
                     value={value.email}
-                    onChange={(e) => setValue({ ...value, email: e.target.value })}
+                    onChange={(e) =>
+                      setValue({ ...value, email: e.target.value })
+                    }
                   />
                 </div>
                 <div className={classes.adminForm3}>
@@ -106,7 +113,9 @@ const Body = () => {
                     className={classes.adminInput}
                     type="text"
                     value={value.school}
-                    onChange={(e) => setValue({ ...value, school: e.target.value })}
+                    onChange={(e) =>
+                      setValue({ ...value, school: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -119,12 +128,14 @@ const Body = () => {
                     sx={{ height: 36 }}
                     inputProps={{ "aria-label": "Without label" }}
                     value={value.department}
-                    onChange={(e) => setValue({ ...value, department: e.target.value })}
+                    onChange={(e) =>
+                      setValue({ ...value, department: e.target.value })
+                    }
                   >
                     <MenuItem value="">None</MenuItem>
                     {departments?.map((dp, idx) => (
-                      <MenuItem key={idx} value={dp.department}>
-                        {dp.department}
+                      <MenuItem key={idx} value={dp}>
+                        {dp}
                       </MenuItem>
                     ))}
                   </Select>
@@ -137,22 +148,26 @@ const Body = () => {
                     className={classes.adminInput}
                     type="text"
                     value={value.designation}
-                    onChange={(e) => setValue({ ...value, designation: e.target.value })}
+                    onChange={(e) =>
+                      setValue({ ...value, designation: e.target.value })
+                    }
                   />
                 </div>
               </div>
             </div>
             <div className={classes.adminFormButton}>
-              <button className={classes.adminFormSubmitButton} type="submit">Submit</button>
+              <button className={classes.adminFormSubmitButton} type="submit">
+                Submit
+              </button>
               <button
                 onClick={() => {
                   setValue({
                     name: "",
                     email: "",
-                    id:"",
-                    school:"",
+                    id: "",
+                    school: "",
                     department: "",
-                    designation:"",
+                    designation: "",
                   });
                   setError({});
                 }}
@@ -186,4 +201,4 @@ const Body = () => {
   );
 };
 
-export default Body;
+export default Body;

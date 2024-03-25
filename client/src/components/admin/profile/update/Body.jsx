@@ -1,44 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../../../utils/Spinner";
 import * as classes from "../../../../utils/styles";
 import axios from "axios";
 import { firebaseApp } from "../../../../firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import adminContext from "../../../../store/admin-context";
 const Body = () => {
   const navigate = useNavigate();
 
+  const { store, setStore } = useContext(adminContext);
   const [loading, setLoading] = useState(false);
-  const [name, setName] = useState();
-  const [dob, setdob] = useState();
-  const [adminId, setAdminId] = useState();
-  const [email, setEmail] = useState();
-  useEffect(() => {
-    //get aemail from auth
-    const auth = getAuth(firebaseApp);
-    const Authemail = auth?.currentUser?.email;
-    console.log(Authemail);
-    if (!Authemail) {
-      navigate("/admin/login");
-    }
-    setEmail(Authemail);
-    const getData = async () => {
-      if (Authemail) {
-        const data = await axios.get(
-          "http://localhost:3002/api/admin/getAdminDetails",
-          { params: { email: Authemail } }
-        );
-        //   console.log(data["Personal Details"]["PWD"]);
-        setName(data?.data?.["Admin Details"]?.["Name"]);
-        setdob(data?.data?.["Admin Details"]?.["DOB"]);
-        setAdminId(data?.data?.["Admin Details"]?.["Id"]);
-      }
-    };
-
-    setLoading(true);
-    getData();
-    setLoading(false);
-  }, []);
+  const [name, setName] = useState(store?.["Admin Details"]?.["Name"]);
+  const [dob, setdob] = useState(store?.["Admin Details"]?.["DOB"]);
+  const [adminId, setAdminId] = useState(store?.["Admin Details"]?.["Id"]);
+  const [email, setEmail] = useState(store?.["Admin Details"]?.["Email"]);
 
   const cancelHandler = () => {
     navigate("/admin/home/profile");
@@ -62,10 +38,15 @@ const Body = () => {
         data
       );
       console.log(res);
+      setStore({
+        ...store,
+        ...data,
+      });
     } catch (error) {
       console.log(error);
     } finally {
-      navigate("/admin/home/profile");
+      console.log("done");
+      // navigate("/admin/home/profile");
     }
   };
 
