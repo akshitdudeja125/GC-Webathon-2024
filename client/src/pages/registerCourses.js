@@ -10,7 +10,7 @@ const DataTable1 = () => {
       try {
         const email = localStorage.getItem("email");
         const response = await axios.get(
-          `http://localhost:3002/api/student/getRegisteredCourses`,
+          `https://gc-webathon-2024.onrender.com/api/student/getRegisteredCourses`,
           { params: { email: email } }
         );
         setDataFromBackend(response.data);

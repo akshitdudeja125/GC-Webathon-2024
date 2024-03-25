@@ -18,7 +18,7 @@ const Body = () => {
   useEffect(() => {
     const getStudent = async () => {
       const response = await axios.get(
-        `http://localhost:3002/api/faculty/getCourseDetails`,
+        `https://gc-webathon-2024.onrender.com/api/faculty/getCourseDetails`,
         {
           params: {
             courseId: courseId,
@@ -66,7 +66,7 @@ const Body = () => {
     try {
       const upload = async () => {
         await axios.post(
-          `http://localhost:3002/api/faculty/registerAttendence`,
+          `https://gc-webathon-2024.onrender.com/api/faculty/registerAttendence`,
           data
         );
       };
@@ -124,7 +124,8 @@ const Body = () => {
                       onChange={handleInputChange}
                       value={stu?.[idx]}
                       className="col-span-2 border-2 w-16 h-4 mt-3 px-2 "
-                      type="checkbox" />
+                      type="checkbox"
+                    />
                   </div>
                 );
               })}

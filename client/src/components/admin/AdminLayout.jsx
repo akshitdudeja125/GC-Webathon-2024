@@ -19,7 +19,7 @@ const AdminLayout = () => {
 
         if (authEmail) {
           const response = await axios.get(
-            `http://localhost:3002/api/admin/getAdminDetails`,
+            `https://gc-webathon-2024.onrender.com/api/admin/getAdminDetails`,
             { params: { email: authEmail } }
           );
           console.log(response.data);

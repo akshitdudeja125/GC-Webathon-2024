@@ -287,7 +287,7 @@ const Body = () => {
     const fetchingResults = async () => {
       try {
         const data = await axios.get(
-          "http://localhost:3002/api/student/getResults",
+          "https://gc-webathon-2024.onrender.com/api/student/getResults",
           { params: { email: "21cs01026@iitbbs.ac.in" } }
         );
 

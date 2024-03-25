@@ -34,8 +34,8 @@ const Body = () => {
 
     try {
       const response = await axios.get(
-        // `http://localhost:3002/api/admin/getFacultyByDepartment?department=${department}`
-        `http://localhost:3002/api/admin/getFacultyByDepartment?department=${department}`
+        // `https://gc-webathon-2024.onrender.com/api/admin/getFacultyByDepartment?department=${department}`
+        `https://gc-webathon-2024.onrender.com/api/admin/getFacultyByDepartment?department=${department}`
       );
       setData(response.data);
       dispatch({ type: "SET_FACULTY", payload: response.data }); // Assuming you have a SET_FACULTY action type

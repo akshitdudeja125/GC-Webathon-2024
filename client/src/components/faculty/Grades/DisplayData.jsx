@@ -19,7 +19,7 @@ const DisplayData = (props) => {
     try {
       const getData = async () => {
         const response = await axios.get(
-          `http://localhost:3002/api/faculty/getCourseDetails`,
+          `https://gc-webathon-2024.onrender.com/api/faculty/getCourseDetails`,
           {
             params: {
               courseId: props.obj,

@@ -28,7 +28,7 @@ const DisplayData = (props) => {
           email: email,
         };
         const res = await axios.post(
-          `http://localhost:3002/api/student/submitFacultyFeedback`,
+          `https://gc-webathon-2024.onrender.com/api/student/submitFacultyFeedback`,
           body
         );
         console.log(res);

@@ -30,7 +30,7 @@ const Body = () => {
       if (authEmail) {
         if (authEmail) {
           const data = await axios.get(
-            "http://localhost:3002/api/faculty/getFacultyDetails",
+            "https://gc-webathon-2024.onrender.com/api/faculty/getFacultyDetails",
             { params: { email: authEmail } }
           );
           setName(data.data?.["Faculty Details"]?.["Name"]);
@@ -72,7 +72,7 @@ const Body = () => {
         },
       };
       const res = await axios.post(
-        "http://localhost:3002/api/faculty/updateFacultyDetails",
+        "https://gc-webathon-2024.onrender.com/api/faculty/updateFacultyDetails",
         data
       );
       console.log(res);
@@ -209,7 +209,6 @@ const Body = () => {
                     value={dept}
                   />
                 </div>
-
               </div>
             </div>
 

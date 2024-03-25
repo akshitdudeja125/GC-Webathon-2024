@@ -130,7 +130,10 @@ const Body = () => {
     };
     try {
       axios
-        .post(`http://localhost:3002/api/student/updateUserDetails`, data)
+        .post(
+          `https://gc-webathon-2024.onrender.com/api/student/updateUserDetails`,
+          data
+        )
         .then((response) => {
           console.log(response.status, response.data.token);
         });

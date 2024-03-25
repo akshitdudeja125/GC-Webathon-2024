@@ -6,7 +6,7 @@ import {
   ATTENDANCE,
   UPDATE_STUDENT,
   GET_SUBJECT,
-  GET_EVENT
+  GET_EVENT,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -14,7 +14,7 @@ import axios from "axios";
 export const studentSignIn = (formData, navigate) => async (dispatch) => {
   try {
     const { data } = await axios.post(
-      "http://localhost:3002/api/student/login",
+      "https://gc-webathon-2024.onrender.com/api/student/login",
       {
         username: formData.username,
         password: formData.password,
@@ -66,19 +66,20 @@ export const getSubject = (department, year) => async (dispatch) => {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
   }
 };
-export const getEvents = (title,adminEmail,description,) => async (dispatch) => {
-  try {
-    const formData = {
-      title,
-    adminEmail,
-    description,
-    };
-    const { data } = await api.getEvents(formData);
-    dispatch({ type: GET_SUBJECT, payload: data });
-  } catch (error) {
-    dispatch({ type: SET_ERRORS, payload: error.response.data });
-  }
-};
+export const getEvents =
+  (title, adminEmail, description) => async (dispatch) => {
+    try {
+      const formData = {
+        title,
+        adminEmail,
+        description,
+      };
+      const { data } = await api.getEvents(formData);
+      dispatch({ type: GET_SUBJECT, payload: data });
+    } catch (error) {
+      dispatch({ type: SET_ERRORS, payload: error.response.data });
+    }
+  };
 
 export const getTestResult =
   (department, year, section) => async (dispatch) => {

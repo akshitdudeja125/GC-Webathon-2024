@@ -20,7 +20,7 @@ const Body = () => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3002/api/event/getAllEvents`
+          `https://gc-webathon-2024.onrender.com/api/event/getAllEvents`
         );
         setEvents(response.data);
       } catch (error) {
@@ -54,7 +54,7 @@ const Body = () => {
       await Promise.all(
         events.map(async (event) => {
           const response = await axios.post(
-            `http://localhost:3002/api/event/registerEventFeedback`,
+            `https://gc-webathon-2024.onrender.com/api/event/registerEventFeedback`,
             {
               email: email,
               feedback: feedbacks[event._id],

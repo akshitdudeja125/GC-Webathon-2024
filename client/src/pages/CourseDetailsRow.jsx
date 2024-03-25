@@ -26,7 +26,7 @@ const CourseDetailsRow = ({ course }) => {
               try {
                 const email = localStorage.getItem("email");
                 const response = await axios.post(
-                  `http://localhost:3002/api/student/deregisterStudentForCourse`,
+                  `https://gc-webathon-2024.onrender.com/api/student/deregisterStudentForCourse`,
                   { email: email, courseId: course.courseId }
                 );
                 console.log(response);
@@ -46,7 +46,7 @@ const CourseDetailsRow = ({ course }) => {
               try {
                 const email = localStorage.getItem("email");
                 const response = await axios.post(
-                  `http://localhost:3002/api/student/registerStudentForCourse`,
+                  `https://gc-webathon-2024.onrender.com/api/student/registerStudentForCourse`,
                   { email: email, courseId: course.courseId }
                 );
                 console.log(response);

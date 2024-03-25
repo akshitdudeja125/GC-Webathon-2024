@@ -41,7 +41,7 @@ const Body = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `http://localhost:3002/api/admin/registerStudent`,
+        `https://gc-webathon-2024.onrender.com/api/admin/registerStudent`,
         value
       );
       if (response.status === 200) {

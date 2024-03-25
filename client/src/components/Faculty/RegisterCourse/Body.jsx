@@ -33,7 +33,7 @@ const Body = () => {
       try {
         const response = async () => {
           const res = await axios.post(
-            "http://localhost:3002/api/faculty/registerCourse",
+            "https://gc-webathon-2024.onrender.com/api/faculty/registerCourse",
             data
           );
           // console.log("jjj");

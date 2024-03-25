@@ -110,7 +110,7 @@ const Body = () => {
       try {
         const email = localStorage.getItem("email");
         const data = await axios.get(
-          "http://localhost:3002/api/student/getResults",
+          "https://gc-webathon-2024.onrender.com/api/student/getResults",
           { params: { email: email } }
         );
         console.log(data);

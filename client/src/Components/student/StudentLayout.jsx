@@ -20,7 +20,7 @@ const StudentLayout = () => {
 
         if (authEmail) {
           const response = await axios.get(
-            `http://localhost:3002/api/student/getStudentDetails`,
+            `https://gc-webathon-2024.onrender.com/api/student/getStudentDetails`,
             { params: { email: authEmail } }
           );
           setStore({ ...response.data });

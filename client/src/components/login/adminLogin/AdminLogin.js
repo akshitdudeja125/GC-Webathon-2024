@@ -52,7 +52,7 @@ const AdminLogin = () => {
         localStorage.setItem("email", user.email);
         console.log("User Logged In");
         const { data } = await axios.get(
-          `http://localhost:3002/api/admin/isAdmin`,
+          `https://gc-webathon-2024.onrender.com/api/admin/isAdmin`,
           {
             params: { email: user.email },
           }

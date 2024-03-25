@@ -30,7 +30,7 @@ const Body = () => {
       const auth = getAuth(firebaseApp);
       const email = auth?.currentUser?.email;
       const data = await axios.get(
-        `http://localhost:3002/api/student/getRegisteredCourses`,
+        `https://gc-webathon-2024.onrender.com/api/student/getRegisteredCourses`,
         {
           params: {
             email: email,

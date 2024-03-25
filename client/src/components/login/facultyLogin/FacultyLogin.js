@@ -52,7 +52,7 @@ const FacultyLogin = () => {
         localStorage.setItem("email", user.email);
         console.log("User Logged In");
         const isAdmin = await axios.get(
-          `http://localhost:3002/api/faculty/isFaculty`,
+          `https://gc-webathon-2024.onrender.com/api/faculty/isFaculty`,
           { params: { email: user.email } }
         );
         if (isAdmin) {

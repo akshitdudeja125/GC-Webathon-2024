@@ -30,7 +30,7 @@ const Body = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `http://localhost:3002/api/admin/registerFaculty`,
+        `https://gc-webathon-2024.onrender.com/api/admin/registerFaculty`,
         value
       );
 

@@ -19,11 +19,11 @@ const FacultyLayout = () => {
 
         if (authEmail) {
           const response = await axios.get(
-            `http://localhost:3002/api/faculty//getFacultyDetails`,
+            `https://gc-webathon-2024.onrender.com/api/faculty//getFacultyDetails`,
             { params: { email: "21cs01026@iitbbs.ac.in" } }
           );
           const response2 = await axios.get(
-            `http://localhost:3002/api/faculty/getFacultyCourses`,
+            `https://gc-webathon-2024.onrender.com/api/faculty/getFacultyCourses`,
             {
               params: { email: "21cs01025@iitbbs.ac.in" },
             }
