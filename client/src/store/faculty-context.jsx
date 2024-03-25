@@ -1,17 +1,19 @@
 import { createContext, useState } from "react";
 
 export const initialState = {
-    "Faculty Details": {
-        "Email": "21CS01025@iitbbs.ac.in",
-        "DOB": "N/A",
-        "Id": "N/A",
-        "Name": "N/A"
-    },
+    
     "Academic Details": {
         "Designation": "Designation",
         "School": "School",
         "Department": "Department"
-    }
+    },
+    "Faculty Details": {
+      "Email": "21CS01025@iitbbs.ac.in",
+      "DOB": "N/A",
+      "Id": "N/A",
+      "Name": "N/A"
+  },
+  "Courses":[],
 };
 
 const facultyContext = createContext({

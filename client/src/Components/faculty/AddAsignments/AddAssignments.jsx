@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
-import Body from "./Body";
 import Header from "../Header";
 import Sidebar from "../Sidebar";
-import CheckAllCourses from "./CheckAllCourses";
+import BodyElement from "./Body";
 
 const MarkAttendance = () => {
   return (
@@ -11,7 +10,7 @@ const MarkAttendance = () => {
         <Header />
         <div className="flex flex-[0.95]">
           <Sidebar />
-          <CheckAllCourses />
+          <BodyElement/>
         </div>
       </div>
     </div>

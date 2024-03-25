@@ -7,7 +7,7 @@ import StudentHome from "./Components/student/StudentHome";
 
 import TestResult from "./Components/student/TestResults/TestResult";
 
-import Attendance from "./Components/student/attendance/DisplayAttendance";
+import DisplayAttendance from "./Components/student/attendance/DisplayAttendance";
 import Feedback from "./Components/student/Feedback/Feedback";
 import FacultyFeedback from "./Components/student/FacultyFeedback/Feedback";
 
@@ -30,6 +30,11 @@ import Profile from "./Components/faculty/Profile";
 import MarkAttendance from "./Components/faculty/MarkAttendace/MarkAttendance";
 import CourseDetails from "./Components/faculty/CourseDetails/CourseDetails";
 import Mark from "./Components/faculty/MarkAttendace/Mark";
+import FacultyLayout from "./Components/faculty/FacultyLayout";
+import DisplayCourseContent from "./Components/faculty/CourseDetails/DisplayCourseContent";
+import Attendance from "./Components/student/attendance/Attendance";
+import AddAssignments from "./Components/faculty/AddAsignments/AddAssignments";
+import Assignments from "./Components/student/Assignments/Assignments";
 
 const App = () => {
   return (
@@ -47,6 +52,7 @@ const App = () => {
         <Route path="faculty-feedback" element={<FacultyFeedback />} />
         <Route path="courseRegistration" element={<Registration />} />
         <Route path="getCourses" element={<SeeCourses />} />
+        <Route path="getAssignments" element={<Assignments />} />
       </Route>
 
       <Route path="/admin/login" element={<AdminLogin />} />
@@ -58,16 +64,17 @@ const App = () => {
       />
 
       <Route path="/login/faculty" element={<FacultyLogin />} />
-      <Route path="/faculty/home" element={<Profile />} />
-      <Route path="/faculty/home/profile" element={<FacultyHome />} />
-      <Route
-        path="/faculty/home/profile/update"
-        element={<FacultyProfileUpdate />}
-      />
-      <Route path="/faculty/home/attendance" element={<MarkAttendance />} />
-      <Route path="/faculty/home/attendance/:courseId" element={<Mark />} />
-      <Route path="/faculty/home/courses" element={<CourseDetails />} />
-      
+      <Route path="/faculty" element={<FacultyLayout />}>
+        <Route path="home" element={<Profile />} />
+        <Route path="home/profile" element={<FacultyHome />} />
+        <Route path="home/profile/update" element={<FacultyProfileUpdate />} />
+        <Route path="home/attendance/:courseId" element={<Mark />} />
+        <Route path="home/attendance" element={<MarkAttendance />} />
+        <Route path="home/courses" element={<CourseDetails />} />
+        <Route path="home/courses/:courseId" element={<DisplayCourseContent />} />
+        <Route path="home/addassignments" element={<AddAssignments />} />
+        
+      </Route>
     </Routes>
   );
 };

@@ -9,7 +9,7 @@ import Header from "./Header";
 import { useNavigate } from "react-router";
 import { firebaseApp } from "../../firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import Sidebar from "./SideBar";
+import Sidebar from "./Sidebar";
 import facultyContext from "../../store/faculty-context";
 const FacultyHomeProfile = () => {
   const navigate = useNavigate();

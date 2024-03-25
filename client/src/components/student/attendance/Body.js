@@ -21,6 +21,42 @@ const Body = () => {
   const [sem9, setsem9] = useState({});
   const [sem10, setsem10] = useState({});
 
+  // const info = {
+  //   2: {
+  //     CS3L001_2_2024_CSE: {
+  //       Attendance: 1,
+  //       Credits: 4,
+  //       TotalClasses: 1,
+  //       Grade: "A",
+  //     },
+  //     CS3L004_2_2022_CSE: {
+  //       Attendance: 0,
+  //       Credits: 2,
+  //       TotalClasses: 0,
+  //       Grade: "NA",
+  //     },
+  //     CS3L003_2_2022_CSE: {
+  //       Attendance: 0,
+  //       Credits: 2,
+  //       TotalClasses: 0,
+  //       Grade: "NA",
+  //     },
+  //     CS3L003_2_2023_CSE: {
+  //       Attendance: 0,
+  //       Credits: 2,
+  //       Grade: "NA",
+  //     },
+  //   },
+  //   3: {
+  //     CS3L005_3_2022_CSE: {
+  //       Attendance: 0,
+  //       Credits: 2,
+  //       TotalClasses: 0,
+  //       Grade: "NA",
+  //     },
+  //   },
+  // };
+
   const grades = {
     Ex: 10,
     A: 9,
@@ -103,7 +139,7 @@ const Body = () => {
           <MenuBookIcon />
           <h1>All Subjects</h1>
         </div>
-        <div className=" mr-10 bg-white rounded-xl pt-6 pl-6 h-[29.5rem]">
+        <div className=" mr-10 bg-white rounded-xl pt-6 pl-6 h-[29.5rem] ml-10 mr-10">
           <div className="col-span-3 mr-6">
             <div className={classes.loadingAndError}>
               {loading && (
@@ -139,13 +175,18 @@ const Body = () => {
                   <h1 className={`${classes.adminDataHeading} col-span-1`}>
                     Percentage
                   </h1>
+                  <h1>
+                  </h1>
                 </div>
                 {arr?.map(
                   (res, idx) =>
                     Object.keys(res).length !== 0 && (
-                      <DisplayAttendance index={idx} array={res} />
+                      <div>
+                        <h1 className="font-bold italic">Semester - {idx + 1}</h1> 
+                        {res && <DisplayAttendance index={idx} array={res} />}
+                      </div>
                     )
-                    // console.log(res)
+                  // console.log(res)
                 )}
               </div>
             )}

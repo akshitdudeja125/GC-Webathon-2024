@@ -7,33 +7,12 @@ import DisplayData from "./DisplayData";
 import facultyContext from "../../../store/faculty-context";
 
 const Body = () => {
-  const [course, setCourse] = useState([]);
+  // const [course, setCourse] = useState([]);
   const { store } = useContext(facultyContext);
   const [loading, setLoading] = useState(false);
+  const course = store?.Courses;
 
   const email = store?.["Faculty Details"]["Email"];
-
-  useEffect(() => {
-    try {
-      const gettingData = async () => {
-        const data = await axios.get(
-          "http://localhost:3002/api/faculty/getFacultyCourses",
-          {
-            params: {
-              email: email,
-            },
-          }
-        );
-        setCourse(data.data);
-        console.log(data.data);
-      };
-      setLoading(true);
-      gettingData();
-      setLoading(false);
-    } catch (err) {
-      alert("Unable to fetch Data!");
-    }
-  }, []);
 
   return (
     <div className="flex-[0.8] mt-3 overflow-auto">
@@ -77,7 +56,7 @@ const Body = () => {
                     Instructor
                   </h1>
                   {course.length !== 0 &&
-                    course.map((res, idx) => (
+                    course?.map((res, idx) => (
                       <DisplayData obj={res} index={idx} />
                     ))}
                 </div>

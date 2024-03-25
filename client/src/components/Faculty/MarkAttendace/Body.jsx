@@ -1,18 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BoyIcon from "@mui/icons-material/Boy";
 
 import * as classes from "../../../utils/styles";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 const Body = () => {
   const navigate = useNavigate();
-  const course = window.location.pathname.split("=")[1];
-  console.log(course);
+  const location = useLocation();
+  const courseId = (location.pathname.split("/")[location.pathname.split("/").length - 1]);
+  // const courseId="CS3L003_2_2022_CSE";
   const [student, setStudent] = useState([]);
-  // console.log("EEE");
-  // const student = ["1", "2", "3"];
+
   const [checkedValue, setCheckedValue] = useState([]);
-  const [courseId, setCourseId] = useState();
+
+  useEffect(()=>{
+    const getStudent = async () => {
+      const response = await axios.get(
+        "http://localhost:3002/api/faculty/getCourseDetails",
+        {
+          params: {
+            courseId: courseId,
+          },
+        }
+      );
+      // console.log(response.data);
+      setStudent(Object.keys(response.data?.["Students"]));
+      console.log(Object.keys(response.data?.["Students"]));
+    };
+    getStudent();
+  }, []);
 
   const handleInputChange = (event) => {
     const tempCheck = checkedValue;
@@ -53,8 +69,14 @@ const Body = () => {
         );
       };
       upload();
+
     } catch (err) {
       console.log(err);
+      alert("Something went wrong!");
+    }
+    finally{
+      alert("Successfully updated");
+      navigate("/faculty/home/attendance");
     }
   };
 
@@ -63,9 +85,9 @@ const Body = () => {
   };
 
   return (
-    <div className="flex-[0.8] mt-3 ">
-      {console.log("djjjjjdd")}
-      <div className="space-y-5">
+    <div className="flex-[0.8] mt-3">
+      {/* {console.log("djjjjjdd")} */}
+      <div className="space-y-5 ml-10">
         <div className="flex text-gray-400 items-center space-x-2 ">
           <BoyIcon />
           <h1>All Students</h1>
@@ -84,6 +106,7 @@ const Body = () => {
                   Mark
                 </h1>
               </div>
+              {console.log(student)}
               {student?.map((stu, idx) => (
                 <div
                   key={idx}
@@ -93,11 +116,11 @@ const Body = () => {
                     {idx + 1}
                   </h1>
                   <h1 className={`col-span-3 ${classes.adminDataBodyFields}`}>
-                    {stu[idx]}
+                    {stu?.[idx]}
                   </h1>
                   <input
                     onChange={handleInputChange}
-                    value={stu[idx]}
+                    value={stu?.[idx]}
                     className="col-span-2 border-2 w-16 h-4 mt-3 px-2 "
                     type="checkbox"
                   />
