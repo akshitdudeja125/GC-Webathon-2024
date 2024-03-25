@@ -14,7 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 const Body = () => {
   const dispatch = useDispatch();
   const store = useSelector((state) => state);
-  const departments = ["CSE", "ECE", "ME", "CE", "EE", ];
+  const departments = ["CSE", "ECE", "ME", "CE", "EE"];
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const errorRef = useRef();
@@ -42,7 +42,7 @@ const Body = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3002/api/admin/registerStudent",
+        `http://localhost:3002/api/admin/registerStudent`,
         value
       );
       if (response.status === 200) {

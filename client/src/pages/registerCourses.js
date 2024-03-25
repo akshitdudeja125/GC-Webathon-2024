@@ -1,7 +1,7 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "./course.css";
 
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import "./course.css"
 const DataTable1 = () => {
   const [dataFromBackend, setDataFromBackend] = useState([]);
 
@@ -9,12 +9,12 @@ const DataTable1 = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3002/api/student/getRegisteredCourses",
+          `http://localhost:3002/api/student/getRegisteredCourses`,
           { params: { email: "21cs01026@iitbbs.ac.in" } }
         );
         setDataFromBackend(response.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -23,7 +23,7 @@ const DataTable1 = () => {
 
   return (
     <div>
-      {dataFromBackend.map(semesterData => (
+      {dataFromBackend.map((semesterData) => (
         <div key={semesterData.sem}>
           <h2>Semester {semesterData.sem}</h2>
           <table>
@@ -37,7 +37,7 @@ const DataTable1 = () => {
               </tr>
             </thead>
             <tbody>
-              {semesterData.courses.map(course => (
+              {semesterData.courses.map((course) => (
                 <tr key={course.courseId}>
                   <td>{semesterData.sem}</td>
                   <td>{semesterData.credits}</td>

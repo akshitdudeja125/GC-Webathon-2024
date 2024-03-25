@@ -4,6 +4,7 @@ import Spinner from "../../../utils/Spinner";
 import { firebaseApp } from "../../../firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import axios from "axios";
+
 const FacultyLogin = () => {
   const [translate, setTranslate] = useState(false);
   const [loading, setIsLoading] = useState(false);
@@ -50,13 +51,11 @@ const FacultyLogin = () => {
         localStorage.setItem("authToken", authToken);
         localStorage.setItem("email", user.email);
         console.log("User Logged In");
-        const { data } = await axios.get(
-          "http://localhost:3002/api/faculty/isFaculty",
-          {
-            params: { email: user.email },
-          }
+        const isAdmin = await axios.get(
+          `http://localhost:3002/api/faculty/isFaculty`,
+          { params: { email: user.email } }
         );
-        if (data) {
+        if (isAdmin) {
           navigate("/faculty/home");
         } else {
           alert("You are not an faculty");

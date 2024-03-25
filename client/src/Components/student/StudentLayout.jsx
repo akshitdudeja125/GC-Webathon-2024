@@ -8,6 +8,7 @@ import { firebaseApp } from "../../firebase";
 import AuthWrapper from "../../utils/authWrapper";
 import Sidebar from "./Sidebar";
 
+
 const StudentLayout = () => {
   const [store, setStore] = useState(initialState);
 
@@ -19,7 +20,7 @@ const StudentLayout = () => {
 
         if (authEmail) {
           const response = await axios.get(
-            "http://localhost:3002/api/student/getStudentDetails",
+            `http://localhost:3002/api/student/getStudentDetails`,
             { params: { email: authEmail } }
           );
           setStore({ ...response.data });

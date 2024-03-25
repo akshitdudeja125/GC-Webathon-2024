@@ -181,7 +181,6 @@ router.get("/getStudents", async (req, res) => {
     }
 });
 
-// http://localhost:3002/api/admin/isAdmin
 router.get("/isAdmin", async (req, res) => {
     try {
         const email = req.query.email as string;

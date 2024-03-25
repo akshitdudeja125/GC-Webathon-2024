@@ -6,6 +6,7 @@ import { firebaseApp } from "../../../firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { Box, CircularProgress } from "@mui/material";
 import axios from "axios";
+
 const AdminLogin = () => {
   const [translate, setTranslate] = useState(false);
   const [loading, setIsLoading] = useState(false);
@@ -51,7 +52,7 @@ const AdminLogin = () => {
         localStorage.setItem("email", user.email);
         console.log("User Logged In");
         const { data } = await axios.get(
-          "http://localhost:3002/api/admin/isAdmin",
+          `http://localhost:3002/api/admin/isAdmin`,
           {
             params: { email: user.email },
           }

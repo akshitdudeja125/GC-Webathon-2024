@@ -20,15 +20,6 @@ const DisplayData = (props) => {
   const submitHandler = () => {
     const getting = async () => {
       try {
-        // body  email, courseId, feedback
-        // const data=await axios.get("http://localhost:3002/api/faculty/getCourseDetails",
-        // {
-        //     params:{
-        //         courseId: code
-        //     }
-        // });
-        // const update=data.data;
-        // update["Course Feedback"].push(feedback);
         const auth = getAuth(firebaseApp);
         const email = auth?.currentUser?.email;
         const body = {
@@ -37,7 +28,7 @@ const DisplayData = (props) => {
           email: email,
         };
         const res = await axios.post(
-          "http://localhost:3002/api/student/submitCourseFeedback",
+          `http://localhost:3002/api/student/submitCourseFeedback`,
           body
         );
         console.log(res);

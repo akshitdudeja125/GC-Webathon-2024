@@ -19,7 +19,9 @@ const Body = () => {
     // Fetch event data from the API
     const fetchEvents = async () => {
       try {
-        const response = await axios.get("http://localhost:3002/api/admin/getEvents");
+        const response = await axios.get(
+          `http://localhost:3002/api/event/getAllEvents`
+        );
         setEvents(response.data);
       } catch (error) {
         console.error("Error fetching events:", error);
@@ -51,11 +53,14 @@ const Body = () => {
     try {
       await Promise.all(
         events.map(async (event) => {
-          const response = await axios.post("http://localhost:3002/api/event/registerEventFeedback", {
-            email: email,
-            feedback: feedbacks[event._id],
-            eventId: event._id,
-          });
+          const response = await axios.post(
+            `http://localhost:3002/api/event/registerEventFeedback`,
+            {
+              email: email,
+              feedback: feedbacks[event._id],
+              eventId: event._id,
+            }
+          );
           console.log("Feedback submitted for event:", response.data);
         })
       );
@@ -77,18 +82,66 @@ const Body = () => {
           <div className="col-span-3 mr-2">
             <div className={classes.adminData}>
               <div className="grid grid-cols-7">
-                <h1 className={`${classes.adminDataHeading} col-span-1`}>Sr no.</h1>
-                <h1 className={`${classes.adminDataHeading} col-span-2`}>Event</h1>
-                <h1 className={`${classes.adminDataHeading} col-span-3`}>User Email</h1>
-                <h1 className={`${classes.adminDataHeading} col-span-1`}>Feedback</h1>
+                <h1 className={`${classes.adminDataHeading} col-span-1`}>
+                  Sr no.
+                </h1>
+                <h1 className={`${classes.adminDataHeading} col-span-2`}>
+                  Event
+                </h1>
+                <h1 className={`${classes.adminDataHeading} col-span-3`}>
+                  User Email
+                </h1>
+                <h1 className={`${classes.adminDataHeading} col-span-1`}>
+                  Feedback
+                </h1>
               </div>
-              {events.map((event, idx) => (
-                <DisplayData
-                  key={idx}
-                  event={event}
-                  onFeedbackChange={handleFeedbackChange} // Pass feedback change handler to DisplayData component
-                />
-              ))}
+              {events.map((event, idx) => {
+                console.log(`event`, event);
+                return (
+                  // <DisplayData
+                  //   key={idx}
+                  //   event={event}
+                  //   onFeedbackChange={handleFeedbackChange} // Pass feedback change handler to DisplayData component
+                  // />
+                  <table className="table-auto w-full">
+                    <thead>
+                      <tr>
+                        <th>Title</th>
+                        <th>User Email</th>
+                        <th>Description</th>
+                        <th>Feedback</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {events.map((event, idx) => (
+                        <tr key={idx}>
+                          <td>{event.title}</td>
+                          <td>{event.adminEmail}</td>
+                          <td>{event.description}</td>
+                          <td>
+                            <input
+                              type="text"
+                              placeholder="Enter feedback"
+                              value={feedbacks[event._id] || ""}
+                              onChange={(e) =>
+                                handleFeedbackChange(event._id, e.target.value)
+                              }
+                            />
+                          </td>
+                          <td>
+                            <button
+                              onClick={() => handleSubmitFeedback(event._id)}
+                              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            >
+                              Submit Feedback
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                );
+              })}
             </div>
             <button
               onClick={handleSubmitFeedback}

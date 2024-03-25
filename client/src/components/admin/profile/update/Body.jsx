@@ -6,6 +6,7 @@ import axios from "axios";
 import { firebaseApp } from "../../../../firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import adminContext from "../../../../store/admin-context";
+
 const Body = () => {
   const navigate = useNavigate();
 
@@ -34,7 +35,7 @@ const Body = () => {
         },
       };
       const res = await axios.post(
-        "http://localhost:3002/api/admin/updateAdminDetails",
+        `http://localhost:3002/api/admin/updateAdminDetails`,
         data
       );
       console.log(res);

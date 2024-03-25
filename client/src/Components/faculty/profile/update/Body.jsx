@@ -5,6 +5,7 @@ import * as classes from "../../../../utils/styles";
 import axios from "axios";
 import { firebaseApp } from "../../../../firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+
 const Body = () => {
   const navigate = useNavigate();
 
@@ -30,7 +31,7 @@ const Body = () => {
       if (authEmail) {
         if (authEmail) {
           const data = await axios.get(
-            "http://localhost:3002/api/faculty/getFacultyDetails",
+            `http://localhost:3002/api/faculty/getFacultyDetails`,
             { params: { email: authEmail } }
           );
           setName(data.data?.["Faculty Details"]?.["Name"]);
@@ -72,7 +73,7 @@ const Body = () => {
         },
       };
       const res = await axios.post(
-        "http://localhost:3002/api/faculty/updateFacultyDetails",
+        `http://localhost:3002/api/faculty/updateFacultyDetails`,
         data
       );
       console.log(res);
@@ -209,7 +210,6 @@ const Body = () => {
                     value={dob}
                   />
                 </div>
-
               </div>
             </div>
 

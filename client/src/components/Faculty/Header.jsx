@@ -1,36 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
 import logo from "../../Images/logo.png";
 import axios from "axios";
 import { firebaseApp } from "../../firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import facultyContext from "../../store/faculty-context";
 const Header = () => {
-  const [name, setName] = useState();
-
-  useEffect(() => {
-    const gettingName = async () => {
-      try {
-        const auth = getAuth(firebaseApp);
-        const authEmail = auth?.currentUser?.email;
-        console.log(`AuthEmail in header: ${authEmail}`)
-        if (authEmail) {
-          const data = await axios.get(
-            "http://localhost:3002/api/faculty/getFaculyDetails",
-            {
-              params: {
-                email: authEmail,
-              },
-            }
-          );
-          setName(data?.data?.["Faculty Details"]?.["Name"] ?? "N/A");
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    gettingName();
-  }, []);
+  const {store} = useContext(facultyContext);
+  const name=store["Faculty Details"]["Name"];
 
   const logout = () => {
     const firebaseAuth = getAuth(firebaseApp);

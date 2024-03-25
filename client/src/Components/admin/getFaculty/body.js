@@ -7,13 +7,13 @@ import Spinner from "../../../utils/Spinner";
 import * as classes from "../../../utils/styles";
 import MenuItem from "@mui/material/MenuItem";
 import { SET_ERRORS } from "../../../redux/actionTypes";
-import axios from 'axios'; // Import axios for making HTTP requests
+import axios from "axios"; // Import axios for making HTTP requests
 
 const Body = () => {
   const dispatch = useDispatch();
   const [department, setDepartment] = useState("");
   const [error, setError] = useState({});
-  const departments = useSelector((state) => state.admin.allDepartment);
+  const departments = ["CSE", "ECE", "EE", "ME", "CE", "META"];
   const [search, setSearch] = useState(false);
   const [loading, setLoading] = useState(false);
   const store = useSelector((state) => state);
@@ -24,18 +24,23 @@ const Body = () => {
       setLoading(false);
     }
   }, [store.errors]);
+  const [data, setData] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSearch(true);
     setLoading(true);
     setError({});
-    
+
     try {
-      const response = await axios.get(`http://localhost:3002/api/admin/getFacultyByDepartment?department=${department}`);
-      dispatch({ type: 'SET_FACULTY', payload: response.data }); // Assuming you have a SET_FACULTY action type
+      const response = await axios.get(
+        // `http://localhost:3002/api/admin/getFacultyByDepartment?department=${department}`
+        `http://localhost:3002/api/admin/getFacultyByDepartment?department=${department}`
+      );
+      setData(response.data);
+      dispatch({ type: "SET_FACULTY", payload: response.data }); // Assuming you have a SET_FACULTY action type
     } catch (error) {
-      console.error('Error fetching faculty:', error);
+      console.error("Error fetching faculty:", error);
       // Handle error as needed
     }
 
@@ -62,7 +67,10 @@ const Body = () => {
           <h1>All Faculty</h1>
         </div>
         <div className="mr-10 bg-white grid grid-cols-4 rounded-xl pt-6 pl-6 h-[29.5rem]">
-          <form className="flex flex-col space-y-2 col-span-1" onSubmit={handleSubmit}>
+          <form
+            className="flex flex-col space-y-2 col-span-1"
+            onSubmit={handleSubmit}
+          >
             <label htmlFor="department">Department</label>
             <Select
               required
@@ -70,15 +78,19 @@ const Body = () => {
               sx={{ height: 36, width: 224 }}
               inputProps={{ "aria-label": "Without label" }}
               value={department}
-              onChange={(e) => setDepartment(e.target.value)}>
+              onChange={(e) => setDepartment(e.target.value)}
+            >
               <MenuItem value="">None</MenuItem>
               {departments?.map((dp, idx) => (
-                <MenuItem key={idx} value={dp.department}>
-                  {dp.department}
+                <MenuItem key={idx} value={dp}>
+                  {dp}
                 </MenuItem>
               ))}
             </Select>
-            <button className={`${classes.adminFormSubmitButton} w-56`} type="submit">
+            <button
+              className={`${classes.adminFormSubmitButton} w-56`}
+              type="submit"
+            >
               Search
             </button>
           </form>
@@ -99,63 +111,85 @@ const Body = () => {
                 </p>
               )}
             </div>
-            {search && !loading && Object.keys(error).length === 0 && faculties?.length !== 0 && (
-              <div>
-                <div className={classes.adminData}>
-                  <div className="grid grid-cols-12">
-                    <h1 className={`${classes.adminDataHeading} col-span-1`}>
-                      Sr no.
-                    </h1>
-                    <h1 className={`${classes.adminDataHeading} col-span-3`}>
-                      Name
-                    </h1>
-                    <h1 className={`${classes.adminDataHeading} col-span-2`}>
-                      ID
-                    </h1>
-                    <h1 className={`${classes.adminDataHeading} col-span-3`}>
-                      Email
-                    </h1>
-                    <h1 className={`${classes.adminDataHeading} col-span-3`}>
-                      Designation
-                    </h1>
-                    <h1 className={`${classes.adminDataHeading} col-span-3`}>
-                      School
-                    </h1>
-                    <h1 className={`${classes.adminDataHeading} col-span-3`}>
-                      Department
-                    </h1>
-                  </div>
-                  {faculties?.map((fac, idx) => (
-                    <div key={idx} className={`${classes.adminDataBody} grid-cols-12`}>
-                      <h1 className={`${classes.adminDataBodyFields} font-bold border-0 col-span-1`}>
-                        {idx + 1}
+            {search &&
+              !loading &&
+              Object.keys(error).length === 0 &&
+              data?.length !== 0 && (
+                <div>
+                  <div className={classes.adminData}>
+                    <div className="grid grid-cols-12">
+                      <h1 className={`${classes.adminDataHeading} col-span-1`}>
+                        Sr no.
                       </h1>
-                      <h1 className={`col-span-3 ${classes.adminDataBodyFields}`}>
-                        {fac["Faculty Details"].Name}
+                      <h1 className={`${classes.adminDataHeading} col-span-3`}>
+                        Name
                       </h1>
-                      <h1 className={`col-span-2 ${classes.adminDataBodyFields}`}>
-                        {fac["Faculty Details"].Id}
+                      <h1 className={`${classes.adminDataHeading} col-span-2`}>
+                        ID
                       </h1>
-                      <h1 className={`col-span-2 ${classes.adminDataBodyFields}`}>
-                        {fac["Faculty Details"].Email}
+                      <h1 className={`${classes.adminDataHeading} col-span-3`}>
+                        Email
                       </h1>
-                      <h1 className={`col-span-3 ${classes.adminDataBodyFields}`}>
-                        {fac.email}
+                      <h1 className={`${classes.adminDataHeading} col-span-3`}>
+                        Designation
                       </h1>
-                      <h1 className={`col-span-3 ${classes.adminDataBodyFields}`}>
-                        {fac["Academic Details"].Designation}
+                      <h1 className={`${classes.adminDataHeading} col-span-3`}>
+                        School
                       </h1>
-                      <h1 className={`col-span-3 ${classes.adminDataBodyFields}`}>
-                        {fac["Academic Details"].School}
-                      </h1>
-                      <h1 className={`col-span-3 ${classes.adminDataBodyFields}`}>
-                        {fac["Academic Details"].Department}
+                      <h1 className={`${classes.adminDataHeading} col-span-3`}>
+                        Department
                       </h1>
                     </div>
-                  ))}
+                    {data?.map((fac, idx) => (
+                      <div
+                        key={idx}
+                        className={`${classes.adminDataBody} grid-cols-12`}
+                      >
+                        <h1
+                          className={`${classes.adminDataBodyFields} font-bold border-0 col-span-1`}
+                        >
+                          {idx + 1}
+                        </h1>
+                        <h1
+                          className={`col-span-3 ${classes.adminDataBodyFields}`}
+                        >
+                          {fac["Faculty Details"].Name}
+                        </h1>
+                        <h1
+                          className={`col-span-2 ${classes.adminDataBodyFields}`}
+                        >
+                          {fac["Faculty Details"].Id}
+                        </h1>
+                        <h1
+                          className={`col-span-2 ${classes.adminDataBodyFields}`}
+                        >
+                          {fac["Faculty Details"].Email}
+                        </h1>
+                        <h1
+                          className={`col-span-3 ${classes.adminDataBodyFields}`}
+                        >
+                          {fac.email}
+                        </h1>
+                        <h1
+                          className={`col-span-3 ${classes.adminDataBodyFields}`}
+                        >
+                          {fac["Academic Details"].Designation}
+                        </h1>
+                        <h1
+                          className={`col-span-3 ${classes.adminDataBodyFields}`}
+                        >
+                          {fac["Academic Details"].School}
+                        </h1>
+                        <h1
+                          className={`col-span-3 ${classes.adminDataBodyFields}`}
+                        >
+                          {fac["Academic Details"].Department}
+                        </h1>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
           </div>
         </div>
       </div>

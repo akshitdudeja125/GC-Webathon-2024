@@ -109,7 +109,6 @@ const Sidebar = () => {
             <h1 className="font-normal">Course Registration</h1>
           </NavLink>
         </div>
-        {/* <button onClick={logout}>Logout</button> */}
       </div>
     </div>
   );

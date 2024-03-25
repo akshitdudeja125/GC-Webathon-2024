@@ -12,7 +12,7 @@ const isActiveStyle =
 const Sidebar = () => {
   return (
     <div className="flex-[0.2]">
-      <div className="space-y-8 overflow-y-scroll scrollbar-thin scrollbar-track-white scrollbar-thumb-gray-300 h-[33rem]">
+      <div className="space-y-8 overflow-y-scroll scrollbar-thin scrollbar-track-white scrollbar-thumb-gray-300 h-[33rem] overflow-auto">
         <div className="">
           <NavLink
             to="/faculty/home"
@@ -31,6 +31,36 @@ const Sidebar = () => {
           >
             <AssignmentIndIcon className="" />
             <h1 className="font-normal">Profile</h1>
+          </NavLink>
+
+          <NavLink
+            to="/faculty/home/attendance"
+            className={({ isActive }) =>
+              isActive ? isActiveStyle : isNotActiveStyle
+            }
+          >
+            <AssignmentIndIcon className="" />
+            <h1 className="font-normal">Mark Attendance</h1>
+          </NavLink>
+
+          <NavLink
+            to="/faculty/home/courses"
+            className={({ isActive }) =>
+              isActive ? isActiveStyle : isNotActiveStyle
+            }
+          >
+            <AssignmentIndIcon className="" />
+            <h1 className="font-normal">Courses</h1>
+          </NavLink>
+
+          <NavLink
+            to="/faculty/home/addassignments"
+            className={({ isActive }) =>
+              isActive ? isActiveStyle : isNotActiveStyle
+            }
+          >
+            <AssignmentIndIcon className="" />
+            <h1 className="font-normal">Add Assignments</h1>
           </NavLink>
         </div>
       </div>

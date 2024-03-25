@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import EngineeringIcon from "@mui/icons-material/Engineering";
 import { useDispatch } from "react-redux";
-import {ADD_EVENT, SET_ERRORS } from "../../../redux/actionTypes";
+import { ADD_EVENT, SET_ERRORS } from "../../../redux/actionTypes";
 import Spinner from "../../../utils/Spinner";
 import * as classes from "../../../utils/styles";
 import axios from "axios";
@@ -23,7 +23,7 @@ const Body = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:3002/api/event/addEvent',
+        `http://localhost:3002/api/event/addEvent`,
         value
       );
       console.log("Event registered successfully:", response.data);
@@ -121,11 +121,7 @@ const Body = () => {
                   messageColor="blue"
                 />
               )}
-              {error.message && (
-                <p className="text-red-500">
-                  {error.message}
-                </p>
-              )}
+              {error.message && <p className="text-red-500">{error.message}</p>}
             </div>
           </form>
         </div>

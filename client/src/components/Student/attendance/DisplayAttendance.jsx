@@ -8,20 +8,21 @@ const DisplayAttendance = (props) => {
   let arr = [];
   // setRarr(esult)
   console.log(props.array);
-  // result.
-  // console.log(Object.keys(props.array));
-  for (let i = 0; i < Object.keys(props.array).length; i++) {
-    const tempp = {
-      ...props.array[Object.keys(props.array)[i]],
-      Name: Object.keys(props.array)[i],
-    };
-    arr.push(tempp);
+  // if(props.array === undefined){
+  //   return <div></div>
+  // }
+  if (props.array) {
+    for (let i = 0; i < Object.keys(props.array).length; i++) {
+      const tempp = {
+        ...props.array[Object.keys(props.array)[i]],
+        Name: Object.keys(props.array)[i],
+      };
+      arr.push(tempp);
+    }
+    console.log(arr);
   }
-  console.log(arr);
-
   return (
     <>
-      
       {arr.map((res, idx) => (
         <div
           key={props.index}
@@ -37,10 +38,13 @@ const DisplayAttendance = (props) => {
             {res["Name"].split("_")[3] + " " + res["Name"].split("_")[2]}
           </h1>
           <h1 className={`col-span-2 ${classes.adminDataBodyFields}`}>
-            {res["Credits"]}
+            {res?.["Attendance"]??0}
           </h1>
           <h1 className={`col-span-1 ${classes.adminDataBodyFields}`}>
-            {res["Grade"]}
+            {res?.["TotalClasses"]??0}
+          </h1>
+          <h1 className={`col-span-1 ${classes.adminDataBodyFields}`}>
+            {((res["Attendance"] / res["TotalClasses"])*100)?(res["Attendance"] / res["TotalClasses"])*100:0}
           </h1>
         </div>
       ))}

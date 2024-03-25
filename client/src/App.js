@@ -7,7 +7,6 @@ import StudentHome from "./components/student/StudentHome";
 
 import TestResult from "./components/student/TestResults/TestResult";
 
-import Attendance from "./components/student/attendance/DisplayAttendance";
 import Feedback from "./components/student/Feedback/Feedback";
 import FacultyFeedback from "./components/student/FacultyFeedback/Feedback";
 
@@ -35,6 +34,13 @@ import Mark from "./components/faculty/MarkAttendace/Mark";
 import AdminLayout from "./components/admin/AdminLayout";
 import AddFaculty from "./components/admin/addFaculty/AddFaculty";
 import AddStudent from "./components/admin/addStudent/AddStudent";
+import FacultyLayout from "./components/faculty/FacultyLayout";
+import DisplayCourseContent from "./components/faculty/CourseDetails/DisplayCourseContent";
+import AddAssignment from "./components/faculty/AddAsignments/AddAssignments";
+import Attendance from "./components/student/attendance/Attendance";
+import EventsFeedback from "./components/student/EventsFeedback/eventsFeedback";
+import GetStudent from "./components/admin/getStudent/GetStudent";
+import GetFaculty from "./components/admin/getFaculty/GetFaculty";
 
 const App = () => {
   return (
@@ -51,6 +57,7 @@ const App = () => {
         <Route path="feedback" element={<Feedback />} />
         <Route path="faculty-feedback" element={<FacultyFeedback />} />
         <Route path="courseRegistration" element={<Registration />} />
+        <Route path="eventsFeedback" element={<EventsFeedback />} />
         <Route path="getCourses" element={<SeeCourses />} />
       </Route>
 
@@ -61,27 +68,25 @@ const App = () => {
         <Route path="home/profile/update" element={<AdminProfileUpdate />} />
         <Route path="addStudent" element={<AddStudent />} />
         <Route path="addFaculty" element={<AddFaculty />} />
-        {/* <Route path="addStudent" element={<AdminProfileUpdate />} /> */}
+        <Route path="getStudent" element={<GetStudent />} />
+        <Route path="getFaculty" element={<GetFaculty />} />
       </Route>
 
-      {/* <Route path="/admin/login" element={<AdminLogin />} />
-      <Route path="/admin/home" element={<AdminHome />} />
-      <Route path="/admin/home/profile" element={<AdminHomeProfile />} />
-      <Route
-        path="/admin/home/profile/update"
-        element={<AdminProfileUpdate />}
-      /> */}
-
       <Route path="/login/faculty" element={<FacultyLogin />} />
-      <Route path="/faculty/home" element={<Profile />} />
-      <Route path="/faculty/home/profile" element={<FacultyHome />} />
-      <Route
-        path="/faculty/home/profile/update"
-        element={<FacultyProfileUpdate />}
-      />
-      <Route path="/faculty/home/attendance" element={<MarkAttendance />} />
-      <Route path="/faculty/home/attendance/:courseId" element={<Mark />} />
-      <Route path="/faculty/home/courses" element={<CourseDetails />} />
+
+      <Route path="/faculty" element={<FacultyLayout />}>
+        <Route path="home" element={<Profile />} />
+        <Route path="home/profile" element={<FacultyHome />} />
+        <Route path="home/profile/update" element={<FacultyProfileUpdate />} />
+        <Route path="home/attendance/:courseId" element={<Mark />} />
+        <Route path="home/attendance" element={<MarkAttendance />} />
+        <Route path="home/courses" element={<CourseDetails />} />
+        <Route path="home/addassignments" element={<AddAssignment />} />
+        <Route
+          path="home/courses/:courseId"
+          element={<DisplayCourseContent />}
+        />
+      </Route>
     </Routes>
   );
 };

@@ -30,10 +30,9 @@ const Body = () => {
       const auth = getAuth(firebaseApp);
       const email = auth?.currentUser?.email;
       const data = await axios.get(
-        "http://localhost:3002/api/student/getRegisteredCourses",
+        `http://localhost:3002/api/student/getRegisteredCourses`,
         {
           params: {
-            // email: "21cs01026@iitbbs.ac.in",
             email: email,
           },
         }

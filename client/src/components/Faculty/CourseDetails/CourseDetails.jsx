@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Header from "../Header";
-import Sidebar from "../SideBar";
+import Sidebar from "../Sidebar";
 import Body from "./Body";
 
 const CourseDetails = () => {

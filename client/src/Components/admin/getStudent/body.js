@@ -5,18 +5,19 @@ import { MenuItem, Select } from "@mui/material";
 import Spinner from "../../../utils/Spinner";
 import * as classes from "../../../utils/styles";
 import { SET_ERRORS } from "../../../redux/actionTypes";
-import axios from 'axios';
+import axios from "axios";
 
 const Body = () => {
   const dispatch = useDispatch();
   const [error, setError] = useState({});
-  const departments = useSelector((state) => state.admin.allDepartment);
+  const departments = ["CSE", "ECE", "EE", "ME", "CE", "META"];
   const [loading, setLoading] = useState(false);
   const store = useSelector((state) => state);
   const [value, setValue] = useState({
     department: "",
     year: "",
   });
+  const [data, setData] = useState([]);
   const [search, setSearch] = useState(false);
 
   useEffect(() => {
@@ -31,12 +32,15 @@ const Body = () => {
     setSearch(true);
     setLoading(true);
     setError({});
-    
+
     try {
-      const response = await axios.get(`http://localhost:3002/api/admin/getStudentsOfParticularBranchAndBatch?department=${value.department}&year=${value.year}`);
-      dispatch({ type: 'SET_STUDENTS', payload: response.data }); // Assuming you have a SET_STUDENTS action type
+      const response = await axios.get(
+        `http://localhost:3002/api/admin/getStudentsOfParticularBranchAndBatch?branch=${value.department}&batch=${value.year}`
+      );
+      console.log("Students fetched successfully:", response.data);
+      setData(response.data);
     } catch (error) {
-      console.error('Error fetching students:', error);
+      console.error("Error fetching students:", error);
       // Handle error as needed
     }
 
@@ -62,19 +66,25 @@ const Body = () => {
             <h1>All Students</h1>
           </div>
           <div className="mr-10 bg-white grid grid-cols-4 rounded-xl pt-6 pl-6 h-[29.5rem]">
-            <form className="flex flex-col space-y-2 col-span-1" onSubmit={handleSubmit}>
+            <form
+              className="flex flex-col space-y-2 col-span-1"
+              onSubmit={handleSubmit}
+            >
               <label htmlFor="department">Department</label>
               <Select
                 required
                 displayEmpty
                 sx={{ height: 36, width: 224 }}
-                inputProps={{ "aria-label": "Without label" }}
+                inputProps={{ "aria-label": "With label" }}
                 value={value.department}
-                onChange={(e) => setValue({ ...value, department: e.target.value })}>
+                onChange={(e) =>
+                  setValue({ ...value, department: e.target.value })
+                }
+              >
                 <MenuItem value="">None</MenuItem>
                 {departments?.map((dp, idx) => (
-                  <MenuItem key={idx} value={dp.department}>
-                    {dp.department}
+                  <MenuItem key={idx} value={dp}>
+                    {dp}
                   </MenuItem>
                 ))}
               </Select>
@@ -85,14 +95,18 @@ const Body = () => {
                 sx={{ height: 36, width: 224 }}
                 inputProps={{ "aria-label": "Without label" }}
                 value={value.year}
-                onChange={(e) => setValue({ ...value, year: e.target.value })}>
-                <MenuItem value="">None</MenuItem>
-                <MenuItem value="1">1</MenuItem>
-                <MenuItem value="2">2</MenuItem>
-                <MenuItem value="3">3</MenuItem>
-                <MenuItem value="4">4</MenuItem>
+                onChange={(e) => setValue({ ...value, year: e.target.value })}
+              >
+                {Array.from({ length: 6 }, (_, i) => (
+                  <MenuItem key={i} value={2018 + i + 1}>
+                    {2018 + i + 1}
+                  </MenuItem>
+                ))}
               </Select>
-              <button className={`${classes.adminFormSubmitButton} w-56`} type="submit">
+              <button
+                className={`${classes.adminFormSubmitButton} w-56`}
+                type="submit"
+              >
                 Search
               </button>
             </form>
@@ -113,59 +127,78 @@ const Body = () => {
                   </p>
                 )}
               </div>
-              {search && !loading && Object.keys(error).length === 0 && students?.length !== 0 && (
-                <div className={classes.adminData}>
-                  <div className="grid grid-cols-10">
-                  <h1 className={`${classes.adminDataHeading} col-span-2`}>
-                      Sr no.
-                    </h1>
-                    <h1 className={`${classes.adminDataHeading} col-span-1`}>
-                      Name
-                    </h1>
-                    <h1 className={`${classes.adminDataHeading} col-span-2`}>
-                      email
-                    </h1>
-                    <h1 className={`${classes.adminDataHeading} col-span-2`}>
-                      School
-                    </h1>
-                    <h1 className={`${classes.adminDataHeading} col-span-2`}>
-                      Batch
-                    </h1>
-                    <h1 className={`${classes.adminDataHeading} col-span-1`}>
-                      Branch
-                    </h1>
-                    <h1 className={`${classes.adminDataHeading} col-span-2`}>
-                      Roll Number
-                    </h1>
-                    
-                  </div>
-                  {students?.map((stu, idx) => (
-                    <div key={idx} className={`${classes.adminDataBody} grid-cols-10`}>
-                      <h1 className={`${classes.adminDataBodyFields} col-span-1`}>
-                        {idx + 1}
+              {search &&
+                !loading &&
+                Object.keys(error).length === 0 &&
+                data?.length !== 0 && (
+                  <div className={classes.adminData}>
+                    <div className="grid grid-cols-10">
+                      <h1 className={`${classes.adminDataHeading} col-span-2`}>
+                        Sr no.
                       </h1>
-                      <h1 className={`${classes.adminDataBodyFields} col-span-2`}>
-                        {stu["Student Details"].Name}
+                      <h1 className={`${classes.adminDataHeading} col-span-1`}>
+                        Name
                       </h1>
-                      <h1 className={`${classes.adminDataBodyFields} col-span-2`}>
-                        {stu["Student Details"]["Roll Number"]}
+                      <h1 className={`${classes.adminDataHeading} col-span-2`}>
+                        email
                       </h1>
-                      <h1 className={`${classes.adminDataBodyFields} col-span-2`}>
-                        {stu.email}
+                      <h1 className={`${classes.adminDataHeading} col-span-2`}>
+                        School
                       </h1>
-                      <h1 className={`${classes.adminDataBodyFields} col-span-1`}>
-                        {stu["Academic Details"].Branch}
+                      <h1 className={`${classes.adminDataHeading} col-span-2`}>
+                        Batch
                       </h1>
-                      <h1 className={`${classes.adminDataBodyFields} col-span-2`}>
-                        {stu["Academic Details"].Batch}
+                      <h1 className={`${classes.adminDataHeading} col-span-1`}>
+                        Branch
                       </h1>
-                      <h1 className={`${classes.adminDataBodyFields} col-span-2`}>
-                        {stu["Academic Details"].School}
+                      <h1 className={`${classes.adminDataHeading} col-span-2`}>
+                        Roll Number
                       </h1>
                     </div>
-                  ))}
-                </div>
-              )}
+                    {data?.map((stu, idx) => (
+                      <div
+                        key={idx}
+                        className={`${classes.adminDataBody} grid-cols-10`}
+                      >
+                        <h1
+                          className={`${classes.adminDataBodyFields} col-span-1`}
+                        >
+                          {idx + 1}
+                        </h1>
+                        <h1
+                          className={`${classes.adminDataBodyFields} col-span-2`}
+                        >
+                          {stu["Student Details"].Name}
+                        </h1>
+                        <h1
+                          className={`${classes.adminDataBodyFields} col-span-2`}
+                        >
+                          {stu["Student Details"]["Roll Number"]}
+                        </h1>
+                        <h1
+                          className={`${classes.adminDataBodyFields} col-span-2`}
+                        >
+                          {stu.email}
+                        </h1>
+                        <h1
+                          className={`${classes.adminDataBodyFields} col-span-1`}
+                        >
+                          {stu["Academic Details"].Branch}
+                        </h1>
+                        <h1
+                          className={`${classes.adminDataBodyFields} col-span-2`}
+                        >
+                          {stu["Academic Details"].Batch}
+                        </h1>
+                        <h1
+                          className={`${classes.adminDataBodyFields} col-span-2`}
+                        >
+                          {stu["Academic Details"].School}
+                        </h1>
+                      </div>
+                    ))}
+                  </div>
+                )}
             </div>
           </div>
         </div>

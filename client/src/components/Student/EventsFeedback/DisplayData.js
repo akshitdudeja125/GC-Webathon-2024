@@ -8,6 +8,7 @@ import { SET_ERRORS } from "../../../redux/actionTypes";
 import * as classes from "../../../utils/styles";
 import { getAuth } from "firebase/auth";
 import { firebaseApp } from "../../../firebase";
+
 const DisplayData = ({ events }) => {
   const [feedbacks, setFeedbacks] = useState({}); // State to store feedback for each event
 
@@ -17,10 +18,13 @@ const DisplayData = ({ events }) => {
 
   const handleSubmitFeedback = async (eventId) => {
     try {
-      const response = await axios.post("http://localhost:3002/api/event/submitFeedback", {
-        eventId: eventId,
-        feedback: feedbacks[eventId],
-      });
+      const response = await axios.post(
+        `http://localhost:3002/api/event/submitFeedback`,
+        {
+          eventId: eventId,
+          feedback: feedbacks[eventId],
+        }
+      );
       console.log("Feedback submitted successfully:", response.data);
       // Optionally, you can handle success message or update state
       alert("Feedback submitted successfully");
@@ -41,7 +45,6 @@ const DisplayData = ({ events }) => {
             <th>User Email</th>
             <th>Description</th>
             <th>Feedback</th>
-            
           </tr>
         </thead>
         <tbody>
@@ -55,11 +58,16 @@ const DisplayData = ({ events }) => {
                   type="text"
                   placeholder="Enter feedback"
                   value={feedbacks[event._id] || ""}
-                  onChange={(e) => handleFeedbackChange(event._id, e.target.value)}
+                  onChange={(e) =>
+                    handleFeedbackChange(event._id, e.target.value)
+                  }
                 />
               </td>
               <td>
-                <button onClick={() => handleSubmitFeedback(event._id)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button
+                  onClick={() => handleSubmitFeedback(event._id)}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
                   Submit Feedback
                 </button>
               </td>

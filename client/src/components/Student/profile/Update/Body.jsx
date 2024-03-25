@@ -6,6 +6,7 @@ import * as classes from "../../../../utils/styles";
 import axios from "axios";
 import { firebaseApp } from "../../../../firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+
 const Body = () => {
   const navigate = useNavigate();
 
@@ -129,7 +130,7 @@ const Body = () => {
     };
     try {
       axios
-        .post("http://localhost:3002/api/student/updateUserDetails", data)
+        .post(`http://localhost:3002/api/student/updateUserDetails`, data)
         .then((response) => {
           console.log(response.status, response.data.token);
         });

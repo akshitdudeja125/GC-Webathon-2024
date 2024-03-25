@@ -19,7 +19,7 @@ const AdminLayout = () => {
 
         if (authEmail) {
           const response = await axios.get(
-            "http://localhost:3002/api/admin/getAdminDetails",
+            `http://localhost:3002/api/admin/getAdminDetails`,
             { params: { email: authEmail } }
           );
           console.log(response.data);

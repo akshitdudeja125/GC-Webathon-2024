@@ -7,6 +7,7 @@ import "react-calendar/dist/Calendar.css";
 import axios from "axios";
 import { getAuth } from "firebase/auth";
 import { firebaseApp } from "../../firebase";
+
 const Body = () => {
   const [name, setName] = useState();
   const [id, setId] = useState();
@@ -25,7 +26,7 @@ const Body = () => {
 
         if (authEmail) {
           const data = await axios.get(
-            "http://localhost:3002/api/admin/getDashboardItems",
+            `http://localhost:3002/api/admin/getDashboardItems`,
             { params: { email: authEmail } }
           );
           console.log(data.data?.["Student Details"]?.["Name"]);
