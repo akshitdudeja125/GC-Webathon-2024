@@ -23,6 +23,7 @@ import {
   DELETE_SUBJECT,
   CREATE_NOTICE,
   GET_NOTICE,
+  ADD_EVENT,
 } from "../actionTypes";
 import * as api from "../api";
 
@@ -90,7 +91,15 @@ export const getAllSubject = () => async (dispatch) => {
     console.log("Redux Error", error);
   }
 };
-
+export const addEvent = (formData) => async (dispatch) => {
+  try {
+    const { data } = await api.addEvent(formData);
+    alert("Notice Created Successfully");
+    dispatch({ type: ADD_EVENT, payload: true });
+  } catch (error) {
+    dispatch({ type: SET_ERRORS, payload: error.response.data });
+  }
+};
 export const updateAdmin = (formData) => async (dispatch) => {
   try {
     const { data } = await api.updateAdmin(formData);
