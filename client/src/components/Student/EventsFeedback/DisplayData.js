@@ -19,7 +19,7 @@ const DisplayData = ({ events }) => {
   const handleSubmitFeedback = async (eventId) => {
     try {
       const response = await axios.post(
-        `http://localhost:3002/api/event/submitFeedback`,
+        `https://gc-webathon-2024.onrender.com/api/event/submitFeedback`,
         {
           eventId: eventId,
           feedback: feedbacks[eventId],

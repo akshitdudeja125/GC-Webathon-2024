@@ -24,7 +24,7 @@ const Body = () => {
     try {
       const getStudents = async () => {
         const data = await axios.get(
-          "http://localhost:3002/api/faculty/getAllRegisteredStudents",
+          "https://gc-webathon-2024.onrender.com/api/faculty/getAllRegisteredStudents",
           {
             params: {
               courseId: courseId,
@@ -48,7 +48,7 @@ const Body = () => {
     try {
       const sendingData = async () => {
         const response = await axios.post(
-          `http://localhost:3002/api/faculty/giveGrade`,
+          `https://gc-webathon-2024.onrender.com/api/faculty/giveGrade`,
           body
         );
         console.log(response);

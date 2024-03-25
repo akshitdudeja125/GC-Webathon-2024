@@ -35,7 +35,7 @@ const Body = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:3002/api/admin/getStudentsOfParticularBranchAndBatch?branch=${value.department}&batch=${value.year}`
+        `https://gc-webathon-2024.onrender.com/api/admin/getStudentsOfParticularBranchAndBatch?branch=${value.department}&batch=${value.year}`
       );
       console.log("Students fetched successfully:", response.data);
       setData(response.data);

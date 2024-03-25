@@ -31,7 +31,7 @@ const BodyElement = () => {
     try {
       const sendingData = async () => {
         const response = await axios.post(
-          `http://localhost:3002/api/faculty/addAssignment`,
+          `https://gc-webathon-2024.onrender.com/api/faculty/addAssignment`,
           data
         );
         console.log(response);

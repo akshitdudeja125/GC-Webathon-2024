@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const API = axios.create({ baseURL: process.env.REACT_APP_SERVER_URL });
-const API = axios.create({ baseURL: `http://localhost:3002` });
+const API = axios.create({ baseURL: `https://gc-webathon-2024.onrender.com` });
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("user")) {

@@ -35,7 +35,7 @@ const Body = () => {
         },
       };
       const res = await axios.post(
-        `http://localhost:3002/api/admin/updateAdminDetails`,
+        `https://gc-webathon-2024.onrender.com/api/admin/updateAdminDetails`,
         data
       );
       console.log(res);

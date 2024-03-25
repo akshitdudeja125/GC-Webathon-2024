@@ -23,7 +23,7 @@ const Body = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:3002/api/event/addEvent`,
+        `https://gc-webathon-2024.onrender.com/api/event/addEvent`,
         value
       );
       console.log("Event registered successfully:", response.data);

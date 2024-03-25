@@ -26,7 +26,7 @@ const Body = () => {
 
         if (authEmail) {
           const data = await axios.get(
-            `http://localhost:3002/api/admin/getDashboardItems`,
+            `https://gc-webathon-2024.onrender.com/api/admin/getDashboardItems`,
             { params: { email: authEmail } }
           );
           console.log(data.data?.["Student Details"]?.["Name"]);
