@@ -41,6 +41,8 @@ import Attendance from "./components/student/attendance/Attendance";
 import EventsFeedback from "./components/student/EventsFeedback/eventsFeedback";
 import GetStudent from "./components/admin/getStudent/GetStudent";
 import GetFaculty from "./components/admin/getFaculty/GetFaculty";
+import Grades from "./components/faculty/Grades/Grades";
+import Body from "./components/faculty/Grades/Body";
 
 const App = () => {
   return (
@@ -82,6 +84,8 @@ const App = () => {
         <Route path="home/attendance" element={<MarkAttendance />} />
         <Route path="home/courses" element={<CourseDetails />} />
         <Route path="home/addassignments" element={<AddAssignment />} />
+        <Route path="home/grade" element={<Grades />} />
+        <Route path="home/grade/:courseId" element={<Body />} />
         <Route
           path="home/courses/:courseId"
           element={<DisplayCourseContent />}

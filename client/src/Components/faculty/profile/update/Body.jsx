@@ -5,7 +5,6 @@ import * as classes from "../../../../utils/styles";
 import axios from "axios";
 import { firebaseApp } from "../../../../firebase";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-
 const Body = () => {
   const navigate = useNavigate();
 
@@ -31,7 +30,7 @@ const Body = () => {
       if (authEmail) {
         if (authEmail) {
           const data = await axios.get(
-            `http://localhost:3002/api/faculty/getFacultyDetails`,
+            "http://localhost:3002/api/faculty/getFacultyDetails",
             { params: { email: authEmail } }
           );
           setName(data.data?.["Faculty Details"]?.["Name"]);
@@ -73,7 +72,7 @@ const Body = () => {
         },
       };
       const res = await axios.post(
-        `http://localhost:3002/api/faculty/updateFacultyDetails`,
+        "http://localhost:3002/api/faculty/updateFacultyDetails",
         data
       );
       console.log(res);
@@ -172,8 +171,8 @@ const Body = () => {
                     id="designation"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={designation}
-                    onChange={(e) => setDob(e.target.value)}
-                    value={dob}
+                    onChange={(e) => setDesignation(e.target.value)}
+                    value={designation}
                   />
                 </div>
 
@@ -189,8 +188,8 @@ const Body = () => {
                     id="school"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={school}
-                    onChange={(e) => setDob(e.target.value)}
-                    value={dob}
+                    onChange={(e) => setSchool(e.target.value)}
+                    value={school}
                   />
                 </div>
 
@@ -206,10 +205,11 @@ const Body = () => {
                     id="dep"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={dept}
-                    onChange={(e) => setDob(e.target.value)}
-                    value={dob}
+                    onChange={(e) => setDept(e.target.value)}
+                    value={dept}
                   />
                 </div>
+
               </div>
             </div>
 

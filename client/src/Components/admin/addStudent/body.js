@@ -25,7 +25,6 @@ const Body = () => {
     rollNumber: "",
     school: "",
     batch: "",
-    userEmail: "",
   });
 
   useEffect(() => {
@@ -55,7 +54,6 @@ const Body = () => {
         rollNumber: "",
         school: "",
         batch: "",
-        userEmail: "",
       });
     } catch (error) {
       if (error.response) {
@@ -79,7 +77,7 @@ const Body = () => {
             <AddIcon />
             <h1>Add Student</h1>
           </div>
-          <div className="mr-10 bg-white flex flex-col rounded-xl">
+          <div className="mr-10 bg-white flex flex-col rounded-xl ">
             <form
               className={`${classes.adminForm0} scrollbar-thin scrollbar-track-white scrollbar-thumb-black overflow-y-scroll h-[30rem]`}
               onSubmit={handleSubmit}
@@ -130,7 +128,7 @@ const Body = () => {
                     <h1 className={classes.adminLabel}>Batch :</h1>
                     <input
                       required
-                      placeholder="yyyy-yyyy"
+                      placeholder="yyyy"
                       className={classes.adminInput}
                       type="text"
                       value={value.batch}
@@ -149,19 +147,6 @@ const Body = () => {
                       value={value.school}
                       onChange={(e) =>
                         setValue({ ...value, school: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className={classes.adminForm3}>
-                    <h1 className={classes.adminLabel}>Admin Email :</h1>
-                    <input
-                      placeholder="User Email"
-                      required
-                      className={classes.adminInput}
-                      type="email"
-                      value={value.userEmail}
-                      onChange={(e) =>
-                        setValue({ ...value, userEmail: e.target.value })
                       }
                     />
                   </div>

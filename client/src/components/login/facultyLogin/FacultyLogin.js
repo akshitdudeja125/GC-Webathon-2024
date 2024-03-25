@@ -96,7 +96,7 @@ const FacultyLogin = () => {
             translate ? "-translate-x-[12rem]" : ""
           }  duration-1000 transition-all space-y-6 rounded-3xl shadow-2xl`}
         >
-          <h1 className="text-white text-3xl font-semibold">Student</h1>
+          <h1 className="text-white text-3xl font-semibold">Faculty</h1>
 
           <button
             onClick={onGoogleSignIn}

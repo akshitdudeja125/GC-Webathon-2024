@@ -62,6 +62,15 @@ const Sidebar = () => {
             <AssignmentIndIcon className="" />
             <h1 className="font-normal">Add Assignments</h1>
           </NavLink>
+          <NavLink
+            to="/faculty/home/grade"
+            className={({ isActive }) =>
+              isActive ? isActiveStyle : isNotActiveStyle
+            }
+          >
+            <AssignmentIndIcon className="" />
+            <h1 className="font-normal">Grade</h1>
+          </NavLink>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import express from "express";
 import { firestoreDB } from "../config/config";
 import { FieldValue } from "firebase-admin/firestore";
+import { getStudentDetails } from "../controller/studentController";
 const router = express.Router();
 router.get("/isFaculty", async (req, res) => {
   try {
@@ -239,6 +240,47 @@ const getEmailFromRollNumber = async (rollNumber: string) => {
     throw e;
   }
 };
+router.post("/giveGrade", async (req, res) => {
+  try {
+    const { rollNumber, courseId, grade } = req.body;
+    const courseCollection = firestoreDB.collection("courses");
+    const courseDoc = await courseCollection.doc(courseId).get();
+    if (courseDoc.exists) {
+      const courseData = courseDoc.data();
+      if (courseData) {
+        if (!courseData?.["Students"]) {
+          return res.status(400).send("Students not found in course data");
+        }
+        if (!courseData["Students"][rollNumber]) {
+          return res.status(400).send("Student not registered for this course");
+        }
+        await firestoreDB.collection("courses").doc(courseId).update({
+          [`Students.${rollNumber}.Grade`]: grade,
+        });
+        const email: any = await getEmailFromRollNumber(rollNumber);
+        await firestoreDB.collection("students").doc(email).update({
+          [`Courses.${courseId}.Grade`]: grade,
+        });
+
+        return res.status(200).send("Grades submitted successfully");
+      }
+      else {
+        return res.status(404).send("Course not found");
+      }
+    }
+    else {
+      return res.status(404).send("Course not found");
+    }
+  } catch (e: any) {
+    console.error(e);
+    return res.status(500).send(
+      {
+        status: "error",
+        message: e?.message
+      }
+    );
+  }
+});
 // router.post("/addAssignment", async (req, res) => {
 router.post("/registerAttendence", async (req, res) => {
   try {

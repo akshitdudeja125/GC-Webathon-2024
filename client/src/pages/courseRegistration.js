@@ -11,9 +11,10 @@ const DataTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const email = localStorage.getItem("email");
         const response = await axios.get(
           `http://localhost:3002/api/student/getAvailableCourses`,
-          { params: { email: "21cs01026@iitbbs.ac.in" } }
+          { params: { email: email } }
         );
         setCourses(response.data);
         console.log(response);
