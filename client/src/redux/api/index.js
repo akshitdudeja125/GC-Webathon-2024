@@ -32,6 +32,10 @@ export const updateAdmin = (updatedAdmin) =>
   API.post("/api/admin/updateprofile", updatedAdmin);
 
 export const addAdmin = (admin) => API.post("/api/admin/addadmin", admin);
+export const addEvent = (event) =>
+  API.post("/api/event/addEvent", event);
+export const getEvents = (event) =>
+  API.post("/api/event/getAllEvents", event);
 export const createNotice = (notice) =>
   API.post("/api/admin/createnotice", notice);
 export const deleteAdmin = (data) => API.post("/api/admin/deleteadmin", data);
