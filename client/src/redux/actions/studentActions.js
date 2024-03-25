@@ -68,7 +68,11 @@ export const getSubject = (department, year) => async (dispatch) => {
 };
 export const getEvents = () => async (dispatch) => {
   try {
-    
+    const formData = {
+      title,
+    adminEmail,
+    description,
+    };
     const { data } = await api.getEvents(formData);
     dispatch({ type: GET_SUBJECT, payload: data });
   } catch (error) {
