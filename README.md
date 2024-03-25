@@ -52,5 +52,13 @@ Click the link above to access the Postman collection.
 
 ## Screenshots of this Project
 
+#### Semester-wise display:
+
+![semwise_display](https://github.com/Abhigna77/webgc/assets/121166830/54e8be08-2312-41e8-9955-23df8b8a4a9f)
+
+
+#### Available courses to register:
+
+![Available_courses](https://github.com/Abhigna77/webgc/assets/121166830/8348e060-ecb2-479a-8879-5513739f8f2d)
 
 
